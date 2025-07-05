@@ -42,7 +42,7 @@ public class BattleScene {
     // -- Helper Methods --
     // method that compares speeds of enemy and player and returns higher
     private int compareSpeeds(Entity comparer, Entity target){
-        return comparer.compareSpeed(target.getEntityStatBlock().getEntitySpeed());
+        return comparer.getEntityStatBlock().compareSpeed(target.getEntityStatBlock().getEntitySpeed());
     }
 
     // method to determine which of two entities goes first
