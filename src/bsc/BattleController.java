@@ -18,6 +18,7 @@ public class BattleController {
     public BattleController(BattleScene bsc){
         this.battleScene = bsc;
         this.battlePanel = new BattlePanel(bsc.getEnemy().getEntityName());
+
         setUpActionListeners();
 
         if(!this.battleScene.isPlayerTurn()){
@@ -107,6 +108,7 @@ public class BattleController {
     private void handlePlayerDefense(){
         if(this.battleScene.isPlayerTurn()){
             this.battlePanel.printPlayerDefend();
+            // TODO: remake entity functionality
         }
     }
 
