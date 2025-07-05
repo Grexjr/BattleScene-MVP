@@ -42,16 +42,16 @@ public class BattleScene {
     // -- Helper Methods --
     // method that compares speeds of enemy and player and returns higher
     private int compareSpeeds(Entity comparer, Entity target){
-        return comparer.compareSpeed(target.getEntitySpeed());
+        return comparer.compareSpeed(target.getEntityStatBlock().getEntitySpeed());
     }
 
     // method to determine which of two entities goes first
     protected Entity determineTurn(Entity entity1, Entity entity2){
         Entity goer = null;
-        if(entity1.getEntitySpeed() > entity2.getEntitySpeed()){
+        if(entity1.getEntityStatBlock().getEntitySpeed() > entity2.getEntityStatBlock().getEntitySpeed()){
             goer = entity1;
             return goer;
-        } else if(entity1.getEntitySpeed() < entity2.getEntitySpeed()){
+        } else if(entity1.getEntityStatBlock().getEntitySpeed() < entity2.getEntityStatBlock().getEntitySpeed()){
             goer = entity2;
             return goer;
         } else { //TODO: Test if this is actually working, doesn't seem to be
@@ -68,10 +68,12 @@ public class BattleScene {
     }
 
     // attack entity method
-    //TODO: Split this up, put some in entity, some here?
+    //TODO: Split this up, put some in entity, some here? | REFACTOR!
     protected void attackEntity(Entity attacker, Entity target){
-        int attackPower = Math.max(attacker.getEntityAttack() - target.getEntityDefense(),0);
-        target.setEntityCurrentHealth(target.getEntityCurrentHealth() - attackPower);
+        int attackPower = Math.max(attacker.getEntityStatBlock().getEntityAttack() -
+                target.getEntityStatBlock().getEntityDefense(),0);
+        target.getEntityStatBlock().setEntityCurrentHealth(target.getEntityStatBlock().getEntityCurrentHealth() -
+                attackPower);
         // Debug
         System.out.println(attacker.getEntityName() + " attacks " + target.getEntityName());
     }

@@ -75,7 +75,7 @@ public class BattleController {
 
     // method to check if entity loses
     private boolean checkLoss(Entity entity){
-        return entity.getEntityCurrentHealth() <= 0;
+        return entity.getEntityStatBlock().getEntityCurrentHealth() <= 0;
     }
 
     // method to run the loss of the entity
