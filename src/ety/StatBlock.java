@@ -112,18 +112,16 @@ public class StatBlock {
 
     // method that compares defense to param and returns higher value
     public int compareDefense(int comparison){
-        return Math.max(this.getEntityDefense(),comparison);
+        return Math.max(this.getEffectiveDefense(),comparison);
     }
 
-    // method that compares speed to param and returns higher value
+    // method that compares speed to param and returns higher value | TODO: Compare effective speed
     public int compareSpeed(int comparison){
         return Math.max(this.getEntitySpeed(),comparison);
     }
 
 
     // -- Modifier Methods --
-    // method to calculate the defense modifier
-    public int calculateDefenseMod() {return this.entityDefense + (int) Math.ceil(this.entityDefense / 2.0);}
 
     // method to get the effective defense
     public int getEffectiveDefense() {return this.entityDefense + this.tempDefenseMod;}

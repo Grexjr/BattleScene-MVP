@@ -46,6 +46,10 @@ public class BattleController {
         this.battlePanel.getDefendButton().addActionListener(e -> {
             this.handlePlayerDefense();
             finishPlayerTurn();
+            // TODO: Find out why this is not properly setting the temp defense back to zero
+            SwingUtilities.invokeLater(() -> {
+                    this.battleScene.getPlayer().getEntityStatBlock().setTempDefenseMod(0);
+            });
         });
         this.battlePanel.getItemButton().addActionListener(e -> {
             this.handlePlayerItemUse();
@@ -108,7 +112,7 @@ public class BattleController {
     private void handlePlayerDefense(){
         if(this.battleScene.isPlayerTurn()){
             this.battlePanel.printPlayerDefend();
-            // TODO: remake entity functionality
+            this.battleScene.getPlayer().guard();
         }
     }
 

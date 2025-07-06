@@ -71,7 +71,7 @@ public class BattleScene {
     //TODO: Split this up, put some in entity, some here? | REFACTOR!
     protected void attackEntity(Entity attacker, Entity target){
         int attackPower = Math.max(attacker.getEntityStatBlock().getEntityAttack() -
-                target.getEntityStatBlock().getEntityDefense(),0);
+                target.getEntityStatBlock().getEffectiveDefense(),0);
         target.getEntityStatBlock().setEntityCurrentHealth(target.getEntityStatBlock().getEntityCurrentHealth() -
                 attackPower);
         // Debug

@@ -31,6 +31,16 @@ public abstract class Entity {
     // === OTHER METHODS ===
 
     // -- Battle methods --
+    public void guard(){
+        if(this.entityStatBlock.getEntityDefense() == 0){
+            this.entityStatBlock.setTempDefenseMod(1);
+        } else {
+            this.entityStatBlock.setTempDefenseMod((int) Math.ceil(this.entityStatBlock.getEntityDefense() / 2.0));
+        }
+        // Debug
+        System.out.println((int) Math.ceil(this.entityStatBlock.getEntityDefense() / 2.0));
+        System.out.println(this.getEntityStatBlock().getEffectiveDefense());
+    }
 
 
 
