@@ -1,5 +1,7 @@
 package ety.enemy;
 
+import ety.StatBlock;
+
 public class Slime extends Enemy{
 
     // === CONSTRUCTOR FOR SLIME ===
@@ -7,12 +9,13 @@ public class Slime extends Enemy{
         super(
                 "Slime",
                 "A gooey, disgusting blob!",
-                level,
-                level + 9,
-                level,
-                Math.max(level - 1,0),
-                level
-        );
+                new StatBlock(
+                        level,
+                        level + 9,
+                        level,
+                        level - 1,
+                        level
+                ));
     }
 
 }

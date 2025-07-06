@@ -7,12 +7,13 @@ public class Player extends Entity{
         super(
                 name,
                 "It's you!",
-                1,
-                20,
-                1,
-                0,
-                1
-        );
+                new StatBlock(
+                        1,
+                        20,
+                        1,
+                        0,
+                        1
+                ));
     }
 
 

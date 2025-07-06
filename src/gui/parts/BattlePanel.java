@@ -90,8 +90,8 @@ public class BattlePanel extends JPanel {
 
     // method to print health | TODO: Should this go here?
     public void printHealth(Entity battler){
-        this.log(battler.getEntityName() + " health: " + battler.getEntityCurrentHealth() + "/" +
-                battler.getEntityMaxHealth() +"\n");
+        this.log(battler.getEntityName() + " health: " + battler.getEntityStatBlock().getEntityCurrentHealth() + "/" +
+                battler.getEntityStatBlock().getEntityMaxHealth() +"\n");
     }
 
     // method to print loss
