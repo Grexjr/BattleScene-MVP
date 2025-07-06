@@ -46,7 +46,6 @@ public class BattleController {
         this.battlePanel.getDefendButton().addActionListener(e -> {
             this.handlePlayerDefense();
             finishPlayerTurn();
-            // TODO: Find out why this is not properly setting the temp defense back to zero
             SwingUtilities.invokeLater(() -> {
                     this.battleScene.getPlayer().getEntityStatBlock().setTempDefenseMod(0);
             });
@@ -138,7 +137,7 @@ public class BattleController {
             this.battlePanel.getButtonPanel().setVisible(true);
     }
 
-    // enemy turn method
+    // enemy turn method | TODO: ADD THE DIFFERENT CASES FOR ENEMY AI
     private void runEnemyTurn(){
         switch(this.battleScene.getEnemy().makeBattleChoice()){
             default:

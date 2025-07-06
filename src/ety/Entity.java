@@ -31,6 +31,7 @@ public abstract class Entity {
     // === OTHER METHODS ===
 
     // -- Battle methods --
+    // method to guard
     public void guard(){
         if(this.entityStatBlock.getEntityDefense() == 0){
             this.entityStatBlock.setTempDefenseMod(1);
@@ -40,6 +41,11 @@ public abstract class Entity {
         // Debug
         System.out.println((int) Math.ceil(this.entityStatBlock.getEntityDefense() / 2.0));
         System.out.println(this.getEntityStatBlock().getEffectiveDefense());
+    }
+
+    // method to calculate run chance using speed  | TODO: Make it effective speed
+    public void run(Entity runFrom){
+
     }
 
 

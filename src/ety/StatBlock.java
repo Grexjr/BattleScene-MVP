@@ -122,11 +122,17 @@ public class StatBlock {
 
 
     // -- Modifier Methods --
+    // method to get the effective maxHealth
+    public int getEffectiveMaxHealth() {return this.entityMaxHealth + this.tempHealthMod;}
+
+    // method to get the effective attack
+    public int getEffectiveAttack() {return this.entityAttack + this.tempAttackMod;}
 
     // method to get the effective defense
     public int getEffectiveDefense() {return this.entityDefense + this.tempDefenseMod;}
 
-
+    // method to get the effective speed
+    public int getEffectiveSpeed() {return this.entitySpeed + this.tempSpeedMod;}
 
 
 

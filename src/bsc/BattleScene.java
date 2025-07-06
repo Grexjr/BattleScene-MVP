@@ -40,12 +40,12 @@ public class BattleScene {
     // === OTHER METHODS ===
 
     // -- Helper Methods --
-    // method that compares speeds of enemy and player and returns higher
+    // method that compares speeds of enemy and player and returns higher | TODO: effective speeds
     private int compareSpeeds(Entity comparer, Entity target){
         return comparer.getEntityStatBlock().compareSpeed(target.getEntityStatBlock().getEntitySpeed());
     }
 
-    // method to determine which of two entities goes first
+    // method to determine which of two entities goes first | TODO: Effective speeds
     protected Entity determineTurn(Entity entity1, Entity entity2){
         Entity goer = null;
         if(entity1.getEntityStatBlock().getEntitySpeed() > entity2.getEntityStatBlock().getEntitySpeed()){
