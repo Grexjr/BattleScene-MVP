@@ -1,5 +1,7 @@
 package ety;
 
+import java.util.Random;
+
 /*
  * This class is the abstract, non-concrete entity class that all entities (in this case slime and player, since
  * there are no others, extend from).
@@ -43,9 +45,21 @@ public abstract class Entity {
         System.out.println(this.getEntityStatBlock().getEffectiveDefense());
     }
 
-    // method to calculate run chance using speed  | TODO: Make it effective speed
-    public void run(Entity runFrom){
+    // method to calculate run chance using speed, returns boolean of run success or not | TODO: Make it effective speed
+    public boolean run(Entity runFrom){
 
+        int totalSpeed = this.getEntityStatBlock().getEffectiveSpeed() +
+                runFrom.getEntityStatBlock().getEffectiveSpeed();
+        // Debug
+        System.out.println(totalSpeed);
+
+        Random rand = new Random();
+        int runSuccessNum = rand.nextInt(1,totalSpeed+1);
+        // Debug
+        System.out.println(runSuccessNum);
+
+        // Should give a ~50% chance to escape when speeds are the same | TODO: Devise a test for this
+        return runSuccessNum <= this.getEntityStatBlock().getEffectiveSpeed();
     }
 
 

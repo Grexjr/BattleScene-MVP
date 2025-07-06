@@ -125,7 +125,23 @@ public class BattleController {
     // method to handle running
     private void handlePlayerRun(){
         if(this.battleScene.isPlayerTurn()){
-            this.battlePanel.printPlayerRun();
+            if(this.battleScene.getPlayer().run(this.battleScene.getEnemy())){
+                // Debug
+                System.out.println("Run Successful.");
+
+                this.battlePanel.printSuccessfulRun(this.battleScene.getPlayer().getEntityName());
+                this.battleScene.setPlayerTurn(false); // TODO: Find out why this isn't stopping input or enemy turn
+                // TODO: Add in battle check that this changes, then add check in finishPlayerTurn that stops enemy
+
+                new Timer(1000,e -> {
+                    System.exit(0);
+                }).start();
+
+            } else{
+                // Debug
+                System.out.println("Run failed.");
+                this.battlePanel.printFailedRun(this.battleScene.getPlayer().getEntityName());
+            }
         }
     }
 

@@ -124,11 +124,22 @@ public class BattlePanel extends JPanel {
         this.log("You try to use an item!");
     }
 
-    // player run
-    public void printPlayerRun(){
-        this.log("You attempt to escape!");
+    // print entity run
+    private void printRun(String runnerName){
+        this.log(runnerName + " attempted to escape!");
     }
 
+    // print entity successful run
+    public void printSuccessfulRun(String runnerName){
+        printRun(runnerName);
+        this.log(runnerName +  " escaped!\n");
+    }
+
+    // print entity failed run
+    public void printFailedRun(String runnerName){
+        printRun(runnerName);
+        this.log(runnerName + " failed to escape!\n");
+    }
 
     // - Methods to print enemy-related things -
     // enemy attack
