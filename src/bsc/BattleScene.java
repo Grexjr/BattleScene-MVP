@@ -23,7 +23,7 @@ public class BattleScene {
     private boolean inBattle, isPlayerTurn;
     private final Enemy enemy;
     private final Player player;
-    private BattleExit exitCode;
+    private Entity firstGoer;
 
 
     // == CONSTRUCTOR FOR BATTLESCENE ===
@@ -32,7 +32,7 @@ public class BattleScene {
         this.player = player;
         this.inBattle = true;
         this.isPlayerTurn = false;
-        this.exitCode = BattleExit.BATTLE_ACTIVE;
+        this.firstGoer = determineWhoGoesFirst(player,enemy);
 
         // Debug
         System.out.println("Starting battle...");
@@ -49,15 +49,15 @@ public class BattleScene {
     public boolean isPlayerTurn() {return this.isPlayerTurn;}
     public void setPlayerTurn(boolean value) {this.isPlayerTurn = value;}
 
-    public BattleExit getExitCode() {return this.exitCode;}
-    public void setExitCode(BattleExit exit) {this.exitCode = exit;}
+    public Entity getFirstGoer() {return this.firstGoer;}
+    public void setFirstGoer(Entity goer) {this.firstGoer = goer;}
 
 
     // === OTHER METHODS ===
 
     // -- Helper Methods --
     // method that determines who goes next in a battle
-    protected Entity determineWhoGoesNext(Entity entity1, Entity entity2){
+    public Entity determineWhoGoesFirst(Entity entity1, Entity entity2){
         Entity goer;
         StatBlock entity1Stats = entity1.getEntityStatBlock();
         int entity1Speed = entity1.getEntityStatBlock().getEffectiveSpeed();
@@ -83,7 +83,7 @@ public class BattleScene {
 
     // check who goes next to change flags, changes isPlayerTurn to true if player, otherwise makes variable false
     protected void checkIfPlayerGoesNext(Entity entity1, Entity entity2){
-        this.isPlayerTurn = determineWhoGoesNext(entity1, entity2) instanceof Player;
+        this.isPlayerTurn = determineWhoGoesFirst(entity1, entity2) instanceof Player;
     }
 
     // attack entity method

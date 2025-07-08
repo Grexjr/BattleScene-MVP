@@ -88,6 +88,14 @@ public class StatBlock {
         this.setEntityLevel(getLastLevel());
     }
 
+    // method to reset all temporary stats
+    public void resetTempStats(){
+        this.tempHealthMod = 0;
+        this.tempAttackMod = 0;
+        this.tempDefenseMod = 0;
+        this.tempSpeedMod = 0;
+    }
+
 
     // -- Comparison Methods --
     // method that compares level to param and returns higher value
