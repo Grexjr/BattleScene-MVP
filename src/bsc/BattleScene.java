@@ -23,6 +23,7 @@ public class BattleScene {
     private boolean inBattle, isPlayerTurn;
     private final Enemy enemy;
     private final Player player;
+    private BattleExit exitCode;
 
 
     // == CONSTRUCTOR FOR BATTLESCENE ===
@@ -31,6 +32,7 @@ public class BattleScene {
         this.player = player;
         this.inBattle = true;
         this.isPlayerTurn = false;
+        this.exitCode = BattleExit.BATTLE_ACTIVE;
 
         // Debug
         System.out.println("Starting battle...");
@@ -46,6 +48,9 @@ public class BattleScene {
 
     public boolean isPlayerTurn() {return this.isPlayerTurn;}
     public void setPlayerTurn(boolean value) {this.isPlayerTurn = value;}
+
+    public BattleExit getExitCode() {return this.exitCode;}
+    public void setExitCode(BattleExit exit) {this.exitCode = exit;}
 
 
     // === OTHER METHODS ===
@@ -91,6 +96,9 @@ public class BattleScene {
         // Debug
         System.out.println(attacker.getEntityName() + " attacks " + target.getEntityName());
     }
+
+
+
 
 
 }

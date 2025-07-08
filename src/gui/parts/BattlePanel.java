@@ -56,6 +56,19 @@ public class BattlePanel extends JPanel {
     // === OTHER METHODS ===
 
     // -- Helper Methods --
+    // method to refresh
+    public void refresh(){
+        this.revalidate();
+        this.repaint();
+    }
+
+    // method to clear
+    public void clear(){
+        this.removeAll();
+        refresh();
+    }
+
+
     // method to always have scrollbar go to the bottom -- added to log method so everytime logged it goes to bottom
     public void scrollDown(){
         this.battleScroller.getVerticalScrollBar().setValue(battleScroller.getVerticalScrollBar().getMaximum());
@@ -102,6 +115,11 @@ public class BattlePanel extends JPanel {
                 " and " +
                 enemy.getEntityName() +
                 " has begun!\n");
+    }
+
+    // method to print battle over
+    public void printBattleOver(){
+        this.log("Battle over!\n\n\n");
     }
 
     // method to print health | TODO: Should this go here?

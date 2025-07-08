@@ -66,6 +66,22 @@ public class BattleController {
     // === OTHER METHODS === | TODO: Check if some of these should just go into battlescene
 
     // -- Helper Methods --
+    // method to end battle
+    private void endBattle(){
+        this.battlePanel.printBattleOver();
+        this.battleScene.setInBattle(false);
+    }
+
+    // method to run battle over
+    private BattleExit runBattleExit(){
+        endBattle();
+        //Temporary, not what's actually going to happen
+        SwingUtilities.invokeLater(this.battlePanel::clear);
+        return this.battleScene.getExitCode();
+    }
+
+
+
     // method to finish up the player turn
     private void finishPlayerTurn(){
         this.battlePanel.disableButtons();
@@ -86,12 +102,12 @@ public class BattleController {
         if(entity instanceof Player){
             // Debug
             System.out.println(this.battleScene.getPlayer() + " has lost.");
-            System.exit(0);
+            runBattleExit();
         }
         if(entity instanceof Enemy){
             // Debug
             System.out.println("Battle won player");
-            System.exit(0);
+            runBattleExit();
         }
     }
 
@@ -131,7 +147,7 @@ public class BattleController {
                 // TODO: Add in battle check that this changes, then add check in finishPlayerTurn that stops enemy
 
                 new Timer(1000,e -> {
-                    System.exit(0);
+                    runBattleExit();
                 }).start();
 
             } else{
