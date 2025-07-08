@@ -18,15 +18,12 @@ public class BattleController {
     public BattleController(BattleScene bsc){
         this.battleScene = bsc;
         this.battlePanel = new BattlePanel(bsc.getEnemy().getEntityName());
+        // TODO: Create variables/defaults of player and enemy for easier reference
 
         setUpActionListeners();
 
-        if(!this.battleScene.isPlayerTurn()){
-            this.battlePanel.getButtonPanel().setVisible(false);
-        }
-
         startBattle();
-        runBattleLoop();
+        runBattleTurn();
     }
 
     // === CONSTRUCTOR METHODS ===
@@ -71,7 +68,7 @@ public class BattleController {
     // -- Helper Methods --
     // method to finish up the player turn
     private void finishPlayerTurn(){
-        this.battlePanel.hide(this.battlePanel.getButtonPanel());
+        this.battlePanel.disableButtons();
         this.battleScene.setPlayerTurn(false);
         SwingUtilities.invokeLater(this::runEnemyTurn);
     }
@@ -149,8 +146,7 @@ public class BattleController {
     // player turn method
     private void runPlayerTurn(){
             this.battlePanel.printPlayerStartTurn();
-            this.battleScene.setPlayerTurn(true);
-            this.battlePanel.getButtonPanel().setVisible(true);
+            this.battlePanel.enableButtons();
     }
 
     // enemy turn method | TODO: ADD THE DIFFERENT CASES FOR ENEMY AI
@@ -165,7 +161,6 @@ public class BattleController {
                 }
                 break;
         }
-        runPlayerTurn();
     }
 
     // start battle method
@@ -173,12 +168,13 @@ public class BattleController {
         this.battlePanel.printBattleStart(this.battleScene.getPlayer(),this.battleScene.getEnemy());
     }
 
-    // battle loop method
-    private void runBattleLoop(){
-        if(this.battleScene.determineTurn(this.battleScene.getPlayer(),this.battleScene.getEnemy()) instanceof Player){
+    // refactored battle turn method
+    private void runBattleTurn(){
+        this.battleScene.checkIfPlayerGoesNext(this.battleScene.getPlayer(),this.battleScene.getEnemy());
+        if(this.battleScene.isPlayerTurn()){
             runPlayerTurn();
-        }else{
-        SwingUtilities.invokeLater(this::runEnemyTurn);
+        } else{
+            runEnemyTurn();
         }
     }
 

@@ -2,9 +2,20 @@ package bsc;
 
 import ety.Entity;
 import ety.Player;
+import ety.StatBlock;
 import ety.enemy.Enemy;
 
 import java.util.Random;
+
+/** The battlescene runs thusly:
+ *      The battlescene determines who goes first, either player or enemy.
+ *      If player goes first, then they make their move.
+ *      After player makes their move, enemy MUST go.
+ *      After enemy makes their move, run the turn calculation again to determine who goes first.
+ *      If enemy goes first, then they make their move.
+ *      After enemy makes their move, player MUST go.
+ *      After player makes their move, run the turn calculation again to determine who goes first.
+ * */
 
 public class BattleScene {
 
@@ -40,31 +51,34 @@ public class BattleScene {
     // === OTHER METHODS ===
 
     // -- Helper Methods --
-    // method that compares speeds of enemy and player and returns higher | TODO: effective speeds
-    private int compareSpeeds(Entity comparer, Entity target){
-        return comparer.getEntityStatBlock().compareSpeed(target.getEntityStatBlock().getEntitySpeed());
+    // method that determines who goes next in a battle
+    protected Entity determineWhoGoesNext(Entity entity1, Entity entity2){
+        Entity goer;
+        StatBlock entity1Stats = entity1.getEntityStatBlock();
+        int entity1Speed = entity1.getEntityStatBlock().getEffectiveSpeed();
+        int entity2Speed = entity2.getEntityStatBlock().getEffectiveSpeed();
+
+        if(entity1Stats.compareSpeedTo(entity2Speed)){
+            goer = entity1;
+        } else {
+            if(entity1Speed == entity2Speed){
+                int rand = new Random().nextInt(0,2);
+                if(rand == 0){
+                    goer = entity1;
+                    return goer;
+                } else if(rand == 1){
+                    goer = entity2;
+                    return goer;
+                }
+            }
+            goer = entity2;
+        }
+        return goer;
     }
 
-    // method to determine which of two entities goes first | TODO: Effective speeds
-    protected Entity determineTurn(Entity entity1, Entity entity2){
-        Entity goer = null;
-        if(entity1.getEntityStatBlock().getEntitySpeed() > entity2.getEntityStatBlock().getEntitySpeed()){
-            goer = entity1;
-            return goer;
-        } else if(entity1.getEntityStatBlock().getEntitySpeed() < entity2.getEntityStatBlock().getEntitySpeed()){
-            goer = entity2;
-            return goer;
-        } else { //TODO: Test if this is actually working, doesn't seem to be
-            int rand = new Random().nextInt(0,1);
-            if(rand == 0){
-                goer = entity1;
-                return goer;
-            } else if(rand == 1){
-                goer = entity2;
-                return goer;
-            }
-        }
-        return goer; //TODO: Throw exception here
+    // check who goes next to change flags, changes isPlayerTurn to true if player, otherwise makes variable false
+    protected void checkIfPlayerGoesNext(Entity entity1, Entity entity2){
+        this.isPlayerTurn = determineWhoGoesNext(entity1, entity2) instanceof Player;
     }
 
     // attack entity method
@@ -77,8 +91,6 @@ public class BattleScene {
         // Debug
         System.out.println(attacker.getEntityName() + " attacks " + target.getEntityName());
     }
-
-
 
 
 }

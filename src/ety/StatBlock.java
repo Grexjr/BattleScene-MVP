@@ -115,9 +115,9 @@ public class StatBlock {
         return Math.max(this.getEffectiveDefense(),comparison);
     }
 
-    // method that compares speed to param and returns higher value | TODO: Compare effective speed
-    public int compareSpeed(int comparison){
-        return Math.max(this.getEntitySpeed(),comparison);
+    // method that compares speed to param and returns higher value
+    public boolean compareSpeedTo(int comparison){
+        return this.getEffectiveSpeed() > comparison;
     }
 
 

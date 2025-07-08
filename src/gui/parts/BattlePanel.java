@@ -77,6 +77,22 @@ public class BattlePanel extends JPanel {
         part.setVisible(true);
     }
 
+    // method to enable buttons
+    public void enableButtons(){
+        this.getAttackButton().setEnabled(true);
+        this.getDefendButton().setEnabled(true);
+        this.getItemButton().setEnabled(true);
+        this.getRunButton().setEnabled(true);
+    }
+
+    // method to disable buttons
+    public void disableButtons(){
+        this.getAttackButton().setEnabled(false);
+        this.getDefendButton().setEnabled(false);
+        this.getItemButton().setEnabled(false);
+        this.getRunButton().setEnabled(false);
+    }
+
 
     // -- Printing Methods --
     // method to print battle start

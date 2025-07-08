@@ -10,6 +10,11 @@ import gui.parts.BattlePanel;
 
 public class Tester {
 
+    /* TODO: Tester method with param of slime level, does ~1000 runs of a first turn with expected values w lvl 1 plyr
+           level 1 slime: 0% slime goes first expected
+           level 2 slime: 50% slime goes first expected
+           level 3slime: 100% slime goes first expected */
+
     // The tester main method
     public static void main(String[] args){
 
