@@ -56,9 +56,23 @@ public class BattlePanel extends JPanel {
     // === OTHER METHODS ===
 
     // -- Helper Methods --
+    // method to refresh
+    public void refresh(){
+        this.revalidate();
+        this.repaint();
+    }
+
+    // method to clear
+    public void clear(){
+        this.removeAll();
+        refresh();
+    }
+
+
     // method to always have scrollbar go to the bottom -- added to log method so everytime logged it goes to bottom
     public void scrollDown(){
-        this.battleScroller.getVerticalScrollBar().setValue(battleScroller.getVerticalScrollBar().getMaximum());
+        JScrollBar scroller = this.battleScroller.getVerticalScrollBar();
+        scroller.setValue(scroller.getMaximum());
     }
 
     // method to log something on the text field
@@ -77,6 +91,22 @@ public class BattlePanel extends JPanel {
         part.setVisible(true);
     }
 
+    // method to enable buttons
+    public void enableButtons(){
+        this.getAttackButton().setEnabled(true);
+        this.getDefendButton().setEnabled(true);
+        this.getItemButton().setEnabled(true);
+        this.getRunButton().setEnabled(true);
+    }
+
+    // method to disable buttons
+    public void disableButtons(){
+        this.getAttackButton().setEnabled(false);
+        this.getDefendButton().setEnabled(false);
+        this.getItemButton().setEnabled(false);
+        this.getRunButton().setEnabled(false);
+    }
+
 
     // -- Printing Methods --
     // method to print battle start
@@ -86,6 +116,11 @@ public class BattlePanel extends JPanel {
                 " and " +
                 enemy.getEntityName() +
                 " has begun!\n");
+    }
+
+    // method to print battle over
+    public void printBattleOver(){
+        this.log("Battle over!\n\n\n");
     }
 
     // method to print health | TODO: Should this go here?

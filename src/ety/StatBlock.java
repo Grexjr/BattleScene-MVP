@@ -88,6 +88,14 @@ public class StatBlock {
         this.setEntityLevel(getLastLevel());
     }
 
+    // method to reset all temporary stats
+    public void resetTempStats(){
+        this.tempHealthMod = 0;
+        this.tempAttackMod = 0;
+        this.tempDefenseMod = 0;
+        this.tempSpeedMod = 0;
+    }
+
 
     // -- Comparison Methods --
     // method that compares level to param and returns higher value
@@ -115,9 +123,9 @@ public class StatBlock {
         return Math.max(this.getEffectiveDefense(),comparison);
     }
 
-    // method that compares speed to param and returns higher value | TODO: Compare effective speed
-    public int compareSpeed(int comparison){
-        return Math.max(this.getEntitySpeed(),comparison);
+    // method that compares speed to param and returns higher value
+    public boolean compareSpeedTo(int comparison){
+        return this.getEffectiveSpeed() > comparison;
     }
 
 

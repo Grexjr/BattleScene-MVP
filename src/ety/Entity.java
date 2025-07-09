@@ -33,6 +33,9 @@ public abstract class Entity {
     // === OTHER METHODS ===
 
     // -- Battle methods --
+    // method to check if dead
+    public boolean isDead(){return this.getEntityStatBlock().getEntityCurrentHealth() <= 0;}
+
     // method to guard
     public void guard(){
         if(this.entityStatBlock.getEntityDefense() == 0){
