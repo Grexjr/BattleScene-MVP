@@ -2,6 +2,9 @@ package ety;
 
 public class Player extends Entity{
 
+    // === VARIABLES AND FIELDS ===
+
+
     // === CONSTRUCTOR FOR PLAYER ===
     public Player(String name){
         super(
