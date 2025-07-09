@@ -57,6 +57,7 @@ public class BattleScene {
 
     // -- Helper Methods --
     // method that determines who goes next in a battle
+    // TODO: Refactor...
     public Entity determineWhoGoesFirst(Entity entity1, Entity entity2){
         Entity goer;
         StatBlock entity1Stats = entity1.getEntityStatBlock();
@@ -67,14 +68,13 @@ public class BattleScene {
             goer = entity1;
         } else {
             if(entity1Speed == entity2Speed){
-                int rand = new Random().nextInt(0,2);
-                if(rand == 0){
+                boolean rand = new Random().nextBoolean();
+                if(rand){
                     goer = entity1;
-                    return goer;
-                } else if(rand == 1){
+                } else{
                     goer = entity2;
-                    return goer;
                 }
+                return goer;
             }
             goer = entity2;
         }
@@ -83,16 +83,22 @@ public class BattleScene {
 
     // check who goes next to change flags, changes isPlayerTurn to true if player, otherwise makes variable false
     protected void checkIfPlayerGoesNext(Entity entity1, Entity entity2){
-        this.isPlayerTurn = determineWhoGoesFirst(entity1, entity2) instanceof Player;
+        Entity goer = determineWhoGoesFirst(entity1,entity2);
+        this.isPlayerTurn = goer instanceof Player;
     }
 
     // attack entity method
-    //TODO: Split this up, put some in entity, some here? | REFACTOR!
     protected void attackEntity(Entity attacker, Entity target){
-        int attackPower = Math.max(attacker.getEntityStatBlock().getEntityAttack() -
-                target.getEntityStatBlock().getEffectiveDefense(),0);
-        target.getEntityStatBlock().setEntityCurrentHealth(target.getEntityStatBlock().getEntityCurrentHealth() -
-                attackPower);
+
+        StatBlock targetStats = target.getEntityStatBlock();
+        StatBlock attackerStats = attacker.getEntityStatBlock();
+        int defensePower = targetStats.getEffectiveDefense();
+        int attackPower = attackerStats.getEntityAttack();
+
+        int damage = Math.max(attackPower - defensePower,0);
+
+        targetStats.takeDamage(damage);
+
         // Debug
         System.out.println(attacker.getEntityName() + " attacks " + target.getEntityName());
     }

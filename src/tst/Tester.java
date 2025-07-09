@@ -15,11 +15,8 @@ public class Tester {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
 
-    /* TODO: Tester method with param of slime level, does ~1000 runs of a first turn with expected values w lvl 1 plyr
-           level 1 slime: 0% slime goes first expected
-           level 2 slime: 50% slime goes first expected
-           level 3slime: 100% slime goes first expected */
 
+    // Testing who goes first | TODO: REFACTOR!
     public static void testGoFirstMethod(int iterations){
         Slime slime = new Slime(1);
         Player player = new Player("Test Guy");

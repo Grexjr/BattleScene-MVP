@@ -6,7 +6,6 @@ import ety.enemy.Enemy;
 import gui.parts.BattlePanel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BattleController {
@@ -22,7 +21,6 @@ public class BattleController {
     public BattleController(BattleScene bsc){
         this.battleScene = bsc;
         this.battlePanel = new BattlePanel(bsc.getEnemy().getEntityName());
-        // TODO: Create variables/defaults of player and enemy for easier reference
 
         this.player = bsc.getPlayer();
         this.enemy = bsc.getEnemy();
@@ -83,15 +81,16 @@ public class BattleController {
             boolean runSuccess = this.player.run(this.enemy);
 
             if(runSuccess){
+
+                endBattle(); // First so set in false so ending player turn doesn't run enemy turn
+                endPlayerTurn();
+
                 // Debug
                 System.out.println("Run Successful.");
 
                 this.battlePanel.printSuccessfulRun(this.player.getEntityName());
 
-                new Timer(1000,_ -> {
-                    endPlayerTurn(); // TODO: Player still takes damaged, though not displayed; fix with boolean
-                    System.exit(0);
-                }).start();
+                new Timer(1000,_ -> System.exit(0)).start(); // TODO: Better end function
 
             } else{
                 // Debug
@@ -116,20 +115,25 @@ public class BattleController {
 
     // running player turn
     private void runPlayerTurn(){
-        this.battlePanel.printPlayerStartTurn();
-        this.battlePanel.enableButtons();
+        if(this.battleScene.isInBattle()){
+            this.battlePanel.printPlayerStartTurn();
+            this.battlePanel.enableButtons();
+        }
     }
 
 
     // === ENEMY TURN METHODS ===
+    // TODO: Add an endEnemyTurn method so you can check in there for battle ends
     private void runEnemyTurn(){
-        this.battlePanel.printEnemyAttack(this.enemy);
-        this.battleScene.attackEntity(this.enemy,this.player);
-        this.battlePanel.printHealth(this.player);
-        if(this.battleScene.getFirstGoer() instanceof Enemy){
-            runPlayerTurn();
-        } else{
-            runTurnSetOrder();
+        if(this.battleScene.isInBattle()){
+            this.battlePanel.printEnemyAttack(this.enemy);
+            this.battleScene.attackEntity(this.enemy,this.player);
+            this.battlePanel.printHealth(this.player);
+            if(this.battleScene.getFirstGoer() instanceof Enemy){
+                runPlayerTurn();
+            } else{
+                runTurnSetOrder();
+            }
         }
     }
 
@@ -157,10 +161,18 @@ public class BattleController {
         return this.player.isDead();
     }
 
+    // method to end the battle
+    private void endBattle(){
+        this.battleScene.setInBattle(false);
+        // If checkWin vs if checkLoss vs returning run
+        //TODO: Add better functionality for this; exit codes, etc.
+    }
+
 
     // === BATTLE PROGRESSION METHODS ===
     private boolean checkFirstGoerIsPlayer(){
-        return this.battleScene.determineWhoGoesFirst(this.player,this.enemy) instanceof Player;
+        Entity firstGoer = this.battleScene.determineWhoGoesFirst(this.player,this.enemy);
+        return  firstGoer instanceof Player;
     }
 
     private void runTurnSetOrder(){
