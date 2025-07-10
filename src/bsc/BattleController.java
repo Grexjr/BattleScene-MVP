@@ -79,8 +79,8 @@ public class BattleController {
             } else{
                 // TEMP: Hard coded for just using healable, need to expand and genericize this.
                 // TEMP: only takes from first slot, no choice | TODO: Add choice for items
+                this.battlePanel.printSuccessfulItemUse(this.player,this.player.getPlayerInventory().getFromIndex(0));
                 this.player.useItem(this.player.getPlayerInventory().getFromIndex(0));
-                // TODO: print out what item was used and what the effect was. For now, debug line:
                 System.out.println("useItem.success");
             }
         };

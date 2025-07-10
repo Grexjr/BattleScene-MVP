@@ -1,5 +1,7 @@
 package ety;
 
+import itm.Item;
+
 public class Player extends Entity{
 
     // === VARIABLES AND FIELDS ===
@@ -22,10 +24,17 @@ public class Player extends Entity{
 
 
     // === GETTERS AND SETTERS ===
-    public Inventory getPlayerInventory() {return playerInventory;}
+    public Inventory getPlayerInventory() {return this.playerInventory;}
 
 
     // === OTHER METHODS ===
+    // -- Item methods --
+    // method to use an item
+    public void useItem(Item item){
+        // TEMP: hard coded to just use healing items. Will need to change with expanded item infrastructure
+        this.getEntityStatBlock().takeHeal(item.getUsed());
+        this.playerInventory.remove(item);
+    }
 
     // -- Battle Methods --
 

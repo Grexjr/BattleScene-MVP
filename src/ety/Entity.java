@@ -35,13 +35,6 @@ public abstract class Entity {
 
     // === OTHER METHODS ===
 
-    // -- Item methods --
-    // method to use an item
-    public void useItem(Item item){
-        // TEMP: hard coded to just use healing items. Will need to change with expanded item infrastructure
-        this.entityStatBlock.takeHeal(item.getUsed());
-    }
-
     // -- Battle methods --
     // method to check if dead
     public boolean isDead(){return this.getEntityStatBlock().getEntityCurrentHealth() <= 0;}
@@ -58,7 +51,7 @@ public abstract class Entity {
         System.out.println(this.getEntityStatBlock().getEffectiveDefense());
     }
 
-    // method to calculate run chance using speed, returns boolean of run success or not | TODO: Make it effective speed
+    // method to calculate run chance using speed, returns boolean of run success or not | TODO: Devise a test for this
     public boolean run(Entity runFrom){
 
         int totalSpeed = this.getEntityStatBlock().getEffectiveSpeed() +
@@ -71,7 +64,7 @@ public abstract class Entity {
         // Debug
         System.out.println(runSuccessNum);
 
-        // Should give a ~50% chance to escape when speeds are the same | TODO: Devise a test for this
+        // Should give a ~50% chance to escape when speeds are the same
         return runSuccessNum <= this.getEntityStatBlock().getEffectiveSpeed();
     }
 
