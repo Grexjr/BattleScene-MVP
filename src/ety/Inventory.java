@@ -36,20 +36,38 @@ public class Inventory {
         this.inventoryContents.remove(item);
     }
 
+    public void removeFirst(){
+        this.inventoryContents.removeFirst();
+    }
+
+    public void removeLast(){
+        this.inventoryContents.removeLast();
+    }
+
     public void removeAtIndex(int index){
         this.inventoryContents.remove(index);
     }
 
+    public boolean checkEmpty(){
+        return this.inventoryContents.isEmpty();
+    }
+
 
     // --- Helper Methods ---
+    // calculates the total weight of all items in the inventory
     public int calculateTotalWeight(){
         int totalWeight = 0;
 
         for(Item item : this.inventoryContents){
-            totalWeight = totalWeight; // item.getWeight
+            totalWeight = totalWeight + item.getItemWeight();
         }
 
         return totalWeight;
+    }
+
+    // checks if the total weight is past the max allowed weight
+    public boolean checkOverEncumbered(int weight){
+        return weight >= this.inventoryMaxWeight;
     }
 
 

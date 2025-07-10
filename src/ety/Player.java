@@ -3,7 +3,7 @@ package ety;
 public class Player extends Entity{
 
     // === VARIABLES AND FIELDS ===
-
+    private final Inventory playerInventory;
 
     // === CONSTRUCTOR FOR PLAYER ===
     public Player(String name){
@@ -17,7 +17,12 @@ public class Player extends Entity{
                         0,
                         1
                 ));
+        this.playerInventory = new Inventory(50);
     }
+
+
+    // === GETTERS AND SETTERS ===
+    public Inventory getPlayerInventory() {return playerInventory;}
 
 
     // === OTHER METHODS ===

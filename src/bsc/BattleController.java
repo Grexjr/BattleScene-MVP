@@ -72,7 +72,11 @@ public class BattleController {
     private ActionListener handlePlayerItem() {
         return _ -> {
             this.battlePanel.printPlayerItemUse();
-            endPlayerTurn();
+            if(this.player.getPlayerInventory().checkEmpty()){
+                this.battlePanel.printNoItems();
+            } else{
+                // Item use infrastructure
+            }
         };
     }
 

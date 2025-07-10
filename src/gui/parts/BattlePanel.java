@@ -2,6 +2,7 @@ package gui.parts;
 
 import ety.Entity;
 import ety.Player;
+import itm.Item;
 
 import javax.swing.*;
 import java.awt.*;
@@ -140,7 +141,7 @@ public class BattlePanel extends JPanel {
 
     // print player turn start
     public void printPlayerStartTurn(){
-        this.log("Player act time!");
+        this.log("\n\nPlayer act time!\n\n");
     }
 
     // - Methods to print button presses -
@@ -157,6 +158,16 @@ public class BattlePanel extends JPanel {
     // player item use
     public void printPlayerItemUse(){
         this.log("You try to use an item!");
+    }
+
+    // player item use success | TODO: model other methods off of this one to make them more generic
+    public void printSuccessfulItemUse(Entity entity, Item item){
+        this.log("\n" + entity.getEntityName() + " uses " + item.getItemName() + "!\n");
+    }
+
+    // player has no items print
+    public void printNoItems(){
+        this.log("You have no items!\n");
     }
 
     // print entity run
