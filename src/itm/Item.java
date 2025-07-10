@@ -29,7 +29,9 @@ public class Item {
     public int getItemSellPrice() {return itemSellPrice;}
 
 
-    // === OTHER METHODS ===
+    // === BASIC METHODS ===
+    // method to use the item -- Override by item subclasses
+    public void use(){}
 
 
 
