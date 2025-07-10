@@ -41,31 +41,36 @@ public abstract class Entity {
 
     // method to guard
     public void guard(){
-        if(this.entityStatBlock.getEntityDefense() == 0){
+        int defense = this.entityStatBlock.getEntityDefense();
+        if(defense == 0){
             this.entityStatBlock.setTempDefenseMod(1);
         } else {
-            this.entityStatBlock.setTempDefenseMod((int) Math.ceil(this.entityStatBlock.getEntityDefense() / 2.0));
+            this.entityStatBlock.setTempDefenseMod((int) Math.ceil(defense / 2.0));
         }
+
         // Debug
-        System.out.println((int) Math.ceil(this.entityStatBlock.getEntityDefense() / 2.0));
+        System.out.println((int) Math.ceil(defense / 2.0));
         System.out.println(this.getEntityStatBlock().getEffectiveDefense());
     }
 
     // method to calculate run chance using speed, returns boolean of run success or not | TODO: Devise a test for this
     public boolean run(Entity runFrom){
+        int runnerSpeed = this.getEntityStatBlock().getEffectiveSpeed();
+        int runFromSpeed = runFrom.getEntityStatBlock().getEffectiveSpeed()
 
-        int totalSpeed = this.getEntityStatBlock().getEffectiveSpeed() +
-                runFrom.getEntityStatBlock().getEffectiveSpeed();
+        int totalSpeed =  runnerSpeed + runFromSpeed;
+
         // Debug
         System.out.println(totalSpeed);
 
         Random rand = new Random();
         int runSuccessNum = rand.nextInt(1,totalSpeed+1);
+
         // Debug
         System.out.println(runSuccessNum);
 
         // Should give a ~50% chance to escape when speeds are the same
-        return runSuccessNum <= this.getEntityStatBlock().getEffectiveSpeed();
+        return runSuccessNum <= runnerSpeed;
     }
 
 

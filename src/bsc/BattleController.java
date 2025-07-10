@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class BattleController {
-    //TODO: Fix bug where player gets to 0 health but keeps going; need inBattle check for enemy attack as well
+    //TODO: Make end of battle better for player loss condition, enemy loss condition, run condition.
 
     // === VARIABLES AND FIELDS ===
     private final BattleScene battleScene;
@@ -125,7 +125,7 @@ public class BattleController {
 
     // running player turn
     private void runPlayerTurn(){
-        if(this.battleScene.isInBattle()){
+        if(this.battleScene.isInBattle() && !checkLoss()){
             this.battlePanel.printPlayerStartTurn();
             this.battlePanel.enableButtons();
         }
