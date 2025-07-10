@@ -23,6 +23,13 @@ public class Healable extends Item {
     public int getRecoveryPower() {return recoveryPower;}
 
 
+    // === OTHER METHODS ===
+    @Override
+    public int getUsed(){
+        return getRecoveryPower();
+    }
+
+
 
 
 

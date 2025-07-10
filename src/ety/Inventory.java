@@ -1,6 +1,7 @@
 package ety;
 
 import itm.Item;
+import itm.healers.Healable;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,8 @@ public class Inventory {
     // === OTHER METHODS ===
 
     // --- Basic Methods ---
+    public Item getFromIndex(int index) { return this.inventoryContents.get(index); }
+
     public void put(Item item){
         this.inventoryContents.add(item);
     }

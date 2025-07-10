@@ -1,5 +1,8 @@
 package ety;
 
+import itm.Item;
+import itm.healers.Healable;
+
 import java.util.Random;
 
 /*
@@ -31,6 +34,13 @@ public abstract class Entity {
 
 
     // === OTHER METHODS ===
+
+    // -- Item methods --
+    // method to use an item
+    public void useItem(Item item){
+        // TEMP: hard coded to just use healing items. Will need to change with expanded item infrastructure
+        this.entityStatBlock.takeHeal(item.getUsed());
+    }
 
     // -- Battle methods --
     // method to check if dead

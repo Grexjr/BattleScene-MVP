@@ -1,6 +1,6 @@
 package itm;
 
-public class Item {
+public abstract class Item {
 
     // === VARIABLES AND FIELDS ===
     private final String itemName, itemDesc;
@@ -30,8 +30,8 @@ public class Item {
 
 
     // === BASIC METHODS ===
-    // method to use the item -- Override by item subclasses
-    public void use(){}
+    // TEMP: returning int is temp because only healables. Future commits will need to rearchitect.
+    public abstract int getUsed();
 
 
 
