@@ -56,7 +56,7 @@ public abstract class Entity {
     // method to calculate run chance using speed, returns boolean of run success or not | TODO: Devise a test for this
     public boolean run(Entity runFrom){
         int runnerSpeed = this.getEntityStatBlock().getEffectiveSpeed();
-        int runFromSpeed = runFrom.getEntityStatBlock().getEffectiveSpeed()
+        int runFromSpeed = runFrom.getEntityStatBlock().getEffectiveSpeed();
 
         int totalSpeed =  runnerSpeed + runFromSpeed;
 
