@@ -4,11 +4,13 @@ import ety.Entity;
 import ety.Player;
 import ety.enemy.Enemy;
 import gui.parts.BattlePanel;
+import itm.healers.Healable;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
 public class BattleController {
+    //TODO: Fix bug where player gets to 0 health but keeps going; need inBattle check for enemy attack as well
 
     // === VARIABLES AND FIELDS ===
     private final BattleScene battleScene;
@@ -72,7 +74,15 @@ public class BattleController {
     private ActionListener handlePlayerItem() {
         return _ -> {
             this.battlePanel.printPlayerItemUse();
-            endPlayerTurn();
+            if(this.player.getPlayerInventory().checkEmpty()){
+                this.battlePanel.printNoItems();
+            } else{
+                // TEMP: Hard coded for just using healable, need to expand and genericize this.
+                // TEMP: only takes from first slot, no choice | TODO: Add choice for items
+                this.player.useItem(this.player.getPlayerInventory().getFromIndex(0));
+                // TODO: print out what item was used and what the effect was. For now, debug line:
+                System.out.println("useItem.success");
+            }
         };
     }
 

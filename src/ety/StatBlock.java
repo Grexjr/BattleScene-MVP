@@ -63,9 +63,19 @@ public class StatBlock {
         return Math.max(this.getEntityCurrentHealth() - damage, 0);
     }
 
-    // Method for enemy to take in a value and apply it as damage to its current health
+    // Method for entity to take in a value and apply it as damage to its current health
+    // NOTE: Clamped this value as of 7/9/25 commit in case of unintended behavior; clamps health no less than 0
     public void takeDamage(int damage) {
-        this.setEntityCurrentHealth(calculateResultingHealth(damage));
+        this.setEntityCurrentHealth(Math.max(calculateResultingHealth(damage),0));
+    }
+
+    // Method for entity to calculate the resulting health by adding a value
+    private int calculateHealthFromHeal(int heal) { return Math.max(this.getEntityCurrentHealth() + heal,0);}
+
+    // Method for entity to take in a value and apply it as heal to its current health
+    // NOTE: Clamped this value as of 7/9/25 commit in case of unintended behavior; sets health no greater than max
+    public void takeHeal(int heal) {
+        this.setEntityCurrentHealth(Math.min(calculateHealthFromHeal(heal),this.getEffectiveMaxHealth()));
     }
 
     // method that returns the next level

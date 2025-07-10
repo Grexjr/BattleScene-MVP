@@ -7,6 +7,8 @@ import ety.enemy.Enemy;
 import ety.enemy.Slime;
 import gui.GameWindow;
 import gui.parts.BattlePanel;
+import itm.healers.Healable;
+import itm.healers.HealingItem;
 
 public class Tester {
 
@@ -115,7 +117,9 @@ public class Tester {
 
         GameWindow gameWindow = new GameWindow(800,600,"Game");
         Player player = new Player("Player");
-        Enemy slime = new Slime(1);
+        player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
+        Enemy slime = new Slime(5);
+        System.out.println(player.getPlayerInventory().getInventoryContents());
         BattleScene bsc = new BattleScene(player,slime);
 
         BattleController bc = new BattleController(bsc);
