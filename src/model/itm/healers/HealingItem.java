@@ -1,4 +1,4 @@
-package itm.healers;
+package model.itm.healers;
 
 public enum HealingItem {
 

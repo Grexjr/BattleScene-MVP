@@ -1,0 +1,9 @@
+NEXT MOVE 7/10/25: ADD PROPER BATTLE EXITING!!!
+--- This may involve making a window separate from the battle window with extra choices for the player. Let's try it!
+--- Will also likely involve a SceneManager object that stores the story scene to return to it after
+--- Also should create a wrapper gamePanel class that all the panels of the game inherit from that has the text log etc.
+
+
+
+7/15/2025: FIX TEXT LOG ISSUE!
+--- Text log now appears below the button panel
