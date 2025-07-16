@@ -1,16 +1,14 @@
 package tst;
 
-import controller.BattleController;
-import model.BattleScene;
-import model.ety.Player;
-import model.ety.enemy.Enemy;
-import model.ety.enemy.Slime;
-import controller.MainMenuController;
-import view.guiparts.GameWindow;
-import view.guiparts.TextLog;
-import view.guiparts.buttonpanels.BattleButtonPanel;
-import view.guis.BattleGUI;
-import view.guis.MainMenuGUI;
+import bsc.BattleController;
+import bsc.BattleScene;
+import ety.Player;
+import ety.enemy.Enemy;
+import ety.enemy.Slime;
+import gui.GameWindow;
+import gui.parts.BattlePanel;
+import itm.healers.Healable;
+import itm.healers.HealingItem;
 
 public class Tester {
 
@@ -114,30 +112,21 @@ public class Tester {
 
     }
 
-    // TESTING THE MAIN RUN
-    private static void runMainBattle(int enemyLevel){
-        GameWindow gameWindow = new GameWindow(800,600,"ROGUE CRAWLER");
-        TextLog battleLog = new TextLog();
-        Player player = new Player("Play guy");
-        Enemy slime = new Slime(enemyLevel);
-        BattleScene bs = new BattleScene(player, slime);
-        BattleController bc = new BattleController(bs,battleLog);
-
-        gameWindow.add(bc.getBattlePanel());
-        gameWindow.refresh();
-    }
-
     // The tester main method
     public static void main(String[] args){
 
-        runMainBattle(1);
+        GameWindow gameWindow = new GameWindow(800,600,"Game");
+        Player player = new Player("Player");
+        player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
+        Enemy slime = new Slime(5);
+        System.out.println(player.getPlayerInventory().getInventoryContents());
+        BattleScene bsc = new BattleScene(player,slime);
 
-        /*GameWindow gameWindow = new GameWindow(800,600,"ROGUE CRAWLER");
-        MainMenuController mmc = new MainMenuController();
-        MainMenuGUI mainMenu = new MainMenuGUI(mmc);
+        BattleController bc = new BattleController(bsc);
 
-        gameWindow.add(mainMenu);
-        gameWindow.refresh();*/
+        gameWindow.add(bc.getBattlePanel());
+
+        gameWindow.refresh();
 
         //testGoFirstMethod(100000);
 

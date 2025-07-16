@@ -1,6 +1,7 @@
-package model.ety;
+package ety;
 
-import model.itm.Item;
+import itm.Item;
+import itm.healers.Healable;
 
 import java.util.ArrayList;
 

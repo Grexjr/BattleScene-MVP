@@ -1,4 +1,6 @@
-package model.ety;
+package ety;
+
+import static java.lang.Math.ceil;
 
 public class StatBlock {
 
