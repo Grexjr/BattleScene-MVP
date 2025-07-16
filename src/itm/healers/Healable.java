@@ -1,6 +1,6 @@
-package model.itm.healers;
+package itm.healers;
 
-import model.itm.Item;
+import itm.Item;
 
 public class Healable extends Item {
 

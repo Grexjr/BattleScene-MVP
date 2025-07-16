@@ -1,4 +1,4 @@
-package model.ety;
+package ety;
 
 public enum BattleChoice {
 

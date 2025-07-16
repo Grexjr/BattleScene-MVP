@@ -1,9 +1,9 @@
-package model;
+package bsc;
 
-import model.ety.Entity;
-import model.ety.Player;
-import model.ety.StatBlock;
-import model.ety.enemy.Enemy;
+import ety.Entity;
+import ety.Player;
+import ety.StatBlock;
+import ety.enemy.Enemy;
 
 import java.util.Random;
 
@@ -88,7 +88,7 @@ public class BattleScene {
     }
 
     // attack entity method
-    public void attackEntity(Entity attacker, Entity target){
+    protected void attackEntity(Entity attacker, Entity target){
 
         StatBlock targetStats = target.getEntityStatBlock();
         StatBlock attackerStats = attacker.getEntityStatBlock();

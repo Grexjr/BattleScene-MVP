@@ -1,4 +1,4 @@
-package view.guiparts;
+package gui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +6,7 @@ import java.awt.*;
 public class GameWindow {
 
     // === VARIABLES AND FIELDS ===
-    private final JFrame baseFrame;
+    private JFrame baseFrame;
 
 
     // === GAME WINDOW CONSTRUCTOR ===
@@ -31,8 +31,8 @@ public class GameWindow {
 
     // method to repaint and revalidate the baseFrame content pane
     public void refresh() {
-        this.baseFrame.getContentPane().revalidate();
-        this.baseFrame.getContentPane().repaint();
+        this.baseFrame.revalidate();
+        this.baseFrame.repaint();
     }
 
     // method to clear the content pane
