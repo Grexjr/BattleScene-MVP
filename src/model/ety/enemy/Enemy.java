@@ -1,8 +1,8 @@
-package ety.enemy;
+package model.ety.enemy;
 
-import ety.BattleChoice;
-import ety.Entity;
-import ety.StatBlock;
+import model.ety.BattleChoice;
+import model.ety.Entity;
+import model.ety.StatBlock;
 
 public class Enemy extends Entity {
 

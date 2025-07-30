@@ -1,7 +1,4 @@
-package ety;
-
-import itm.Item;
-import itm.healers.Healable;
+package model.ety;
 
 import java.util.Random;
 

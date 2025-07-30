@@ -1,6 +1,6 @@
-package ety.enemy;
+package model.ety.enemy;
 
-import ety.StatBlock;
+import model.ety.StatBlock;
 
 public class Slime extends Enemy{
 

@@ -1,4 +1,4 @@
-package pmn;
+package main.pmn;
 
 public class Main {
 

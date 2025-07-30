@@ -1,10 +1,9 @@
-package bsc;
+package model.bsc;
 
-import ety.Entity;
-import ety.Player;
-import ety.enemy.Enemy;
-import gui.parts.BattlePanel;
-import itm.healers.Healable;
+import model.ety.Entity;
+import model.ety.Player;
+import model.ety.enemy.Enemy;
+import view.gui.parts.BattlePanel;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

@@ -1,14 +1,13 @@
-package tst;
+package main.tst;
 
-import bsc.BattleController;
-import bsc.BattleScene;
-import ety.Player;
-import ety.enemy.Enemy;
-import ety.enemy.Slime;
-import gui.GameWindow;
-import gui.parts.BattlePanel;
-import itm.healers.Healable;
-import itm.healers.HealingItem;
+import model.bsc.BattleController;
+import model.bsc.BattleScene;
+import model.ety.Player;
+import model.ety.enemy.Enemy;
+import model.ety.enemy.Slime;
+import view.gui.GameWindow;
+import model.itm.healers.Healable;
+import model.itm.healers.HealingItem;
 
 public class Tester {
 
@@ -118,7 +117,7 @@ public class Tester {
         GameWindow gameWindow = new GameWindow(800,600,"Game");
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
-        Enemy slime = new Slime(5);
+        Enemy slime = new Slime(1);
         System.out.println(player.getPlayerInventory().getInventoryContents());
         BattleScene bsc = new BattleScene(player,slime);
 

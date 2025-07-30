@@ -1,12 +1,11 @@
-package gui.parts;
+package view.gui.parts;
 
-import ety.Entity;
-import ety.Player;
-import itm.Item;
+import model.ety.Entity;
+import model.ety.Player;
+import model.itm.Item;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class BattlePanel extends JPanel {
 
