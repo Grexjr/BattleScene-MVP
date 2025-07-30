@@ -1,4 +1,4 @@
-package itm;
+package model.itm;
 
 public abstract class Item {
 

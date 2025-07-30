@@ -1,9 +1,9 @@
-package bsc;
+package model.bsc;
 
-import ety.Entity;
-import ety.Player;
-import ety.StatBlock;
-import ety.enemy.Enemy;
+import model.ety.Entity;
+import model.ety.Player;
+import model.ety.StatBlock;
+import model.ety.enemy.Enemy;
 
 import java.util.Random;
 

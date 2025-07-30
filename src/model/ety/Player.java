@@ -1,6 +1,6 @@
-package ety;
+package model.ety;
 
-import itm.Item;
+import model.itm.Item;
 
 public class Player extends Entity{
 
