@@ -3,30 +3,24 @@ package view.gui.parts;
 import model.ety.Entity;
 import model.ety.Player;
 import model.itm.Item;
+import view.gui.DisplayPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BattlePanel extends JPanel {
+public class BattleDisplayPanel extends DisplayPanel {
+    // === CONSTANTS ===
+    private static final String TITLE = "BATTLE VERSUS ";
 
     // === VARIABLES AND FIELDS ===
-    private final JTextArea textLog;
-    private final JScrollPane battleScroller;
     private final JButton attackButton, defendButton, itemButton, runButton;
     private final JPanel buttonPanel;
 
 
     // === THE CONSTRUCTOR ===
-    public BattlePanel(String enemyName){
-        // Creating the title label
-        JLabel titleLabel = new JLabel("Battle versus " + enemyName);
-        this.add(titleLabel, BorderLayout.NORTH);
+    public BattleDisplayPanel(JTextArea textLog, String enemyName){
+        super(textLog,TITLE + enemyName);
 
-        // Creating the text panel
-        this.textLog = new JTextArea(30,65);
-        this.textLog.setEditable(false);
-        this.battleScroller = new JScrollPane(textLog);
-        this.add(battleScroller,BorderLayout.CENTER);
 
         //add all buttons, for now just do manual below | TODO: Use enum or class(?) for future
         this.attackButton = new JButton("Attack");
@@ -56,40 +50,6 @@ public class BattlePanel extends JPanel {
     // === OTHER METHODS ===
 
     // -- Helper Methods --
-    // method to refresh
-    public void refresh(){
-        this.revalidate();
-        this.repaint();
-    }
-
-    // method to clear
-    public void clear(){
-        this.removeAll();
-        refresh();
-    }
-
-
-    // method to always have scrollbar go to the bottom -- added to log method so everytime logged it goes to bottom
-    public void scrollDown(){
-        JScrollBar scroller = this.battleScroller.getVerticalScrollBar();
-        scroller.setValue(scroller.getMaximum());
-    }
-
-    // method to log something on the text field
-    public void log(String message){
-        this.textLog.append(message + "\n");
-        SwingUtilities.invokeLater(this::scrollDown);
-    }
-
-    // method to hide a component
-    public void hide(Component part){
-        part.setVisible(false);
-    }
-
-    // method to show a component
-    public void show(Component part){
-        part.setVisible(true);
-    }
 
     // method to enable buttons
     public void enableButtons(){

@@ -13,18 +13,24 @@ import java.awt.*;
 
 public class DisplayPanel extends ContentPanel {
     // === CONSTANTS ===
+    private static final LayoutManager LAYOUT = new BorderLayout();
     private static final int TEXT_ROWS = 30;
     private static final int TEXT_COLUMNS = 65;
 
 
     // === VARIABLES AND FIELDS ===
-    private final JScrollPane contentDisplayer;
+    protected final JScrollPane contentDisplayer;
     private final JTextArea textLog;
+    protected final String displayTitle;
 
 
     // === CONSTRUCTOR ===
-    public DisplayPanel(JTextArea text, LayoutManager layout){
-        super(layout);
+    public DisplayPanel(JTextArea text, String title){
+        super(LAYOUT);
+
+        // The title of the display panel
+        this.displayTitle = title;
+        this.add(new JLabel(displayTitle),BorderLayout.NORTH);
 
         // The central text log of all display panels
         this.textLog = text;
@@ -33,6 +39,7 @@ public class DisplayPanel extends ContentPanel {
         this.textLog.setEditable(false);
         this.contentDisplayer = new JScrollPane(textLog);
         this.add(contentDisplayer,BorderLayout.CENTER);
+
     }
 
 

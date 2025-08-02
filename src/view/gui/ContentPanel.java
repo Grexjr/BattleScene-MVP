@@ -15,7 +15,7 @@ public abstract class ContentPanel extends JPanel {
 
     // === CONSTRUCTOR ===
     public ContentPanel(LayoutManager layout) {
-        this.setLayout(layout);
+        super(layout);
     }
 
 

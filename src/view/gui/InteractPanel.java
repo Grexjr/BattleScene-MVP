@@ -20,11 +20,7 @@ public class InteractPanel extends ContentPanel {
 
 
     // === METHODS ===
-    private void addButtons(ArrayList<JButton> buttonsList){
-        for(JButton b : buttonsList){
-            this.add(b);
-        }
-    }
+
 
 
 
