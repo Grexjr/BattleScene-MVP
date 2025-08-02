@@ -6,22 +6,28 @@ import java.awt.*;
 public class GameWindow {
 
     // === VARIABLES AND FIELDS ===
-    private JFrame baseFrame;
+    private final JFrame baseFrame;
 
 
     // === GAME WINDOW CONSTRUCTOR ===
-    public GameWindow(int width, int height, String title){
-        this.baseFrame = new JFrame(title);
+    public GameWindow(){
+        // === CONSTANTS === | NOTE: some of these may be changed if settings for window size get added.
+        String GAME_WINDOW_TITLE = "GAME";
+        int width = 1290;
+        int height = 700;
+
+        // === BASE FRAME CREATION ===
+        this.baseFrame = new JFrame(GAME_WINDOW_TITLE);
         this.baseFrame.setSize(width,height);
+
         this.baseFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.baseFrame.setVisible(true);
         this.baseFrame.setResizable(false);
         this.baseFrame.setLocationRelativeTo(null);
-        // set icon image one day
-    }
 
-    // === GETTERS AND SETTERS ===
-    public JFrame getBaseFrame() {return this.baseFrame;}
+        this.baseFrame.getContentPane().setLayout(new BorderLayout()); //NOTE: border or grid? or Box
+        // TODO: Image and Icon
+    }
 
     // === OTHER METHODS ===
 
