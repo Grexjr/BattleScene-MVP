@@ -13,7 +13,7 @@ public class BattleController {
 
     // === VARIABLES AND FIELDS ===
     private final BattleScene battleScene;
-    private final BattleDisplayPanel battleDisplayPanel;
+    //private final BattleDisplayPanel battleDisplayPanel;
     private final Player player;
     private final Enemy enemy;
 
@@ -21,7 +21,7 @@ public class BattleController {
     // === BATTLE CONTROLLER CONSTRUCTOR ===
     public BattleController(BattleScene bsc){
         this.battleScene = bsc;
-        this.battleDisplayPanel = new BattleDisplayPanel(bsc.getEnemy().getEntityName());
+        //this.battleDisplayPanel = new BattleDisplayPanel(bsc.getEnemy().getEntityName());
 
         this.player = bsc.getPlayer();
         this.enemy = bsc.getEnemy();
@@ -32,38 +32,38 @@ public class BattleController {
     }
 
     // === GETTERS AND SETTERS ===
-    public BattleDisplayPanel getBattlePanel() {return battleDisplayPanel;}
+    //public BattleDisplayPanel getBattlePanel() {return battleDisplayPanel;}
 
 
     // === CONSTRUCTOR METHODS ===
 
     // method to set the action listeners for the buttons
     private void setUpActionListeners(){
-        this.battleDisplayPanel.getAttackButton().addActionListener(handlePlayerAttack());
+        /*this.battleDisplayPanel.getAttackButton().addActionListener(handlePlayerAttack());
 
         this.battleDisplayPanel.getDefendButton().addActionListener(handlePlayerDefend());
 
         this.battleDisplayPanel.getItemButton().addActionListener(handlePlayerItem());
 
-        this.battleDisplayPanel.getRunButton().addActionListener(handlePlayerRun());
+        this.battleDisplayPanel.getRunButton().addActionListener(handlePlayerRun());*/
     }
 
     // button handling methods
     private ActionListener handlePlayerAttack(){
         return _ -> {
-            this.battleDisplayPanel.printPlayerAttack(this.enemy.getEntityName());
+            //this.battleDisplayPanel.printPlayerAttack(this.enemy.getEntityName());
             this.battleScene.attackEntity(this.player,this.enemy);
             if(checkWin()){
                 System.exit(0);
             }
-            this.battleDisplayPanel.printHealth(this.enemy);
+            //this.battleDisplayPanel.printHealth(this.enemy);
             endPlayerTurn();
         };
     }
 
     private ActionListener handlePlayerDefend(){
         return _ -> {
-            this.battleDisplayPanel.printPlayerDefend();
+            //this.battleDisplayPanel.printPlayerDefend();
             this.player.guard();
             endPlayerTurn();
             this.player.getEntityStatBlock().resetTempStats();
@@ -72,13 +72,13 @@ public class BattleController {
 
     private ActionListener handlePlayerItem() {
         return _ -> {
-            this.battleDisplayPanel.printPlayerItemUse();
+            //this.battleDisplayPanel.printPlayerItemUse();
             if(this.player.getPlayerInventory().checkEmpty()){
-                this.battleDisplayPanel.printNoItems();
+                //this.battleDisplayPanel.printNoItems();
             } else{
                 // TEMP: Hard coded for just using healable, need to expand and genericize this.
                 // TEMP: only takes from first slot, no choice | TODO: Add choice for items
-                this.battleDisplayPanel.printSuccessfulItemUse(this.player,this.player.getPlayerInventory().getFromIndex(0));
+                //this.battleDisplayPanel.printSuccessfulItemUse(this.player,this.player.getPlayerInventory().getFromIndex(0));
                 this.player.useItem(this.player.getPlayerInventory().getFromIndex(0));
                 System.out.println("useItem.success");
             }
@@ -97,7 +97,7 @@ public class BattleController {
                 // Debug
                 System.out.println("Run Successful.");
 
-                this.battleDisplayPanel.printSuccessfulRun(this.player.getEntityName());
+                //this.battleDisplayPanel.printSuccessfulRun(this.player.getEntityName());
 
                 new Timer(1000,_ -> System.exit(0)).start(); // TODO: Better end function
 
@@ -105,7 +105,7 @@ public class BattleController {
                 // Debug
                 System.out.println("Run failed.");
 
-                this.battleDisplayPanel.printFailedRun(this.player.getEntityName());
+                //this.battleDisplayPanel.printFailedRun(this.player.getEntityName());
                 endPlayerTurn();
             }
         };
@@ -114,7 +114,7 @@ public class BattleController {
 
     // === PLAYER TURN METHODS ===
     private void endPlayerTurn(){
-        this.battleDisplayPanel.disableButtons();
+        //this.battleDisplayPanel.disableButtons();
         if(this.battleScene.getFirstGoer() instanceof Player){
             runEnemyTurn();
         } else{
@@ -125,8 +125,8 @@ public class BattleController {
     // running player turn
     private void runPlayerTurn(){
         if(this.battleScene.isInBattle() && !checkLoss()){
-            this.battleDisplayPanel.printPlayerStartTurn();
-            this.battleDisplayPanel.enableButtons();
+            //this.battleDisplayPanel.printPlayerStartTurn();
+            //this.battleDisplayPanel.enableButtons();
         }
     }
 
@@ -135,9 +135,9 @@ public class BattleController {
     // TODO: Add an endEnemyTurn method so you can check in there for battle ends
     private void runEnemyTurn(){
         if(this.battleScene.isInBattle()){
-            this.battleDisplayPanel.printEnemyAttack(this.enemy);
+            //this.battleDisplayPanel.printEnemyAttack(this.enemy);
             this.battleScene.attackEntity(this.enemy,this.player);
-            this.battleDisplayPanel.printHealth(this.player);
+            //this.battleDisplayPanel.printHealth(this.player);
             if(this.battleScene.getFirstGoer() instanceof Enemy){
                 runPlayerTurn();
             } else{
@@ -148,8 +148,8 @@ public class BattleController {
 
     // === BATTLE START METHODS ===
     private void startBattle(){
-        this.battleDisplayPanel.printBattleStart(this.player,this.enemy);
-        this.battleDisplayPanel.disableButtons();
+        //this.battleDisplayPanel.printBattleStart(this.player,this.enemy);
+        //this.battleDisplayPanel.disableButtons();
         if(this.battleScene.getFirstGoer() instanceof Player){
             runPlayerTurn();
         } else {

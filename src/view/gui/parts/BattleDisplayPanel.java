@@ -13,58 +13,12 @@ public class BattleDisplayPanel extends DisplayPanel {
     private static final String TITLE = "BATTLE VERSUS ";
 
     // === VARIABLES AND FIELDS ===
-    private final JButton attackButton, defendButton, itemButton, runButton;
-    private final JPanel buttonPanel;
 
 
     // === THE CONSTRUCTOR ===
     public BattleDisplayPanel(JTextArea textLog, String enemyName){
         super(textLog,TITLE + enemyName);
-
-
-        //add all buttons, for now just do manual below | TODO: Use enum or class(?) for future
-        this.attackButton = new JButton("Attack");
-        this.defendButton = new JButton("Defend");
-        this.itemButton = new JButton("Items");
-        this.runButton = new JButton("Run");
-
-        // Creating the buttons panel
-        this.buttonPanel = new JPanel(new FlowLayout());
-        this.buttonPanel.add(new JLabel("Actions:"), BorderLayout.NORTH);
-        this.buttonPanel.add(this.attackButton);
-        this.buttonPanel.add(this.defendButton);
-        this.buttonPanel.add(this.itemButton);
-        this.buttonPanel.add(this.runButton);
-        this.add(buttonPanel,BorderLayout.SOUTH);
-    }
-
-
-    // === GETTERS AND SETTERS ===
-    public JPanel getButtonPanel() {return this.buttonPanel;}
-    public JButton getAttackButton() {return this.attackButton;}
-    public JButton getDefendButton() {return this.defendButton;}
-    public JButton getItemButton() {return this.itemButton;}
-    public JButton getRunButton() {return this.runButton;}
-
-
-    // === OTHER METHODS ===
-
-    // -- Helper Methods --
-
-    // method to enable buttons
-    public void enableButtons(){
-        this.getAttackButton().setEnabled(true);
-        this.getDefendButton().setEnabled(true);
-        this.getItemButton().setEnabled(true);
-        this.getRunButton().setEnabled(true);
-    }
-
-    // method to disable buttons
-    public void disableButtons(){
-        this.getAttackButton().setEnabled(false);
-        this.getDefendButton().setEnabled(false);
-        this.getItemButton().setEnabled(false);
-        this.getRunButton().setEnabled(false);
+        setVisible(true); //NOTE: other ways to do this
     }
 
 

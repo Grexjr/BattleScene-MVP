@@ -25,7 +25,7 @@ public class GameWindow {
         this.baseFrame.setResizable(false);
         this.baseFrame.setLocationRelativeTo(null);
 
-        this.baseFrame.getContentPane().setLayout(new BorderLayout());
+        this.baseFrame.getContentPane().setLayout(new BorderLayout()); //NOTE: border or grid? or Box
         // TODO: Image and Icon
     }
 
