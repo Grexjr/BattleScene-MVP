@@ -10,17 +10,40 @@ import java.awt.*;
 
 public class BattleDisplayPanel extends DisplayPanel {
     // === CONSTANTS ===
-    private static final String TITLE = "BATTLE VERSUS ";
+    private static final String TITLE = "Battle vs. ";
+    private static int BORDER_NORTH = 10;
+    private static int BORDER_SOUTH = 10;
+    private static int BORDER_WEST = 10;
+    private static int BORDER_EAST = 10;
 
     // === VARIABLES AND FIELDS ===
-
+    private final StatDisplayer playerStats, enemyStats;
 
     // === THE CONSTRUCTOR ===
-    public BattleDisplayPanel(JTextArea textLog, String enemyName){
-        super(textLog,TITLE + enemyName);
+    public BattleDisplayPanel(JTextArea textLog, Entity enemy, Entity player){
+        super(textLog,TITLE + enemy.getEntityName());
+
+        this.playerStats = new StatDisplayer(player);
+        this.enemyStats = new StatDisplayer(enemy);
+
+        this.add(playerStats,BorderLayout.EAST);
+        this.add(enemyStats,BorderLayout.WEST);
+
+        // formatting the panel with edges
+        this.setBorder(BorderFactory.createEmptyBorder(BORDER_NORTH,BORDER_WEST,BORDER_SOUTH,BORDER_EAST));
+            // NORTH WEST SOUTH EAST
+
+
+
+
+
         setVisible(true); //NOTE: other ways to do this
     }
 
+    // === GETTERS ===
+    public StatDisplayer getPlayerStats() {return playerStats;}
+
+    public StatDisplayer getEnemyStats() {return enemyStats;}
 
     // -- Printing Methods --
     // method to print battle start

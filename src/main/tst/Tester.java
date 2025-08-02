@@ -126,7 +126,7 @@ public class Tester {
         JTextArea textLog = new JTextArea();
 
 
-        gameWindow.getContentPane().add(new BattleDisplayPanel(textLog,slime.getEntityName()), BorderLayout.NORTH);
+        gameWindow.getContentPane().add(new BattleDisplayPanel(textLog,slime,player), BorderLayout.NORTH);
         gameWindow.getContentPane().add(new BattleButtonPanel(),BorderLayout.SOUTH);
 
         gameWindow.refresh();

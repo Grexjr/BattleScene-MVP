@@ -13,8 +13,8 @@ public class GameWindow {
     public GameWindow(){
         // === CONSTANTS === | NOTE: some of these may be changed if settings for window size get added.
         String GAME_WINDOW_TITLE = "GAME";
-        int width = 800;
-        int height = 600;
+        int width = 1290;
+        int height = 700;
 
         // === BASE FRAME CREATION ===
         this.baseFrame = new JFrame(GAME_WINDOW_TITLE);

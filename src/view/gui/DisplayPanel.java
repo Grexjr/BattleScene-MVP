@@ -1,6 +1,7 @@
 package view.gui;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 
 /***********************************************************************************************************************
@@ -13,7 +14,9 @@ import java.awt.*;
 
 public class DisplayPanel extends ContentPanel {
     // === CONSTANTS ===
-    private static final LayoutManager LAYOUT = new BorderLayout();
+    private static final int horizontalGap = 15;
+    private static final int verticalGap = 0;
+    private static final LayoutManager LAYOUT = new BorderLayout(horizontalGap,verticalGap);
     private static final int TEXT_ROWS = 30;
     private static final int TEXT_COLUMNS = 65;
 
@@ -30,7 +33,9 @@ public class DisplayPanel extends ContentPanel {
 
         // The title of the display panel
         this.displayTitle = title;
-        this.add(new JLabel(displayTitle),BorderLayout.NORTH);
+        JLabel titleLabel = new JLabel(displayTitle);
+        this.add(titleLabel,BorderLayout.NORTH);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // The central text log of all display panels
         this.textLog = text;
@@ -39,6 +44,9 @@ public class DisplayPanel extends ContentPanel {
         this.textLog.setEditable(false);
         this.contentDisplayer = new JScrollPane(textLog);
         this.add(contentDisplayer,BorderLayout.CENTER);
+
+        // Formatting for text Log | TODO: move to its own wrapper class
+        textLog.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
     }
 
