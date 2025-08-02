@@ -114,7 +114,7 @@ public class Tester {
     // The tester main method
     public static void main(String[] args){
 
-        GameWindow gameWindow = new GameWindow(800,600,"Game");
+        GameWindow gameWindow = new GameWindow();
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
         Enemy slime = new Slime(1);
