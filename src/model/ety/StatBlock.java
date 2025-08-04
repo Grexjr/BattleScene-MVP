@@ -1,6 +1,11 @@
 package model.ety;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class StatBlock {
+
+    // TODO: Should eventually be a Hash Map
 
     // === VARIABLES AND FIELDS ===
     private int entityLevel, entityCurrentHealth, entityMaxHealth, entityAttack, entityDefense, entitySpeed;
@@ -19,6 +24,27 @@ public class StatBlock {
         this.tempAttackMod = 0;
         this.tempDefenseMod = 0;
         this.tempSpeedMod = 0;
+    }
+
+    // === TO STRING ===
+    @Override
+    public String toString(){
+        String[] statsArray = new String[]{
+                "Level: " + this.entityLevel,
+                "Health: " + this.entityCurrentHealth + "/" + this.entityMaxHealth,
+                "Attack: " + this.entityAttack,
+                "Defense: " + this.entityDefense,
+                "Speed: " + this.entitySpeed,
+                "Temporary HP: " + this.tempHealthMod,
+                "Temporary Def: " + this.tempDefenseMod,
+                "Temporary Spd: " + this.tempSpeedMod
+        };
+
+        return Arrays.toString(statsArray)
+                .replace(",","\n")
+                .replace("[","")
+                .replace("]","")
+                .trim();
     }
 
 

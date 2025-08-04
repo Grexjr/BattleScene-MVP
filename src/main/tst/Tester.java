@@ -1,6 +1,5 @@
 package main.tst;
 
-import model.bsc.BattleController;
 import model.bsc.BattleScene;
 import model.ety.Player;
 import model.ety.enemy.Enemy;

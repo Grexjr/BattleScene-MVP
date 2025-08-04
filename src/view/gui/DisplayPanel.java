@@ -42,6 +42,8 @@ public class DisplayPanel extends ContentPanel {
         this.textLog.setRows(TEXT_ROWS);
         this.textLog.setColumns(TEXT_COLUMNS);
         this.textLog.setEditable(false);
+        this.textLog.setFocusable(false);
+        this.textLog.setLineWrap(true);
         this.contentDisplayer = new JScrollPane(textLog);
         this.add(contentDisplayer,BorderLayout.CENTER);
 

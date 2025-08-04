@@ -1,9 +1,9 @@
-package model.bsc;
+package controller;
 
+import model.bsc.BattleScene;
 import model.ety.Entity;
 import model.ety.Player;
 import model.ety.enemy.Enemy;
-import view.gui.parts.BattleDisplayPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

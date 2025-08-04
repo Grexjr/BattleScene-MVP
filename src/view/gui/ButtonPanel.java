@@ -20,7 +20,7 @@ public abstract class ButtonPanel extends InteractPanel {
 
 
     // === METHODS ===
-    private void addButtons(ArrayList<JButton> buttonsList){
+    protected void addButtons(ArrayList<JButton> buttonsList){
         for(JButton b : buttonsList){
             this.add(b);
         }
@@ -36,6 +36,8 @@ public abstract class ButtonPanel extends InteractPanel {
     protected abstract ArrayList<JButton> initializeButtons();
 
     protected abstract JButton createButton(String label, ActionListener action);
+
+    protected abstract void createBorders();
 
 
 
