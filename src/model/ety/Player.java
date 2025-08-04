@@ -32,7 +32,7 @@ public class Player extends Entity{
     // method to use an item
     public void useItem(Item item){
         // TEMP: hard coded to just use healing items. Will need to change with expanded item infrastructure
-        this.getEntityStatBlock().takeHeal(item.getUsed());
+        //this.getEntityStatBlock().takeHeal(item.getUsed());
         this.playerInventory.remove(item);
     }
 

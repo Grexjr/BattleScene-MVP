@@ -32,7 +32,7 @@ public abstract class Entity {
 
     // === OTHER METHODS ===
 
-    // -- Battle methods --
+    /*// -- Battle methods --
     // method to check if dead
     public boolean isDead(){return this.getEntityStatBlock().getEntityCurrentHealth() <= 0;}
 
@@ -68,7 +68,7 @@ public abstract class Entity {
 
         // Should give a ~50% chance to escape when speeds are the same
         return runSuccessNum <= runnerSpeed;
-    }
+    }*/
 
 
 

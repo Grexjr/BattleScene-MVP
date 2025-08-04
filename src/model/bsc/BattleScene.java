@@ -32,7 +32,7 @@ public class BattleScene {
         this.player = player;
         this.inBattle = true;
         this.isPlayerTurn = false;
-        this.firstGoer = determineWhoGoesFirst(player,enemy);
+        //this.firstGoer = determineWhoGoesFirst(player,enemy);
 
         // Debug
         System.out.println("Starting battle...");
@@ -58,7 +58,7 @@ public class BattleScene {
     // -- Helper Methods --
     // method that determines who goes next in a battle
     // TODO: Refactor...
-    public Entity determineWhoGoesFirst(Entity entity1, Entity entity2){
+    /*public Entity determineWhoGoesFirst(Entity entity1, Entity entity2){
         Entity goer;
         StatBlock entity1Stats = entity1.getEntityStatBlock();
         int entity1Speed = entity1.getEntityStatBlock().getEffectiveSpeed();
@@ -101,7 +101,7 @@ public class BattleScene {
 
         // Debug
         System.out.println(attacker.getEntityName() + " attacks " + target.getEntityName());
-    }
+    }*/
 
 
 

@@ -22,7 +22,7 @@ public class Tester {
 
 
     // Testing who goes first | TODO: REFACTOR!
-    public static void testGoFirstMethod(int iterations){
+    /*public static void testGoFirstMethod(int iterations){
         Slime slime = new Slime(1);
         Player player = new Player("Test Guy");
         BattleScene bsc = new BattleScene(player,slime);
@@ -113,7 +113,7 @@ public class Tester {
             System.out.println(ANSI_RED + "FAILURE" + ANSI_RESET);
         }
 
-    }
+    }*/
 
     // The tester main method
     public static void main(String[] args){
