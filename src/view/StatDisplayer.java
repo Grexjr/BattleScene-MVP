@@ -1,4 +1,4 @@
-package view.gui.parts;
+package view;
 
 import model.ety.Entity;
 

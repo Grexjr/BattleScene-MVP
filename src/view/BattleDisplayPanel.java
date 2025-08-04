@@ -1,9 +1,8 @@
-package view.gui.parts;
+package view;
 
 import model.ety.Entity;
 import model.ety.Player;
 import model.itm.Item;
-import view.gui.DisplayPanel;
 
 import javax.swing.*;
 import java.awt.*;

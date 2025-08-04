@@ -4,11 +4,11 @@ import model.bsc.BattleScene;
 import model.ety.Player;
 import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
-import view.gui.BattleButtonPanel;
-import view.gui.GameWindow;
+import view.BattleButtonPanel;
+import view.GameWindow;
 import model.itm.healers.Healable;
 import model.itm.healers.HealingItem;
-import view.gui.parts.BattleDisplayPanel;
+import view.BattleDisplayPanel;
 
 import javax.swing.*;
 import java.awt.*;
