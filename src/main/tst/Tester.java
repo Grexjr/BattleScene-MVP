@@ -1,13 +1,17 @@
 package main.tst;
 
-import model.bsc.BattleController;
 import model.bsc.BattleScene;
 import model.ety.Player;
 import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
+import view.gui.BattleButtonPanel;
 import view.gui.GameWindow;
 import model.itm.healers.Healable;
 import model.itm.healers.HealingItem;
+import view.gui.parts.BattleDisplayPanel;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class Tester {
 
@@ -114,11 +118,21 @@ public class Tester {
     // The tester main method
     public static void main(String[] args){
 
-        GameWindow gameWindow = new GameWindow(800,600,"Game");
+        GameWindow gameWindow = new GameWindow();
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
         Enemy slime = new Slime(1);
-        System.out.println(player.getPlayerInventory().getInventoryContents());
+        JTextArea textLog = new JTextArea();
+
+
+        gameWindow.getContentPane().add(new BattleDisplayPanel(textLog,slime,player), BorderLayout.NORTH);
+        gameWindow.getContentPane().add(new BattleButtonPanel(),BorderLayout.SOUTH);
+
+        gameWindow.refresh();
+
+
+
+        /*System.out.println(player.getPlayerInventory().getInventoryContents());
         BattleScene bsc = new BattleScene(player,slime);
 
         BattleController bc = new BattleController(bsc);
@@ -127,7 +141,7 @@ public class Tester {
 
         gameWindow.refresh();
 
-        //testGoFirstMethod(100000);
+        //testGoFirstMethod(100000);*/
 
 
     }

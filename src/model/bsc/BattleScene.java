@@ -88,7 +88,7 @@ public class BattleScene {
     }
 
     // attack entity method
-    protected void attackEntity(Entity attacker, Entity target){
+    public void attackEntity(Entity attacker, Entity target){
 
         StatBlock targetStats = target.getEntityStatBlock();
         StatBlock attackerStats = attacker.getEntityStatBlock();
