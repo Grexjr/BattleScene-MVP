@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
 
+/**
+ * This class is the stat block for entities. It contains only a Hash Map, and is a separate class so that all stat
+ * related calculations take place here instead of within the more general Entity class, and so they can have separate
+ * to String values.
+ * NOTE: It might be a good idea to keep an original version of the to String if I need to see the instance value or
+ *    see the information without printing everything else. I'm not too sure, but that might be a toLog method.
+ **********************************************************************************************************************/
+
 public class StatBlock {
 
     // TODO: Should eventually be a Hash Map
 
     // === VARIABLES AND FIELDS ===
     private final EnumMap<Stats,Integer> statsMap;
-
 
     // === CONSTRUCTOR FOR STAT BLOCK ===
     public StatBlock(int level, int health, int attack, int defense, int speed){
@@ -30,14 +37,37 @@ public class StatBlock {
 
     }
 
-    // ===
+    // === GETTER ===
+    public EnumMap<Stats,Integer> getStatsMap() {return this.statsMap;}
+
+    // === METHODS ===
+    public void levelUp(){this.statsMap.replace(Stats.LEVEL,this.statsMap.get(Stats.LEVEL) + 1);}
+
+    public void levelDown(){this.statsMap.replace(Stats.LEVEL,this.statsMap.get(Stats.LEVEL) - 1);}
+
+    public void takeDamage(int damage){
+        this.statsMap.replace(Stats.CURRENT_HEALTH,this.statsMap.get(Stats.CURRENT_HEALTH) - damage);
+        if(this.statsMap.get(Stats.CURRENT_HEALTH) <= 0){
+            this.statsMap.replace(Stats.CURRENT_HEALTH, 0);
+        }
+    }
+
+    public void healHealth(int heal){
+        this.statsMap.replace(Stats.CURRENT_HEALTH,this.statsMap.get(Stats.CURRENT_HEALTH) + heal);
+        if(this.statsMap.get(Stats.CURRENT_HEALTH) >= this.statsMap.get(Stats.MAX_HEALTH)){
+            this.statsMap.replace(Stats.CURRENT_HEALTH,statsMap.get(Stats.MAX_HEALTH));
+        }
+    }
+
+
+    ///  To String for the Stat Block of the Entity
     @Override
-    public String toString(){
+    public String toString(){ //TODO: NEED A BETTER WAY TO DO THIS
         ArrayList<String> rawStatsStrings = new ArrayList<>();
         ArrayList<String> rawStatsValues = new ArrayList<>();
 
         for(Stats stat : this.statsMap.keySet()){
-            String statString = stat.toString(); // NOTE: May need to add this in the enum
+            String statString = stat.toString();
 
             rawStatsStrings.add(statString);
         }
@@ -51,11 +81,11 @@ public class StatBlock {
 
         String[] finalDisplay = new String[]{
                 rawStatsStrings.get(0) + rawStatsValues.get(0),                      //Level
-                "HEALTH: " + rawStatsValues.get(2) + "/" + rawStatsValues.get(1),           //Health
+                "HEALTH: " + rawStatsValues.get(2) + "/" + rawStatsValues.get(1),    //Health
                 rawStatsStrings.get(3) + rawStatsValues.get(3),                      //Attack
                 rawStatsStrings.get(4) + rawStatsValues.get(4),                      //Defense
                 rawStatsStrings.get(5) + rawStatsValues.get(5),                      //Speed
-        };
+        }; //TODO: Add the temporary values to this printing... might make things complex
 
         return Arrays.toString(finalDisplay)
                 .replace(",","\n")
@@ -64,5 +94,6 @@ public class StatBlock {
                 .trim();
 
     }
+
 
 }
