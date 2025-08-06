@@ -48,14 +48,14 @@ public class StatBlock {
 
     public void levelDown(){this.statsMap.replace(Stats.LEVEL,this.statsMap.get(Stats.LEVEL) - 1);}
 
-    public void takeDamage(int damage){
+    public void reduceCurrentHealth(int damage){
         this.statsMap.replace(Stats.CURRENT_HEALTH,this.statsMap.get(Stats.CURRENT_HEALTH) - damage);
         if(this.statsMap.get(Stats.CURRENT_HEALTH) <= 0){
             this.statsMap.replace(Stats.CURRENT_HEALTH, 0);
         }
     }
 
-    public void healHealth(int heal){
+    public void increaseCurrentHealth(int heal){
         this.statsMap.replace(Stats.CURRENT_HEALTH,this.statsMap.get(Stats.CURRENT_HEALTH) + heal);
         if(this.statsMap.get(Stats.CURRENT_HEALTH) >= this.statsMap.get(Stats.MAX_HEALTH)){
             this.statsMap.replace(Stats.CURRENT_HEALTH,statsMap.get(Stats.MAX_HEALTH));

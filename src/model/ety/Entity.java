@@ -31,7 +31,33 @@ public abstract class Entity {
     public StatBlock getEntityStatBlock() {return this.entityStatBlock;}
 
 
-    // === OTHER METHODS ===
+    // === ENTITY METHODS ===
+    /**
+     * Method for an entity to attack another entity. Returns an int that is the value of the damage done by this
+     * entity.
+     * */
+    public int attack(){
+        StatBlock stats = this.getEntityStatBlock();
+
+        int finalAttack = stats.calcFullAttack();
+        // Will be modified with anything else that increases attack; weapons, etc.
+
+        return finalAttack;
+    }
+
+    /**
+     * Method that calculates final damage based on resistances, statuses, etc. and then applies that to the entity's
+     * stat block. Does not return anything, merely changes the stat block values.
+     * */
+    public void takeDamage(int damage){
+        StatBlock stats = this.getEntityStatBlock();
+        int damageReduction = stats.calcFullDefense();
+
+        int finalDamage = damage - damageReduction;
+
+        stats.reduceCurrentHealth(finalDamage);
+    }
+
     /**
      * Void method that sets the enemies temporary defense to a higher value if they guard. This value will be added in
      * other methods to calculate the full defense value, which will be used in all battle calculations. Right now,
@@ -45,6 +71,12 @@ public abstract class Entity {
             this.getEntityStatBlock().increaseTemporaryDefense((int) Math.ceil(defense / 2.0));
         }
     }
+
+    /**
+     * Method that will eventually be populated for the entity to use an item.
+     * TODO: figure out handling of different item types. Enum?
+     * */
+    public void useItem(){}
 
     /**
      * Returns the double chance value of an entity being able to escape. It will be used in another method in battle
@@ -61,4 +93,9 @@ public abstract class Entity {
 
         return (double) runnerSpeed / totalSpeed;
     }
+
+    /**
+     * This method sets the entity's state to the input. That input set does not exist yet.
+     * */
+    public void changeState(){}
 }
