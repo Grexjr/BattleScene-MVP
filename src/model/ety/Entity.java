@@ -1,8 +1,9 @@
 package model.ety;
 
+import java.util.EnumMap;
 import java.util.Random;
 
-/*
+/**
  * This class is the abstract, non-concrete entity class that all entities (in this case slime and player, since
  * there are no others, extend from).
  * It provides all parameters for entities as well as most functionality for entities.
@@ -31,45 +32,33 @@ public abstract class Entity {
 
 
     // === OTHER METHODS ===
-
-    /*// -- Battle methods --
-    // method to check if dead
-    public boolean isDead(){return this.getEntityStatBlock().getEntityCurrentHealth() <= 0;}
-
-    // method to guard
+    /**
+     * Void method that sets the enemies temporary defense to a higher value if they guard. This value will be added in
+     * other methods to calculate the full defense value, which will be used in all battle calculations. Right now,
+     * it just sets that as the temporary value. If the entity's defense is 0, it sets the temporary value to 1.
+     * */
     public void guard(){
-        int defense = this.entityStatBlock.getEntityDefense();
+        int defense = this.getEntityStatBlock().getStatsMap().get(Stats.DEFENSE);
         if(defense == 0){
-            this.entityStatBlock.setTempDefenseMod(1);
+            this.getEntityStatBlock().increaseTemporaryDefense(1);
         } else {
-            this.entityStatBlock.setTempDefenseMod((int) Math.ceil(defense / 2.0));
+            this.getEntityStatBlock().increaseTemporaryDefense((int) Math.ceil(defense / 2.0));
         }
-
-        // Debug
-        System.out.println((int) Math.ceil(defense / 2.0));
-        System.out.println(this.getEntityStatBlock().getEffectiveDefense());
     }
 
-    // method to calculate run chance using speed, returns boolean of run success or not | TODO: Devise a test for this
-    public boolean run(Entity runFrom){
-        int runnerSpeed = this.getEntityStatBlock().getEffectiveSpeed();
-        int runFromSpeed = runFrom.getEntityStatBlock().getEffectiveSpeed();
+    /**
+     * Returns the double chance value of an entity being able to escape. It will be used in another method in battle
+     * scene to return a boolean based on if runnerSpeed <= random between 1 and totalSpeed+1.
+     * Currently, it just returns the double chance value.
+     * If both speeds are 0, it returns 0.5 for an equal chance of escape or non-escape.
+     */
+    public double calculateEscapeChance(int opposingSpeed){
+        StatBlock thisStatBlock = this.getEntityStatBlock();
+        int runnerSpeed = thisStatBlock.calcFullSpeed();
 
-        int totalSpeed =  runnerSpeed + runFromSpeed;
+        int totalSpeed = runnerSpeed + opposingSpeed;
+        if(totalSpeed == 0) return 0.5;
 
-        // Debug
-        System.out.println(totalSpeed);
-
-        Random rand = new Random();
-        int runSuccessNum = rand.nextInt(1,totalSpeed+1);
-
-        // Debug
-        System.out.println(runSuccessNum);
-
-        // Should give a ~50% chance to escape when speeds are the same
-        return runSuccessNum <= runnerSpeed;
-    }*/
-
-
-
+        return (double) runnerSpeed / totalSpeed;
+    }
 }

@@ -3,6 +3,7 @@ package model.ety;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.Spliterator;
 
 /**
  * This class is the stat block for entities. It contains only a Hash Map, and is a separate class so that all stat
@@ -41,6 +42,8 @@ public class StatBlock {
     public EnumMap<Stats,Integer> getStatsMap() {return this.statsMap;}
 
     // === METHODS ===
+    public boolean isDead() {return this.statsMap.get(Stats.CURRENT_HEALTH) <= 0;}
+
     public void levelUp(){this.statsMap.replace(Stats.LEVEL,this.statsMap.get(Stats.LEVEL) + 1);}
 
     public void levelDown(){this.statsMap.replace(Stats.LEVEL,this.statsMap.get(Stats.LEVEL) - 1);}
@@ -58,6 +61,68 @@ public class StatBlock {
             this.statsMap.replace(Stats.CURRENT_HEALTH,statsMap.get(Stats.MAX_HEALTH));
         }
     }
+
+    public int calcFullHealth(){
+        return this.statsMap.get(Stats.MAX_HEALTH) + this.statsMap.get(Stats.TEMP_HEALTH_BONUS);
+    }
+
+    public int calcFullAttack(){
+        return this.statsMap.get(Stats.ATTACK) + this.statsMap.get(Stats.TEMP_ATTACK_BONUS);
+    }
+
+    public int calcFullDefense(){
+        return this.statsMap.get(Stats.DEFENSE) + this.statsMap.get(Stats.TEMP_DEFENSE_BONUS);
+    }
+
+    public int calcFullSpeed(){
+        return this.statsMap.get(Stats.SPEED) + this.statsMap.get(Stats.TEMP_SPEED_BONUS);
+    }
+
+    public void increaseTemporaryHealth(int increase){
+        this.statsMap.replace(Stats.TEMP_HEALTH_BONUS,this.statsMap.get(Stats.TEMP_HEALTH_BONUS) + increase);
+    }
+
+    public void increaseTemporaryAttack(int increase){
+        this.statsMap.replace(Stats.TEMP_ATTACK_BONUS,this.statsMap.get(Stats.TEMP_ATTACK_BONUS) + increase);
+    }
+
+    public void increaseTemporaryDefense(int increase){
+        this.statsMap.replace(Stats.TEMP_DEFENSE_BONUS,this.statsMap.get(Stats.TEMP_DEFENSE_BONUS) + increase);
+    }
+
+    public void increaseTemporarySpeed(int increase){
+        this.statsMap.replace(Stats.TEMP_SPEED_BONUS,this.statsMap.get(Stats.TEMP_SPEED_BONUS) + increase);
+    }
+
+    // === COMPARE METHODS ===
+    public int compareLevel(int comparedLevel){
+        return this.statsMap.get(Stats.LEVEL) - comparedLevel;
+    }
+
+    public int compareMaxHealth(int comparedHealth){
+        return this.statsMap.get(Stats.MAX_HEALTH) - comparedHealth;
+    }
+
+    public int compareCurrentHealth(int comparedHealth){
+        return this.statsMap.get(Stats.CURRENT_HEALTH) - comparedHealth;
+    }
+
+    public int compareAttack(int comparedAttack){
+        return this.statsMap.get(Stats.ATTACK) - comparedAttack;
+    }
+
+    public int compareDefense(int comparedDefense){
+        return this.statsMap.get(Stats.DEFENSE) - comparedDefense;
+    }
+
+    public int compareSpeed(int comparedSpeed){
+        return this.statsMap.get(Stats.SPEED) - comparedSpeed;
+    }
+
+
+
+
+
 
 
     ///  To String for the Stat Block of the Entity
