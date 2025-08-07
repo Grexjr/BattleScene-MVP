@@ -120,43 +120,23 @@ public class StatBlock {
     }
 
 
-
-
-
-
-
     ///  To String for the Stat Block of the Entity
     @Override
-    public String toString(){ //TODO: NEED A BETTER WAY TO DO THIS
-        ArrayList<String> rawStatsStrings = new ArrayList<>();
-        ArrayList<String> rawStatsValues = new ArrayList<>();
+    public String toString(){
+        int level = statsMap.get(Stats.LEVEL);
+        int currentHealth = statsMap.get(Stats.CURRENT_HEALTH);
+        int maxHealth = statsMap.get(Stats.MAX_HEALTH);
+        int healthBonus = statsMap.get(Stats.TEMP_HEALTH_BONUS);
+        int attack = statsMap.get(Stats.ATTACK);
+        int attackBonus = statsMap.get(Stats.TEMP_ATTACK_BONUS);
+        int defense = statsMap.get(Stats.DEFENSE);
+        int defenseBonus = statsMap.get(Stats.TEMP_DEFENSE_BONUS);
+        int speed = statsMap.get(Stats.SPEED);
+        int speedBonus = statsMap.get(Stats.TEMP_SPEED_BONUS);
 
-        for(Stats stat : this.statsMap.keySet()){
-            String statString = stat.toString();
-
-            rawStatsStrings.add(statString);
-        }
-
-
-        for(Stats stat : this.statsMap.keySet()){
-            String valueString = this.statsMap.get(stat).toString();
-
-            rawStatsValues.add(valueString);
-        }
-
-        String[] finalDisplay = new String[]{
-                rawStatsStrings.get(0) + rawStatsValues.get(0),                      //Level
-                "HEALTH: " + rawStatsValues.get(2) + "/" + rawStatsValues.get(1),    //Health
-                rawStatsStrings.get(3) + rawStatsValues.get(3),                      //Attack
-                rawStatsStrings.get(4) + rawStatsValues.get(4),                      //Defense
-                rawStatsStrings.get(5) + rawStatsValues.get(5),                      //Speed
-        }; //TODO: Add the temporary values to this printing... might make things complex
-
-        return Arrays.toString(finalDisplay)
-                .replace(",","\n")
-                .replace("[","")
-                .replace("]","")
-                .trim();
+        return String.format("Level: %d%n%nHealth: %d/%d + %d%nAttack: %d + %d%nDefense: %d + %d%nSpeed: %d + %d",
+                level,currentHealth,maxHealth,healthBonus,attack,attackBonus,defense,defenseBonus,speed,speedBonus
+        );
 
     }
 

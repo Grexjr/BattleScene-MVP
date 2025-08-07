@@ -14,6 +14,7 @@ public abstract class Entity {
     // === VARIABLES AND FIELDS ===
     private final String entityName, entityDescription;
     private final StatBlock entityStatBlock;
+    private LifeState entityState;
 
 
     // === ENTITY CONSTRUCTOR ===
@@ -21,6 +22,7 @@ public abstract class Entity {
         this.entityName = name;
         this.entityDescription = description;
         this.entityStatBlock = statBlock;
+        this.entityState = LifeState.ALIVE;
     }
 
     // === GETTERS AND SETTERS ===
@@ -29,6 +31,8 @@ public abstract class Entity {
     public String getEntityDescription() {return this.entityDescription;}
 
     public StatBlock getEntityStatBlock() {return this.entityStatBlock;}
+
+    public LifeState getEntityState() {return this.entityState;}
 
 
     // === ENTITY METHODS ===
@@ -97,5 +101,24 @@ public abstract class Entity {
     /**
      * This method sets the entity's state to the input. That input set does not exist yet.
      * */
-    public void changeState(){}
+    // QUESTION: Should I just use a setter?
+    public void changeState(LifeState state){
+        this.entityState = state;
+    }
+
+
+    /// TO STRING OF ENTITY
+    @Override
+    public String toString(){
+        // QUESTION: is this... readable and good?
+        return String.format("%s%n%s%n%n%s%n%nState: %s",
+                entityName,
+                entityDescription,
+                entityStatBlock,
+                entityState
+        );
+    }
+
+
+
 }
