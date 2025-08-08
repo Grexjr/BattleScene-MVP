@@ -60,9 +60,9 @@ public class BattleDisplayPanel extends DisplayPanel {
     }
 
     // method to print health
-    public void printHealth(Entity battler){
-        int currentHealth = battler.getEntityStatBlock().getEntityCurrentHealth();
-        int maxHealth = battler.getEntityStatBlock().getEntityMaxHealth();
+    /*public void printHealth(Entity battler){
+        //int currentHealth = battler.getEntityStatBlock().getEntityCurrentHealth();
+        //int maxHealth = battler.getEntityStatBlock().getEntityMaxHealth();
 
         this.log(battler.getEntityName() + " health: " + currentHealth + "/" + maxHealth +"\n");
     }
@@ -128,7 +128,7 @@ public class BattleDisplayPanel extends DisplayPanel {
     // enemy attack
     public void printEnemyAttack(Entity enemy){
         this.log(enemy.getEntityName() + " attacks!\n");
-    }
+    }*/
 
 
 
