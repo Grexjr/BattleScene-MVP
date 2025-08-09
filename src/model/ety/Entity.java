@@ -57,7 +57,7 @@ public abstract class Entity {
      * Method that calculates final damage based on resistances, statuses, etc. and then applies that to the entity's
      * stat block. Does not return anything, merely changes the stat block values.
      * */
-    public void takeDamage(int damage){
+    public int takeDamage(int damage){
         StatBlock stats = this.getEntityStatBlock();
         int damageReduction = stats.calcFullDefense();
         // need to also add armor
@@ -65,6 +65,7 @@ public abstract class Entity {
         int finalDamage = Math.max(damage - damageReduction,0);
 
         stats.reduceCurrentHealth(finalDamage);
+        return finalDamage;
     }
 
     /**

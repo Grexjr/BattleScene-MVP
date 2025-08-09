@@ -68,7 +68,8 @@ public class BattleController {
         switch(choice){
             case ATTACK ->
                     {
-                        this.battleState.handleAttack(chooser,other);
+                        int damage = this.battleState.handleAttack(chooser,other);
+                        printAttack(chooser, other, damage);
                     }
             case DEFEND ->
                     {
@@ -124,6 +125,13 @@ public class BattleController {
         runTurnOrder();
     }
 
-
+    // === PRINT METHODS === | TODO: will need to be refactored
+    public void printAttack(Entity attacker, Entity target, int damage){
+        this.battleDisplay.print(String.format("%s Attacks %s for %d damage!",
+                attacker.getEntityName(),
+                target.getEntityName(),
+                damage
+        ));
+    }
 
 }

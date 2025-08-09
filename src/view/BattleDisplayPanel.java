@@ -39,6 +39,13 @@ public class BattleDisplayPanel extends DisplayPanel {
         setVisible(true); //NOTE: other ways to do this
     }
 
+    // === METHODS ===
+    public void print(String... printStrings){
+        for(String string : printStrings){
+            this.log(string);
+        }
+    }
+
 
 
 }

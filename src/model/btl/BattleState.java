@@ -73,8 +73,8 @@ public class BattleState {
     }
 
     /// attack entity method uses the take damage function and attack functions from the entity class
-    private void attackEntity(Entity attacker, Entity target){
-        target.takeDamage(attacker.attack());
+    private int attackEntity(Entity attacker, Entity target){
+        return target.takeDamage(attacker.attack());
     }
 
 
@@ -90,8 +90,8 @@ public class BattleState {
     // === BATTLE CHOICE HANDLING METHODS ===
     // NOTE: These are all separated to allow for greater expandibility later
     /// Handles generic entity attacking
-    public void handleAttack(Entity attacker, Entity target){
-        attackEntity(attacker,target);
+    public int handleAttack(Entity attacker, Entity target){
+        return attackEntity(attacker,target);
     }
 
     /// Handles generic entity defending
