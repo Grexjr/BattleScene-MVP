@@ -1,5 +1,6 @@
 package model.btl;
 
+import model.ety.BattleChoice;
 import model.ety.Entity;
 import model.ety.Player;
 import model.ety.StatBlock;
@@ -72,8 +73,37 @@ public class BattleState {
     }
 
     /// attack entity method uses the take damage function and attack functions from the entity class
-    public void attackEntity(Entity attacker, Entity target){
+    private void attackEntity(Entity attacker, Entity target){
         target.takeDamage(attacker.attack());
+    }
+
+
+    // === RUNNING ENTITY TURN METHODS ===
+    /** Method to run generic entity turn based on the input value. For the player, from buttons; enemy, from AI.
+     * It takes in the entity and the choice being made, and applies that choice to the entity.
+    */
+    public void calcEntityBattleChoice(Entity goer, BattleChoice choice){
+        goer.makeBattleChoice(choice);
+    }
+
+
+    // === BATTLE CHOICE HANDLING METHODS ===
+    // NOTE: These are all separated to allow for greater expandibility later
+    /// Handles generic entity attacking
+    public void handleAttack(Entity attacker, Entity target){
+        attackEntity(attacker,target);
+    }
+
+    /// Handles generic entity defending
+    public void handleDefend(Entity defender){
+        defender.guard();
+    }
+
+    /// Handles generic entity item use
+    public void handleItemUse(Entity user){}
+
+    public void handleRun(Entity runner, Entity runFrom){
+        runner.calculateEscapeChance(runFrom.getEntityStatBlock().calcFullSpeed());
     }
 
 

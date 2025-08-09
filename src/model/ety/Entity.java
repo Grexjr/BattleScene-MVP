@@ -81,6 +81,11 @@ public abstract class Entity {
         }
     }
 
+    /// This method resets the guard and sets the entity's defense back to their standard amount.
+    public void resetGuard(){
+        this.getEntityStatBlock().getStatsMap().replace(Stats.TEMP_DEFENSE_BONUS,0);
+    }
+
     /**
      * Method that will eventually be populated for the entity to use an item.
      * TODO: figure out handling of different item types. Enum?
@@ -103,17 +108,13 @@ public abstract class Entity {
         return (double) runnerSpeed / totalSpeed;
     }
 
-    /**
-     * This method sets the entity's state to the input. That input set does not exist yet.
-     * */
+    /// This method sets the entity's state to the input.
     // QUESTION: Should I just use a setter?
     public void changeState(LifeState state){
         this.entityState = state;
     }
 
-    /**
-     * Sets the battleChoice variable of the entity to the input
-     * */
+    /// This method sets the entity's battle choice to the input.
     public void makeBattleChoice(BattleChoice choice){
         this.battleChoice = choice;
     }
