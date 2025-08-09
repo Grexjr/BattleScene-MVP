@@ -33,12 +33,4 @@ public class Enemy extends Entity {
         return rand.nextInt(minEXP,maxEXP);
     }
 
-
-
-    // -- Battle Methods --
-    public BattleChoice makeBattleChoice(){
-        //TODO: add enemy AI
-        return BattleChoice.ATTACK;
-    }
-
 }

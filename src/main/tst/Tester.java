@@ -1,6 +1,6 @@
 package main.tst;
 
-import model.bsc.BattleState;
+import model.btl.BattleState;
 import model.ety.Player;
 import model.ety.Stats;
 import model.ety.enemy.Slime;

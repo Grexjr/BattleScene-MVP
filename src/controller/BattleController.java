@@ -1,6 +1,6 @@
 package controller;
 
-import model.bsc.BattleState;
+import model.btl.BattleState;
 import model.ety.Entity;
 import model.itm.Item;
 import view.BattleDisplayPanel;

@@ -49,7 +49,6 @@ public class Player extends Entity{
     }
 
 
-
     /**
      * Method to level up the player. Randomly increases stats by a certain amount. Right now just 1-5.
      * */
