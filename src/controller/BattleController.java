@@ -27,6 +27,7 @@ public class BattleController {
     public BattleController(BattleState state, BattleDisplayPanel view){
         this.battleState = state;
         this.battleDisplay = view;
+        runBattle(); //TEMP: just for testing
     }
 
 
@@ -59,23 +60,33 @@ public class BattleController {
     }
 
     ///  Method to run entity turn that tests if entity is player or enemy and gives them a battle choice respectively.
-    public void runEntityTurn(Entity goer){
-        if(goer instanceof Player){
-            // TODO: Need to add button functionality
-            //this.battleState.calcEntityBattleChoice(goer,BUTTON FUNCTIONALITY);
-        } else {
-            this.battleState.calcEntityBattleChoice(goer,BattleChoice.ATTACK); //TODO: Make enemy AI and use it here
-        }
+    private void runEntityTurn(Entity goer, Entity other){
+        // TODO: Need to add button functionality, for now just does the battle choice attack
+        //    also need to add enemy AI.
+        this.battleState.calcEntityBattleChoice(goer,BattleChoice.ATTACK);
+        System.out.println("Player attacks!");
+        handleBattleAction(goer,other);
     }
 
     ///  Method to run the turn order each time a new turn "set" is done
-    public void runTurnOrder(){
+    private void runTurnOrder(){
         Player player = this.battleState.getPlayer();
         Enemy enemy = this.battleState.getEnemy();
 
         Entity firstGoer = this.battleState.determineFirst(player,enemy);
 
-        //if for whether first goer is enemy or player and run their separate logic?
+        if(firstGoer instanceof Player){
+            runEntityTurn(player,enemy);
+            System.out.println("Player attacks!");
+        } else{
+            runEntityTurn(enemy,player);
+            System.out.println("Enemy attacks!");
+        }
+    }
+
+    /// Method to run the actual battle progression
+    public void runBattle(){
+        runTurnOrder();
     }
 
 }
