@@ -9,13 +9,13 @@ public class BattleController {
 
 
     // === VARIABLES AND FIELDS ===
-    private final BattleState battleScene;
+    private final BattleState battleState;
     private final BattleDisplayPanel battleDisplay;
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
-    public BattleController(BattleState bsc, BattleDisplayPanel view){
-        this.battleScene = bsc;
+    public BattleController(BattleState state, BattleDisplayPanel view){
+        this.battleState = state;
         this.battleDisplay = view;
     }
 
