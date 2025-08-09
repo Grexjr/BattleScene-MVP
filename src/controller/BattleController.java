@@ -66,10 +66,22 @@ public class BattleController {
     private void handleBattleAction(Entity chooser, Entity other){
         BattleChoice choice = chooser.getBattleChoice();
         switch(choice){
-            case ATTACK -> this.battleState.handleAttack(chooser,other);
-            case DEFEND -> this.battleState.handleDefend(chooser);
-            case USE_ITEM -> this.battleState.handleItemUse(chooser); // NOTE: does nothing
-            case RUN -> this.battleState.handleRun(chooser,other);
+            case ATTACK ->
+                    {
+                        this.battleState.handleAttack(chooser,other);
+                    }
+            case DEFEND ->
+                    {
+                        this.battleState.handleDefend(chooser);
+                    }
+            case USE_ITEM ->
+                    {
+                        this.battleState.handleItemUse(chooser);
+                    } // NOTE: does nothing
+            case RUN ->
+                    {
+                        this.battleState.handleRun(chooser,other);
+                    }
         }
     }
 
@@ -111,5 +123,7 @@ public class BattleController {
     public void runBattle(){
         runTurnOrder();
     }
+
+
 
 }
