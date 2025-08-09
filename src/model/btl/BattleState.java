@@ -1,5 +1,6 @@
 package model.btl;
 
+import controller.BattlePhase;
 import model.ety.BattleChoice;
 import model.ety.Entity;
 import model.ety.Player;
@@ -18,6 +19,7 @@ public class BattleState {
     private final Enemy enemy;
     private boolean isPlayerTurn;
     private EndCode ending;
+    private BattlePhase currentPhase;
 
 
     // == CONSTRUCTOR FOR BATTLESCENE ===
@@ -26,6 +28,7 @@ public class BattleState {
         this.enemy = enemy;
         this.isPlayerTurn = false;
         this.ending = EndCode.NOT_OVER;
+        this.currentPhase = BattlePhase.INITIALIZATION;
     }
 
     // === GETTERS AND SETTERS ===
@@ -35,6 +38,9 @@ public class BattleState {
 
     public boolean getPlayerTurn() {return this.isPlayerTurn;}
     public void setPlayerTurn(boolean turn) {this.isPlayerTurn = turn;}
+
+    public BattlePhase getCurrentPhase() {return this.currentPhase;}
+    public void setCurrentPhase(BattlePhase phase) {this.currentPhase = phase;}
 
     public EndCode getEnding() {return this.ending;}
     public void setEnding(EndCode end) {this.ending = end;}

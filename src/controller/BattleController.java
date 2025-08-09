@@ -28,7 +28,6 @@ public class BattleController {
     private final BattleState battleState;
     private final BattleDisplayPanel battleDisplay;
     private final BattleButtonPanel battleInteract;
-    private BattlePhase currentPhase;
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
@@ -36,40 +35,64 @@ public class BattleController {
         this.battleState = state;
         this.battleDisplay = view;
         this.battleInteract = interact;
-        this.currentPhase = BattlePhase.INITIALIZATION;
+        runBattle(); // TEMP: Testing purposes
     }
 
     // === Creating ActionListeners === TODO: Can one day move this to a different action class
-    private void onAttackPressed(Entity attacker, Entity target){
-        if(currentPhase == BattlePhase.PLAYER_TURN){
+    private void onAttackPressed(Entity target){
+        if(this.battleState.getCurrentPhase() == BattlePhase.PLAYER_TURN){
+            // local vars
+            Player player = this.battleState.getPlayer();
+
             // store damage amount
-            int damage = this.battleState.handleAttack(attacker,target);
+            int damage = this.battleState.handleAttack(player,target);
 
             // Update UI
-            printAttack(attacker, target, damage);
+            printAttack(player, target, damage);
             this.battleDisplay.updateStatDisplayer(target);
 
             // System log | TODO: Proper system logging
-            System.out.println("Player attacks for " + damage);
+            System.out.println(player.getEntityName() + " attacks for " + damage + " damage!");
         } // ERROR: handle if not player turn
     }
 
-    private void onDefendPressed(){}
+    private void onDefendPressed(){
+        if(this.battleState.getCurrentPhase() == BattlePhase.PLAYER_TURN){
+            // run defense if player turn
+            this.battleState.handleDefend(this.battleState.getPlayer());
+        } // ERROR: will need to handle if not player turn
+    }
 
-    private void onItemPressed(){}
+    private void onItemPressed(){
+        this.battleState.handleItemUse(this.battleState.getPlayer());
+    }
 
-    private void onRunPressed(){}
+    private void onRunPressed(){
+        this.battleState.handleRun(this.battleState.getPlayer(),this.battleState.getEnemy());
+    }
+
 
     // === Creating Buttons ===
-    private void initializeBattleButtons(Entity chooser, Entity other){
+    private void setUpActionListeners(){
         ArrayList<JButton> battleButtons = battleInteract.getButtonsList();
+        Entity other = this.battleState.getEnemy();  // gets current enemy
 
-        //TODO: Model, create currentAttacker and Target variables... or rather just getChooser
-
-        battleButtons.getFirst().addActionListener(_ -> onAttackPressed(chooser,other));
-        battleButtons.get(1).addActionListener(_ -> onDefendPressed());
-        battleButtons.get(2).addActionListener(_ -> onItemPressed());
-        battleButtons.get(3).addActionListener(_ -> onRunPressed());
+        battleButtons.getFirst().addActionListener(_ -> {
+            onAttackPressed(other);
+            System.out.println("Press.");
+        });
+        battleButtons.get(1).addActionListener(_ -> {
+            onDefendPressed();
+            System.out.println("Press.");
+        });
+        battleButtons.get(2).addActionListener(_ -> {
+            onItemPressed();
+            System.out.println("Press.");
+        });
+        battleButtons.get(3).addActionListener(_ -> {
+            onRunPressed();
+            System.out.println("Press.");
+        });
     }
 
     /**
@@ -84,7 +107,7 @@ public class BattleController {
         enemy.getEntityStatBlock().resetTemporaryStats();
 
         // Creating the buttons for the button panel
-        initializeBattleButtons(player,enemy); // again, need to change these params
+        setUpActionListeners();
     }
 
 
@@ -190,25 +213,25 @@ public class BattleController {
 
     // === RUNNING METHODS ===
     public void runInit(){
-        if(currentPhase == BattlePhase.INITIALIZATION){
+        if(this.battleState.getCurrentPhase() == BattlePhase.INITIALIZATION){
             initializeBattle();
-            currentPhase = BattlePhase.TEXT_EVENT;
+            this.battleState.setCurrentPhase(BattlePhase.TEXT_EVENT);
         } // NOTE: Else will throw exception that must be handled; battle ends prematurely
     }
 
     public void runIntro(){
-        if(currentPhase == BattlePhase.TEXT_EVENT){
+        if(this.battleState.getCurrentPhase() == BattlePhase.TEXT_EVENT){
             // Printing intro, etc., any text events that occur; passed in as parameter
-            currentPhase = BattlePhase.DETERMINE_TURN_ORDER;
+            this.battleState.setCurrentPhase(BattlePhase.DETERMINE_TURN_ORDER);
         }
     }
 
     public void runTurnOrderCalc(){
-        if (currentPhase == BattlePhase.DETERMINE_TURN_ORDER){
+        if (this.battleState.getCurrentPhase() == BattlePhase.DETERMINE_TURN_ORDER){
             if(runTurnOrder() instanceof Player){
-                currentPhase = BattlePhase.PLAYER_TURN;
+                this.battleState.setCurrentPhase(BattlePhase.PLAYER_TURN);
             } else {
-                currentPhase = BattlePhase.ENEMY_TURN;
+                this.battleState.setCurrentPhase(BattlePhase.ENEMY_TURN);
             }
         }
     }
