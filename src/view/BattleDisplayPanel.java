@@ -39,10 +39,23 @@ public class BattleDisplayPanel extends DisplayPanel {
         setVisible(true); //NOTE: other ways to do this
     }
 
+
+    // === GETTERS ===
+    public StatDisplayer getPlayerStats(){return this.playerStats;}
+    public StatDisplayer getEnemyStats(){return this.enemyStats;}
+
     // === METHODS ===
     public void print(String... printStrings){
         for(String string : printStrings){
             this.log(string);
+        }
+    }
+
+    public void updateStatDisplayer(Entity entity){
+        if(entity instanceof Player){
+            playerStats.update(entity);
+        } else{
+            enemyStats.update(entity);
         }
     }
 

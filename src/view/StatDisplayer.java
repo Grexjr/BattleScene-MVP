@@ -27,7 +27,7 @@ public class StatDisplayer extends JTextArea {
 
 
     // === METHODS ===
-    private void update(Entity displayedEntity){
+    public void update(Entity displayedEntity){
         this.setText(displayedEntity.toString());
     }
 

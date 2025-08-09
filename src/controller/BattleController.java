@@ -36,6 +36,13 @@ public class BattleController {
 
     // === METHODS ===
     /**
+     * Reads input from the battle button panel and returns it
+     * */
+    public BattleChoice readPlayerInput(){
+        return this.battleInteract.getChoice();
+    }
+
+    /**
      * Resets all temporary values of the entities in the battle scene, set to be used at the beginning of battle
      * */
     private void resetAllTempValues(){
@@ -70,6 +77,8 @@ public class BattleController {
                     {
                         int damage = this.battleState.handleAttack(chooser,other);
                         printAttack(chooser, other, damage);
+                        System.out.println("Player attacks!");
+                        this.battleDisplay.updateStatDisplayer(other);
                     }
             case DEFEND ->
                     {
@@ -93,10 +102,10 @@ public class BattleController {
      * @param other the entity who is not currently going
      *
      * */
-    private void runEntityTurn(Entity goer, Entity other){
+    private void runEntityTurn(Entity goer, Entity other, BattleChoice choice){
         // TODO: Need to add button functionality, for now just does the battle choice attack
         //    also need to add enemy AI.
-        this.battleState.calcEntityBattleChoice(goer,BattleChoice.ATTACK);
+        this.battleState.calcEntityBattleChoice(goer,choice);
         handleBattleAction(goer,other);
     }
 
@@ -110,11 +119,11 @@ public class BattleController {
         Entity firstGoer = this.battleState.determineFirst(player,enemy);
 
         if(firstGoer instanceof Player){
-            runEntityTurn(player,enemy);
-            System.out.println("Player attacks!");
+            player.makeBattleChoice(readPlayerInput());
+            runEntityTurn(player,enemy,player.getBattleChoice());
         } else{
-            runEntityTurn(enemy,player);
-            System.out.println("Enemy attacks!");
+            enemy.makeBattleChoice(enemy.calcBattleChoice());
+            runEntityTurn(enemy,player,enemy.getBattleChoice());
         }
     }
 
