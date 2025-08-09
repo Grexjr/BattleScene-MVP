@@ -1,9 +1,19 @@
 package main.tst;
 
+import controller.BattleController;
 import model.btl.BattleState;
 import model.ety.Player;
 import model.ety.Stats;
+import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
+import model.itm.healers.Healable;
+import model.itm.healers.HealingItem;
+import view.BattleButtonPanel;
+import view.BattleDisplayPanel;
+import view.GameWindow;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class Tester {
 
@@ -110,18 +120,23 @@ public class Tester {
     // The tester main method
     public static void main(String[] args){
 
-        /*GameWindow gameWindow = new GameWindow();
+        GameWindow gameWindow = new GameWindow();
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
         Enemy slime = new Slime(1);
         System.out.println(slime.getEXPAmount());
         JTextArea textLog = new JTextArea();
+        BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,slime,player);
+        BattleButtonPanel bbp = new BattleButtonPanel();
 
 
-        gameWindow.getContentPane().add(new BattleDisplayPanel(textLog,slime,player), BorderLayout.NORTH);
-        gameWindow.getContentPane().add(new BattleButtonPanel(),BorderLayout.SOUTH);
+        gameWindow.getContentPane().add(bdp, BorderLayout.NORTH);
+        gameWindow.getContentPane().add(bbp,BorderLayout.SOUTH);
 
-        gameWindow.refresh();*/
+        gameWindow.refresh();
+
+        BattleState bs = new BattleState(player,slime);
+        BattleController bc = new BattleController(bs,bdp,bbp);
 
 
 
@@ -135,7 +150,7 @@ public class Tester {
         gameWindow.refresh();
 
         testGoFirstMethod(100000);*/
-        testGoFirstMethod(100000);
+        //testGoFirstMethod(100000);
 
     }
 

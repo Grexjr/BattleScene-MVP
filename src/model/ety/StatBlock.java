@@ -9,10 +9,9 @@ import java.util.Spliterator;
  * This class is the stat block for entities. It contains only a Hash Map, and is a separate class so that all stat
  * related calculations take place here instead of within the more general Entity class, and so they can have separate
  * to String values.
- * NOTE: It might be a good idea to keep an original version of the to String if I need to see the instance value or
- *    see the information without printing everything else. I'm not too sure, but that might be a toLog method.
- **********************************************************************************************************************/
-
+ */
+// NOTE: It might be a good idea to keep an original version of the to String if I need to see the instance value or
+//  see the information without printing everything else. I'm not too sure, but that might be a toLog method.
 public class StatBlock {
 
     // TODO: Should eventually be a Hash Map
@@ -92,6 +91,15 @@ public class StatBlock {
 
     public void increaseTemporarySpeed(int increase){
         this.statsMap.replace(Stats.TEMP_SPEED_BONUS,this.statsMap.get(Stats.TEMP_SPEED_BONUS) + increase);
+    }
+
+
+    // === RESET METHODS ===
+    public void resetTemporaryStats(){
+        this.statsMap.replace(Stats.TEMP_HEALTH_BONUS,0);
+        this.statsMap.replace(Stats.TEMP_ATTACK_BONUS,0);
+        this.statsMap.replace(Stats.TEMP_DEFENSE_BONUS,0);
+        this.statsMap.replace(Stats.TEMP_SPEED_BONUS,0);
     }
 
     // === COMPARE METHODS ===

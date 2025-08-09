@@ -57,7 +57,7 @@ public abstract class Entity {
      * Method that calculates final damage based on resistances, statuses, etc. and then applies that to the entity's
      * stat block. Does not return anything, merely changes the stat block values.
      * */
-    public void takeDamage(int damage){
+    public int takeDamage(int damage){
         StatBlock stats = this.getEntityStatBlock();
         int damageReduction = stats.calcFullDefense();
         // need to also add armor
@@ -65,6 +65,7 @@ public abstract class Entity {
         int finalDamage = Math.max(damage - damageReduction,0);
 
         stats.reduceCurrentHealth(finalDamage);
+        return finalDamage;
     }
 
     /**
@@ -79,6 +80,11 @@ public abstract class Entity {
         } else {
             this.getEntityStatBlock().increaseTemporaryDefense((int) Math.ceil(defense / 2.0));
         }
+    }
+
+    /// This method resets the guard and sets the entity's defense back to their standard amount.
+    public void resetGuard(){
+        this.getEntityStatBlock().getStatsMap().replace(Stats.TEMP_DEFENSE_BONUS,0);
     }
 
     /**
@@ -103,17 +109,13 @@ public abstract class Entity {
         return (double) runnerSpeed / totalSpeed;
     }
 
-    /**
-     * This method sets the entity's state to the input. That input set does not exist yet.
-     * */
+    /// This method sets the entity's state to the input.
     // QUESTION: Should I just use a setter?
     public void changeState(LifeState state){
         this.entityState = state;
     }
 
-    /**
-     * Sets the battleChoice variable of the entity to the input
-     * */
+    /// This method sets the entity's battle choice to the input.
     public void makeBattleChoice(BattleChoice choice){
         this.battleChoice = choice;
     }
@@ -129,7 +131,5 @@ public abstract class Entity {
                 entityState
         );
     }
-
-
 
 }
