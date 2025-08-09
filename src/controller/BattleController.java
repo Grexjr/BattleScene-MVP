@@ -42,7 +42,6 @@ public class BattleController {
         return this.battleInteract.getChoice();
     }
 
-
     /**
      * Resets all temporary values of the entities in the battle scene, set to be used at the beginning of battle
      * */
@@ -75,6 +74,13 @@ public class BattleController {
         BattleChoice choice = chooser.getBattleChoice();
         switch(choice){
             case ATTACK ->
+                    {
+                        int damage = this.battleState.handleAttack(chooser,other);
+                        printAttack(chooser, other, damage);
+                        System.out.println("Player attacks!");
+                        this.battleDisplay.updateStatDisplayer(other);
+                    }
+            case DEFEND ->
                     {
                         System.out.println("ATTACK");
                         this.battleState.handleAttack(chooser,other);
@@ -124,7 +130,7 @@ public class BattleController {
             player.makeBattleChoice(readPlayerInput());
             runEntityTurn(player,enemy,player.getBattleChoice());
         } else{
-            enemy.calcEnemyBattleChoice();
+            enemy.makeBattleChoice(enemy.calcEnemyBattleChoice());
             runEntityTurn(enemy,player,enemy.getBattleChoice());
         }
     }
@@ -134,6 +140,15 @@ public class BattleController {
      * */
     public void runBattle(){
         runTurnOrder();
+    }
+
+    // === PRINT METHODS === | TODO: will need to be refactored
+    public void printAttack(Entity attacker, Entity target, int damage){
+        this.battleDisplay.print(String.format("%s Attacks %s for %d damage!",
+                attacker.getEntityName(),
+                target.getEntityName(),
+                damage
+        ));
     }
 
 }
