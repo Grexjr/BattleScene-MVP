@@ -18,6 +18,9 @@ public abstract class ButtonPanel extends InteractPanel {
         this.addButtons(buttonsList);
     }
 
+    // === GETTER ===
+    public ArrayList<JButton> getButtonsList() {return this.buttonsList;}
+
 
     // === METHODS ===
     protected void addButtons(ArrayList<JButton> buttonsList){
@@ -35,7 +38,7 @@ public abstract class ButtonPanel extends InteractPanel {
     // === ABSTRACT METHODS ===
     protected abstract ArrayList<JButton> initializeButtons();
 
-    protected abstract JButton createButton(String label, ActionListener action);
+    public abstract JButton createButton(String label, ActionListener action);
 
     protected abstract void createBorders();
 

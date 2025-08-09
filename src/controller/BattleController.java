@@ -9,6 +9,10 @@ import model.itm.Item;
 import view.BattleButtonPanel;
 import view.BattleDisplayPanel;
 
+import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 
 /** The battle controller class that controls the flow of battle. Battle is broken up into "turn sets," which are just
  * sets of entity turns. One turn set is all the entities' turns in the battle state. Each turn set involves the
@@ -17,12 +21,14 @@ import view.BattleDisplayPanel;
  * */
 //QUESTION: Should turn sets be their own object?
 public class BattleController {
+    // === CONSTANTS ===
 
 
     // === VARIABLES AND FIELDS ===
     private final BattleState battleState;
     private final BattleDisplayPanel battleDisplay;
     private final BattleButtonPanel battleInteract;
+    private BattlePhase currentPhase;
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
@@ -30,7 +36,55 @@ public class BattleController {
         this.battleState = state;
         this.battleDisplay = view;
         this.battleInteract = interact;
-        runBattle(); //TEMP: just for testing
+        this.currentPhase = BattlePhase.INITIALIZATION;
+    }
+
+    // === Creating ActionListeners === TODO: Can one day move this to a different action class
+    private void onAttackPressed(Entity attacker, Entity target){
+        if(currentPhase == BattlePhase.PLAYER_TURN){
+            // store damage amount
+            int damage = this.battleState.handleAttack(attacker,target);
+
+            // Update UI
+            printAttack(attacker, target, damage);
+            this.battleDisplay.updateStatDisplayer(target);
+
+            // System log | TODO: Proper system logging
+            System.out.println("Player attacks for " + damage);
+        } // ERROR: handle if not player turn
+    }
+
+    private void onDefendPressed(){}
+
+    private void onItemPressed(){}
+
+    private void onRunPressed(){}
+
+    // === Creating Buttons ===
+    private void initializeBattleButtons(Entity chooser, Entity other){
+        ArrayList<JButton> battleButtons = battleInteract.getButtonsList();
+
+        //TODO: Model, create currentAttacker and Target variables... or rather just getChooser
+
+        battleButtons.getFirst().addActionListener(_ -> onAttackPressed(chooser,other));
+        battleButtons.get(1).addActionListener(_ -> onDefendPressed());
+        battleButtons.get(2).addActionListener(_ -> onItemPressed());
+        battleButtons.get(3).addActionListener(_ -> onRunPressed());
+    }
+
+    /**
+     * This method initializes the battle
+     * */
+    public void initializeBattle(){
+        // Creating the player and enemy
+        Player player = battleState.getPlayer();
+        Enemy enemy = battleState.getEnemy();
+
+        player.getEntityStatBlock().resetTemporaryStats();
+        enemy.getEntityStatBlock().resetTemporaryStats();
+
+        // Creating the buttons for the button panel
+        initializeBattleButtons(player,enemy); // again, need to change these params
     }
 
 
@@ -75,15 +129,7 @@ public class BattleController {
         switch(choice){
             case ATTACK ->
                     {
-                        int damage = this.battleState.handleAttack(chooser,other);
-                        printAttack(chooser, other, damage);
-                        System.out.println("Player attacks!");
-                        this.battleDisplay.updateStatDisplayer(other);
-                    }
-            case DEFEND ->
-                    {
-                        System.out.println("ATTACK");
-                        this.battleState.handleAttack(chooser,other);
+
                     }
             case DEFEND ->
                     {
@@ -110,36 +156,27 @@ public class BattleController {
      * @param other the entity who is not currently going
      * @param choice the choice the goer entity is making
      * */
-    private void runEntityTurn(Entity goer, Entity other, BattleChoice choice){
+    /*private void runEntityTurn(Entity goer, Entity other, BattleChoice choice){
         // TODO: Need to add button functionality, for now just does the battle choice attack
         //    also need to add enemy AI.
         this.battleState.calcEntityBattleChoice(goer,choice);
         handleBattleAction(goer,other);
-    }
+    }*/
 
     /**
      * Runs the turn order
      * */
-    private void runTurnOrder(){
+    private Entity runTurnOrder(){
         Player player = this.battleState.getPlayer();
         Enemy enemy = this.battleState.getEnemy();
 
         Entity firstGoer = this.battleState.determineFirst(player,enemy);
 
         if(firstGoer instanceof Player){
-            player.makeBattleChoice(readPlayerInput());
-            runEntityTurn(player,enemy,player.getBattleChoice());
+            return player;
         } else{
-            enemy.makeBattleChoice(enemy.calcEnemyBattleChoice());
-            runEntityTurn(enemy,player,enemy.getBattleChoice());
+            return enemy;
         }
-    }
-
-    /**
-     * Runs progression of the battle
-     * */
-    public void runBattle(){
-        runTurnOrder();
     }
 
     // === PRINT METHODS === | TODO: will need to be refactored
@@ -149,6 +186,41 @@ public class BattleController {
                 target.getEntityName(),
                 damage
         ));
+    }
+
+    // === RUNNING METHODS ===
+    public void runInit(){
+        if(currentPhase == BattlePhase.INITIALIZATION){
+            initializeBattle();
+            currentPhase = BattlePhase.TEXT_EVENT;
+        } // NOTE: Else will throw exception that must be handled; battle ends prematurely
+    }
+
+    public void runIntro(){
+        if(currentPhase == BattlePhase.TEXT_EVENT){
+            // Printing intro, etc., any text events that occur; passed in as parameter
+            currentPhase = BattlePhase.DETERMINE_TURN_ORDER;
+        }
+    }
+
+    public void runTurnOrderCalc(){
+        if (currentPhase == BattlePhase.DETERMINE_TURN_ORDER){
+            if(runTurnOrder() instanceof Player){
+                currentPhase = BattlePhase.PLAYER_TURN;
+            } else {
+                currentPhase = BattlePhase.ENEMY_TURN;
+            }
+        }
+    }
+
+
+
+    /**
+     * This method runs the entire battle
+     * */
+    public void runBattle(){
+        runInit();
+        runIntro();
     }
 
 }
