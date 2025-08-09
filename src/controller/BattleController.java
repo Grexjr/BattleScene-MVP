@@ -1,26 +1,21 @@
 package controller;
 
-import model.bsc.BattleScene;
+import model.btl.BattleState;
 import model.ety.Entity;
-import model.ety.Player;
-import model.ety.enemy.Enemy;
 import model.itm.Item;
 import view.BattleDisplayPanel;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
 
 public class BattleController {
 
 
     // === VARIABLES AND FIELDS ===
-    private final BattleScene battleScene;
+    private final BattleState battleState;
     private final BattleDisplayPanel battleDisplay;
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
-    public BattleController(BattleScene bsc, BattleDisplayPanel view){
-        this.battleScene = bsc;
+    public BattleController(BattleState state, BattleDisplayPanel view){
+        this.battleState = state;
         this.battleDisplay = view;
     }
 

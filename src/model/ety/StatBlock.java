@@ -99,7 +99,7 @@ public class StatBlock {
         return this.statsMap.get(Stats.LEVEL) - comparedLevel;
     }
 
-    public int compareMaxHealth(int comparedHealth){
+    public int compareBaseMaxHealth(int comparedHealth){
         return this.statsMap.get(Stats.MAX_HEALTH) - comparedHealth;
     }
 
@@ -107,18 +107,33 @@ public class StatBlock {
         return this.statsMap.get(Stats.CURRENT_HEALTH) - comparedHealth;
     }
 
-    public int compareAttack(int comparedAttack){
+    public int compareBaseAttack(int comparedAttack){
         return this.statsMap.get(Stats.ATTACK) - comparedAttack;
     }
 
-    public int compareDefense(int comparedDefense){
+    public int compareBaseDefense(int comparedDefense){
         return this.statsMap.get(Stats.DEFENSE) - comparedDefense;
     }
 
-    public int compareSpeed(int comparedSpeed){
+    public int compareBaseSpeed(int comparedSpeed){
         return this.statsMap.get(Stats.SPEED) - comparedSpeed;
     }
 
+    public int compareFullMaxHealth(int comparedHealth){
+        return this.calcFullHealth() - comparedHealth;
+    }
+
+    public int compareFullAttack(int comparedAttack){
+        return this.calcFullAttack() - comparedAttack;
+    }
+
+    public int compareFullDefense(int comparedDefense){
+        return this.calcFullDefense() - comparedDefense;
+    }
+
+    public int compareFullSpeed(int comparedSpeed){
+        return this.calcFullSpeed() - comparedSpeed;
+    }
 
     ///  To String for the Stat Block of the Entity
     @Override

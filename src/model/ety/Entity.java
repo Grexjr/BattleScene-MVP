@@ -15,6 +15,7 @@ public abstract class Entity {
     private final String entityName, entityDescription;
     private final StatBlock entityStatBlock;
     private LifeState entityState;
+    private BattleChoice battleChoice;
 
 
     // === ENTITY CONSTRUCTOR ===
@@ -23,6 +24,7 @@ public abstract class Entity {
         this.entityDescription = description;
         this.entityStatBlock = statBlock;
         this.entityState = LifeState.ALIVE;
+        this.battleChoice = BattleChoice.INVALID;
     }
 
     // === GETTERS AND SETTERS ===
@@ -33,6 +35,8 @@ public abstract class Entity {
     public StatBlock getEntityStatBlock() {return this.entityStatBlock;}
 
     public LifeState getEntityState() {return this.entityState;}
+
+    public BattleChoice getBattleChoice() {return this.battleChoice;}
 
 
     // === ENTITY METHODS ===
@@ -56,8 +60,9 @@ public abstract class Entity {
     public void takeDamage(int damage){
         StatBlock stats = this.getEntityStatBlock();
         int damageReduction = stats.calcFullDefense();
+        // need to also add armor
 
-        int finalDamage = damage - damageReduction;
+        int finalDamage = Math.max(damage - damageReduction,0);
 
         stats.reduceCurrentHealth(finalDamage);
     }
@@ -106,6 +111,12 @@ public abstract class Entity {
         this.entityState = state;
     }
 
+    /**
+     * Sets the battleChoice variable of the entity to the input
+     * */
+    public void makeBattleChoice(BattleChoice choice){
+        this.battleChoice = choice;
+    }
 
     /// TO STRING OF ENTITY
     @Override
