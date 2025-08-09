@@ -15,7 +15,9 @@ public class Slime extends Enemy{
                         level,
                         level - 1,
                         level - 1
-                ));
+                ),
+                10
+                );
     }
 
 }

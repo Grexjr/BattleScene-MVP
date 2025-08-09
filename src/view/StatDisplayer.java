@@ -1,4 +1,4 @@
-package view.gui.parts;
+package view;
 
 import model.ety.Entity;
 
@@ -28,10 +28,7 @@ public class StatDisplayer extends JTextArea {
 
     // === METHODS ===
     private void update(Entity displayedEntity){
-        this.setText(displayedEntity.getEntityName() + "\n" +
-                        displayedEntity.getEntityDescription() + "\n\n" +
-                        displayedEntity.getEntityStatBlock().toString()
-        );
+        this.setText(displayedEntity.toString());
     }
 
 
