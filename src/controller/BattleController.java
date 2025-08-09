@@ -82,14 +82,22 @@ public class BattleController {
                     }
             case DEFEND ->
                     {
+                        System.out.println("ATTACK");
+                        this.battleState.handleAttack(chooser,other);
+                    }
+            case DEFEND ->
+                    {
+                        System.out.println("DEFEND");
                         this.battleState.handleDefend(chooser);
                     }
             case USE_ITEM ->
                     {
+                        System.out.println("ITEM");
                         this.battleState.handleItemUse(chooser);
                     } // NOTE: does nothing
             case RUN ->
                     {
+                        System.out.println("RUN");
                         this.battleState.handleRun(chooser,other);
                     }
         }
@@ -100,7 +108,7 @@ public class BattleController {
      *
      * @param goer the entity whose turn it is,
      * @param other the entity who is not currently going
-     *
+     * @param choice the choice the goer entity is making
      * */
     private void runEntityTurn(Entity goer, Entity other, BattleChoice choice){
         // TODO: Need to add button functionality, for now just does the battle choice attack
@@ -122,7 +130,7 @@ public class BattleController {
             player.makeBattleChoice(readPlayerInput());
             runEntityTurn(player,enemy,player.getBattleChoice());
         } else{
-            enemy.makeBattleChoice(enemy.calcBattleChoice());
+            enemy.makeBattleChoice(enemy.calcEnemyBattleChoice());
             runEntityTurn(enemy,player,enemy.getBattleChoice());
         }
     }
