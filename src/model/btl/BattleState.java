@@ -103,7 +103,13 @@ public class BattleState {
     public void handleItemUse(Entity user){}
 
     public void handleRun(Entity runner, Entity runFrom){
-        runner.calculateEscapeChance(runFrom.getEntityStatBlock().calcFullSpeed());
+        double escapeChance = runner.calculateEscapeChance(runFrom.getEntityStatBlock().calcFullSpeed());
+        Random rand = new Random();
+        double escapeRoll = rand.nextDouble();
+
+        if(escapeChance <= escapeRoll){
+            System.out.println("RUN SUCCESS!");
+        }
     }
 
 

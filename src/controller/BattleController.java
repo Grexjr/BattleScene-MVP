@@ -36,6 +36,14 @@ public class BattleController {
 
     // === METHODS ===
     /**
+     * Reads input from the battle button panel and returns it
+     * */
+    public BattleChoice readPlayerInput(){
+        return this.battleInteract.getChoice();
+    }
+
+
+    /**
      * Resets all temporary values of the entities in the battle scene, set to be used at the beginning of battle
      * */
     private void resetAllTempValues(){
@@ -66,10 +74,26 @@ public class BattleController {
     private void handleBattleAction(Entity chooser, Entity other){
         BattleChoice choice = chooser.getBattleChoice();
         switch(choice){
-            case ATTACK -> this.battleState.handleAttack(chooser,other);
-            case DEFEND -> this.battleState.handleDefend(chooser);
-            case USE_ITEM -> this.battleState.handleItemUse(chooser); // NOTE: does nothing
-            case RUN -> this.battleState.handleRun(chooser,other);
+            case ATTACK ->
+                    {
+                        System.out.println("ATTACK");
+                        this.battleState.handleAttack(chooser,other);
+                    }
+            case DEFEND ->
+                    {
+                        System.out.println("DEFEND");
+                        this.battleState.handleDefend(chooser);
+                    }
+            case USE_ITEM ->
+                    {
+                        System.out.println("ITEM");
+                        this.battleState.handleItemUse(chooser);
+                    } // NOTE: does nothing
+            case RUN ->
+                    {
+                        System.out.println("RUN");
+                        this.battleState.handleRun(chooser,other);
+                    }
         }
     }
 
@@ -78,12 +102,12 @@ public class BattleController {
      *
      * @param goer the entity whose turn it is,
      * @param other the entity who is not currently going
-     *
+     * @param choice the choice the goer entity is making
      * */
-    private void runEntityTurn(Entity goer, Entity other){
+    private void runEntityTurn(Entity goer, Entity other, BattleChoice choice){
         // TODO: Need to add button functionality, for now just does the battle choice attack
         //    also need to add enemy AI.
-        this.battleState.calcEntityBattleChoice(goer,BattleChoice.ATTACK);
+        this.battleState.calcEntityBattleChoice(goer,choice);
         handleBattleAction(goer,other);
     }
 
@@ -97,11 +121,11 @@ public class BattleController {
         Entity firstGoer = this.battleState.determineFirst(player,enemy);
 
         if(firstGoer instanceof Player){
-            runEntityTurn(player,enemy);
-            System.out.println("Player attacks!");
+            player.makeBattleChoice(readPlayerInput());
+            runEntityTurn(player,enemy,player.getBattleChoice());
         } else{
-            runEntityTurn(enemy,player);
-            System.out.println("Enemy attacks!");
+            enemy.calcEnemyBattleChoice();
+            runEntityTurn(enemy,player,enemy.getBattleChoice());
         }
     }
 
