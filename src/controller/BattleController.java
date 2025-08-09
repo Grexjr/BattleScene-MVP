@@ -6,6 +6,7 @@ import model.ety.Entity;
 import model.ety.Player;
 import model.ety.enemy.Enemy;
 import model.itm.Item;
+import view.BattleButtonPanel;
 import view.BattleDisplayPanel;
 
 
@@ -21,18 +22,22 @@ public class BattleController {
     // === VARIABLES AND FIELDS ===
     private final BattleState battleState;
     private final BattleDisplayPanel battleDisplay;
+    private final BattleButtonPanel battleInteract;
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
-    public BattleController(BattleState state, BattleDisplayPanel view){
+    public BattleController(BattleState state, BattleDisplayPanel view, BattleButtonPanel interact){
         this.battleState = state;
         this.battleDisplay = view;
+        this.battleInteract = interact;
         runBattle(); //TEMP: just for testing
     }
 
 
     // === METHODS ===
-    /// Method to reset temporary values at the beginning of the battle before anything happens
+    /**
+     * Resets all temporary values of the entities in the battle scene, set to be used at the beginning of battle
+     * */
     private void resetAllTempValues(){
         // NOTE: Should find some way to do this without explicit reference to the players... should be a list/array
         Player player = this.battleState.getPlayer();
@@ -42,13 +47,22 @@ public class BattleController {
         enemy.getEntityStatBlock().resetTemporaryStats();
     }
 
-    ///  Method that specifically resets an entity's defense by removing temporary defense based on guard.
+    /**
+     * Method that resets the defense of the entity to prevent guarding from carrying over from turn to turn
+     *
+     * @param guardingEntity the entity that is guarding and will have defense reset.
+     * */
     // NOTE: This WILL NOT WORK as currently implemented with status AND guard, but for now it is okay.
     private void resetDefenseTurnStart(Entity guardingEntity){
         guardingEntity.resetGuard();
     }
 
-    ///  Method to handle battle choices generically, depending on the battle choice input
+    /**
+     * Handles individual battle actions like attacking, defending, using item, running
+     *
+     * @param chooser the entity choosing the battle action
+     * @param other the entity not currently choosing a battle action
+     * */
     private void handleBattleAction(Entity chooser, Entity other){
         BattleChoice choice = chooser.getBattleChoice();
         switch(choice){
@@ -59,16 +73,23 @@ public class BattleController {
         }
     }
 
-    ///  Method to run entity turn that tests if entity is player or enemy and gives them a battle choice respectively.
+    /**
+     * Runs an entity's turn
+     *
+     * @param goer the entity whose turn it is,
+     * @param other the entity who is not currently going
+     *
+     * */
     private void runEntityTurn(Entity goer, Entity other){
         // TODO: Need to add button functionality, for now just does the battle choice attack
         //    also need to add enemy AI.
         this.battleState.calcEntityBattleChoice(goer,BattleChoice.ATTACK);
-        System.out.println("Player attacks!");
         handleBattleAction(goer,other);
     }
 
-    ///  Method to run the turn order each time a new turn "set" is done
+    /**
+     * Runs the turn order
+     * */
     private void runTurnOrder(){
         Player player = this.battleState.getPlayer();
         Enemy enemy = this.battleState.getEnemy();
@@ -84,7 +105,9 @@ public class BattleController {
         }
     }
 
-    /// Method to run the actual battle progression
+    /**
+     * Runs progression of the battle
+     * */
     public void runBattle(){
         runTurnOrder();
     }
