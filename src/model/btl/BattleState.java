@@ -1,10 +1,7 @@
 package model.btl;
 
 import controller.BattlePhase;
-import model.ety.BattleChoice;
-import model.ety.Entity;
-import model.ety.Player;
-import model.ety.StatBlock;
+import model.ety.*;
 import model.ety.enemy.Enemy;
 
 import java.util.Random;
@@ -81,6 +78,11 @@ public class BattleState {
     /// attack entity method uses the take damage function and attack functions from the entity class
     private int attackEntity(Entity attacker, Entity target){
         return target.takeDamage(attacker.attack());
+    }
+
+    /// Checks if an entity is dead
+    public boolean checkDeath(Entity queriedEntity){
+        return queriedEntity.getEntityStatBlock().getStatsMap().get(Stats.CURRENT_HEALTH) <= 0;
     }
 
 

@@ -123,7 +123,7 @@ public class Tester {
         GameWindow gameWindow = new GameWindow();
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
-        Enemy slime = new Slime(1);
+        Enemy slime = new Slime(2);
         System.out.println(slime.getEXPAmount());
         JTextArea textLog = new JTextArea();
         BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,slime,player);

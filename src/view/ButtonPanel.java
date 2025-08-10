@@ -29,7 +29,7 @@ public abstract class ButtonPanel extends InteractPanel {
         }
     }
 
-    protected void toggleButtons(boolean activeStatus){
+    public void toggleButtons(boolean activeStatus){
         for(JButton b : this.buttonsList){
             b.setEnabled(activeStatus);
         }

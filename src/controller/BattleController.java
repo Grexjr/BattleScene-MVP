@@ -4,6 +4,7 @@ import model.btl.BattleState;
 import model.ety.BattleChoice;
 import model.ety.Entity;
 import model.ety.Player;
+import model.ety.Stats;
 import model.ety.enemy.Enemy;
 import model.itm.Item;
 import view.BattleButtonPanel;
@@ -38,7 +39,28 @@ public class BattleController {
         runBattle(); // TEMP: Testing purposes
     }
 
-    // === Creating ActionListeners === TODO: Can one day move this to a different action class
+    /**
+     * Method that ends the players turn. First sets their buttons to inactive, runs the enemy turn, then puts
+     * the battle phase back into determine turn order.
+     * */
+    public void endEntityTurn(Entity goer){
+        if(goer instanceof Player){
+            // Turn off player buttons
+            this.battleInteract.toggleButtons(false);
+
+            // Run Enemy turn
+             // enemy attack
+            printAttack(this.battleState.getEnemy(),this.battleState.getPlayer(),
+                    this.battleState.handleAttack(this.battleState.getEnemy(),this.battleState.getPlayer()));
+            this.battleDisplay.updateStatDisplayer(battleState.getPlayer());
+
+            // Set phase back to determine turn order
+            this.battleState.setCurrentPhase(BattlePhase.DETERMINE_TURN_ORDER);
+            this.runTurnOrderCalc();
+        }
+    }
+
+    // === Action Methods === TODO: Can one day move this to a different action class
     private void onAttackPressed(Entity target){
         if(this.battleState.getCurrentPhase() == BattlePhase.PLAYER_TURN){
             // local vars
@@ -53,6 +75,18 @@ public class BattleController {
 
             // System log | TODO: Proper system logging
             System.out.println(player.getEntityName() + " attacks for " + damage + " damage!");
+
+            // Check if entity dead
+            if(this.battleState.checkDeath(target)) {
+                // Interrupts flow early
+                System.out.println("Player wins!");
+                this.battleState.setCurrentPhase(BattlePhase.ENDING);
+                runEnding();
+            } else{
+                // End the player turn
+                endEntityTurn(player);
+            }
+
         } // ERROR: handle if not player turn
     }
 
@@ -60,15 +94,18 @@ public class BattleController {
         if(this.battleState.getCurrentPhase() == BattlePhase.PLAYER_TURN){
             // run defense if player turn
             this.battleState.handleDefend(this.battleState.getPlayer());
+            this.battleInteract.toggleButtons(false);
         } // ERROR: will need to handle if not player turn
     }
 
     private void onItemPressed(){
         this.battleState.handleItemUse(this.battleState.getPlayer());
+        this.battleInteract.toggleButtons(false);
     }
 
     private void onRunPressed(){
         this.battleState.handleRun(this.battleState.getPlayer(),this.battleState.getEnemy());
+        this.battleInteract.toggleButtons(false);
     }
 
 
@@ -99,12 +136,8 @@ public class BattleController {
      * This method initializes the battle
      * */
     public void initializeBattle(){
-        // Creating the player and enemy
-        Player player = battleState.getPlayer();
-        Enemy enemy = battleState.getEnemy();
-
-        player.getEntityStatBlock().resetTemporaryStats();
-        enemy.getEntityStatBlock().resetTemporaryStats();
+        // resetting all temporary values of the entities
+        resetAllTempValues();
 
         // Creating the buttons for the button panel
         setUpActionListeners();
@@ -112,13 +145,6 @@ public class BattleController {
 
 
     // === METHODS ===
-    /**
-     * Reads input from the battle button panel and returns it
-     * */
-    public BattleChoice readPlayerInput(){
-        return this.battleInteract.getChoice();
-    }
-
     /**
      * Resets all temporary values of the entities in the battle scene, set to be used at the beginning of battle
      * */
@@ -140,51 +166,6 @@ public class BattleController {
     private void resetDefenseTurnStart(Entity guardingEntity){
         guardingEntity.resetGuard();
     }
-
-    /**
-     * Handles individual battle actions like attacking, defending, using item, running
-     *
-     * @param chooser the entity choosing the battle action
-     * @param other the entity not currently choosing a battle action
-     * */
-    private void handleBattleAction(Entity chooser, Entity other){
-        BattleChoice choice = chooser.getBattleChoice();
-        switch(choice){
-            case ATTACK ->
-                    {
-
-                    }
-            case DEFEND ->
-                    {
-                        System.out.println("DEFEND");
-                        this.battleState.handleDefend(chooser);
-                    }
-            case USE_ITEM ->
-                    {
-                        System.out.println("ITEM");
-                        this.battleState.handleItemUse(chooser);
-                    } // NOTE: does nothing
-            case RUN ->
-                    {
-                        System.out.println("RUN");
-                        this.battleState.handleRun(chooser,other);
-                    }
-        }
-    }
-
-    /**
-     * Runs an entity's turn
-     *
-     * @param goer the entity whose turn it is,
-     * @param other the entity who is not currently going
-     * @param choice the choice the goer entity is making
-     * */
-    /*private void runEntityTurn(Entity goer, Entity other, BattleChoice choice){
-        // TODO: Need to add button functionality, for now just does the battle choice attack
-        //    also need to add enemy AI.
-        this.battleState.calcEntityBattleChoice(goer,choice);
-        handleBattleAction(goer,other);
-    }*/
 
     /**
      * Runs the turn order
@@ -230,9 +211,41 @@ public class BattleController {
         if (this.battleState.getCurrentPhase() == BattlePhase.DETERMINE_TURN_ORDER){
             if(runTurnOrder() instanceof Player){
                 this.battleState.setCurrentPhase(BattlePhase.PLAYER_TURN);
+                this.battleInteract.toggleButtons(true);
             } else {
                 this.battleState.setCurrentPhase(BattlePhase.ENEMY_TURN);
             }
+        } //ERROR: Throw error if not in the correct phase; battle out of phase error
+    }
+
+    public void runTurnSet(){
+        runTurnOrderCalc();
+        resetDefenseTurnStart(this.battleState.getPlayer());
+        resetDefenseTurnStart(this.battleState.getEnemy());
+        if(this.battleState.getCurrentPhase() == BattlePhase.PLAYER_TURN){
+            this.battleInteract.toggleButtons(true);
+        } else{
+            this.battleInteract.toggleButtons(false);
+            //run enemy turn | TODO: Enemy AI!!!
+            this.printAttack(this.battleState.getEnemy(),this.battleState.getPlayer(),this.battleState.handleAttack(
+                    this.battleState.getEnemy(),this.battleState.getPlayer()
+            ));
+
+            // Update player stats
+            this.battleDisplay.updateStatDisplayer(this.battleState.getPlayer());
+
+            //Set phase now to player turn again
+            this.battleState.setCurrentPhase(BattlePhase.PLAYER_TURN);
+
+            //set buttons to true
+            this.battleInteract.toggleButtons(true);
+        }
+    }
+
+    public void runEnding(){
+        if(this.battleState.getCurrentPhase() == BattlePhase.ENDING) {
+            this.battleInteract.toggleButtons(false);
+            new Timer(5000, _ -> System.exit(0)).start();
         }
     }
 
@@ -244,6 +257,7 @@ public class BattleController {
     public void runBattle(){
         runInit();
         runIntro();
+        runTurnSet();
     }
 
 }
