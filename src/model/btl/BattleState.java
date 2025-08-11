@@ -115,8 +115,13 @@ public class BattleState {
         Random rand = new Random();
         double escapeRoll = rand.nextDouble();
 
-        if(escapeChance <= escapeRoll){
+        System.out.println(escapeChance);
+        System.out.println(escapeRoll);
+
+        if(escapeRoll <= escapeChance){
             System.out.println("RUN SUCCESS!");
+        } else {
+            System.out.println("RUN FAILED!");
         }
     }
 

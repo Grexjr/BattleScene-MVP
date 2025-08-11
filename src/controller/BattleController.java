@@ -36,7 +36,7 @@ public class BattleController {
         this.battleState = state;
         this.battleDisplay = view;
         this.battleInteract = interact;
-        runBattle(); // TEMP: Testing purposes
+        runBattleStart(); // TEMP: Testing purposes
     }
 
     /**
@@ -49,15 +49,27 @@ public class BattleController {
             this.battleInteract.toggleButtons(false);
 
             // Run Enemy turn
-             // enemy attack
-            printAttack(this.battleState.getEnemy(),this.battleState.getPlayer(),
-                    this.battleState.handleAttack(this.battleState.getEnemy(),this.battleState.getPlayer()));
+            // enemy attack + update the UI
+            printAttack(
+                    this.battleState.getEnemy(),
+                    this.battleState.getPlayer(),
+                    this.battleState.handleAttack(
+                            this.battleState.getEnemy(),
+                            this.battleState.getPlayer()
+                    )
+            );
             this.battleDisplay.updateStatDisplayer(battleState.getPlayer());
 
-            // Set phase back to determine turn order
-            this.battleState.setCurrentPhase(BattlePhase.DETERMINE_TURN_ORDER);
-            this.runTurnOrderCalc();
-        }
+            // check if player is dead
+            if(battleState.checkDeath(battleState.getPlayer())){
+                this.battleState.setCurrentPhase(BattlePhase.ENDING);
+                System.out.println("Player dead!");
+                this.runEnding();
+            } else { // Set phase back to determine turn order
+                this.battleState.setCurrentPhase(BattlePhase.DETERMINE_TURN_ORDER);
+                this.runTurnSet();
+            }
+        } // Need to also handle other case.... stuff definitely needs to be refactored
     }
 
     // === Action Methods === TODO: Can one day move this to a different action class
@@ -91,21 +103,34 @@ public class BattleController {
     }
 
     private void onDefendPressed(){
+        Entity player = this.battleState.getPlayer();
         if(this.battleState.getCurrentPhase() == BattlePhase.PLAYER_TURN){
             // run defense if player turn
-            this.battleState.handleDefend(this.battleState.getPlayer());
+            this.battleState.handleDefend(player);
+
+            // Update the UI
+            printDefense(player);
+            this.battleDisplay.updateStatDisplayer(player);
+
+            // Disable the buttons
             this.battleInteract.toggleButtons(false);
+
+            // End the player turn
+            endEntityTurn(player);
         } // ERROR: will need to handle if not player turn
     }
 
     private void onItemPressed(){
         this.battleState.handleItemUse(this.battleState.getPlayer());
         this.battleInteract.toggleButtons(false);
+        System.out.println("NOT YET IMPLEMENTED!");
+        endEntityTurn(this.battleState.getPlayer());
     }
 
     private void onRunPressed(){
         this.battleState.handleRun(this.battleState.getPlayer(),this.battleState.getEnemy());
         this.battleInteract.toggleButtons(false);
+        new Timer(3000, _ -> {System.exit(0);}).start();
     }
 
 
@@ -192,11 +217,20 @@ public class BattleController {
         ));
     }
 
+    public void printDefense(Entity defender){
+        this.battleDisplay.print(String.format("%s defends!",
+                defender.getEntityName()));
+    }
+
     // === RUNNING METHODS ===
+    public void advancePhase(BattlePhase phase){
+        this.battleState.setCurrentPhase(phase);
+    }
+
     public void runInit(){
         if(this.battleState.getCurrentPhase() == BattlePhase.INITIALIZATION){
             initializeBattle();
-            this.battleState.setCurrentPhase(BattlePhase.TEXT_EVENT);
+            advancePhase(BattlePhase.TEXT_EVENT);
         } // NOTE: Else will throw exception that must be handled; battle ends prematurely
     }
 
@@ -249,12 +283,10 @@ public class BattleController {
         }
     }
 
-
-
     /**
      * This method runs the entire battle
      * */
-    public void runBattle(){
+    public void runBattleStart(){
         runInit();
         runIntro();
         runTurnSet();
