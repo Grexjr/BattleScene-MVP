@@ -1,8 +1,7 @@
 package model.btl;
 
-import model.ety.Entity;
-import model.ety.Player;
-import model.ety.StatBlock;
+import controller.BattlePhase;
+import model.ety.*;
 import model.ety.enemy.Enemy;
 
 import java.util.Random;
@@ -17,6 +16,7 @@ public class BattleState {
     private final Enemy enemy;
     private boolean isPlayerTurn;
     private EndCode ending;
+    private BattlePhase currentPhase;
 
 
     // == CONSTRUCTOR FOR BATTLESCENE ===
@@ -25,6 +25,7 @@ public class BattleState {
         this.enemy = enemy;
         this.isPlayerTurn = false;
         this.ending = EndCode.NOT_OVER;
+        this.currentPhase = BattlePhase.INITIALIZATION;
     }
 
     // === GETTERS AND SETTERS ===
@@ -34,6 +35,9 @@ public class BattleState {
 
     public boolean getPlayerTurn() {return this.isPlayerTurn;}
     public void setPlayerTurn(boolean turn) {this.isPlayerTurn = turn;}
+
+    public BattlePhase getCurrentPhase() {return this.currentPhase;}
+    public void setCurrentPhase(BattlePhase phase) {this.currentPhase = phase;}
 
     public EndCode getEnding() {return this.ending;}
     public void setEnding(EndCode end) {this.ending = end;}
@@ -72,8 +76,53 @@ public class BattleState {
     }
 
     /// attack entity method uses the take damage function and attack functions from the entity class
-    public void attackEntity(Entity attacker, Entity target){
-        target.takeDamage(attacker.attack());
+    private int attackEntity(Entity attacker, Entity target){
+        return target.takeDamage(attacker.attack());
+    }
+
+    /// Checks if an entity is dead
+    public boolean checkDeath(Entity queriedEntity){
+        return queriedEntity.getEntityStatBlock().getStatsMap().get(Stats.CURRENT_HEALTH) <= 0;
+    }
+
+
+    // === RUNNING ENTITY TURN METHODS ===
+    /** Method to run generic entity turn based on the input value. For the player, from buttons; enemy, from AI.
+     * It takes in the entity and the choice being made, and applies that choice to the entity.
+    */
+    public void calcEntityBattleChoice(Entity goer, BattleChoice choice){
+        goer.makeBattleChoice(choice);
+    }
+
+
+    // === BATTLE CHOICE HANDLING METHODS ===
+    // NOTE: These are all separated to allow for greater expandibility later
+    /// Handles generic entity attacking
+    public int handleAttack(Entity attacker, Entity target){
+        return attackEntity(attacker,target);
+    }
+
+    /// Handles generic entity defending
+    public void handleDefend(Entity defender){
+        defender.guard();
+    }
+
+    /// Handles generic entity item use
+    public void handleItemUse(Entity user){}
+
+    public void handleRun(Entity runner, Entity runFrom){
+        double escapeChance = runner.calculateEscapeChance(runFrom.getEntityStatBlock().calcFullSpeed());
+        Random rand = new Random();
+        double escapeRoll = rand.nextDouble();
+
+        System.out.println(escapeChance);
+        System.out.println(escapeRoll);
+
+        if(escapeRoll <= escapeChance){
+            System.out.println("RUN SUCCESS!");
+        } else {
+            System.out.println("RUN FAILED!");
+        }
     }
 
 
