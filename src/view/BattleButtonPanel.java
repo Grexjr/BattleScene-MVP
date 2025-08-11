@@ -1,11 +1,10 @@
-package view.gui;
+package view;
 
 import model.ety.BattleChoice;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class BattleButtonPanel extends ButtonPanel {
 
     // === METHODS ===
     @Override
-    protected JButton createButton(String label, ActionListener action){
+    public JButton createButton(String label, ActionListener action){
         JButton button = new JButton(label);
         button.addActionListener(action);
         return button;
@@ -48,10 +47,10 @@ public class BattleButtonPanel extends ButtonPanel {
 
     @Override
     protected ArrayList<JButton> initializeButtons() {
-        JButton attack = createButton(BUTTON_LABELS[0],_ ->this.choice = BattleChoice.ATTACK);
-        JButton defend = createButton(BUTTON_LABELS[1],_ -> this.choice = BattleChoice.DEFEND);
-        JButton item = createButton(BUTTON_LABELS[2],_ -> this.choice = BattleChoice.USE_ITEM);
-        JButton run = createButton(BUTTON_LABELS[3],_ -> this.choice = BattleChoice.RUN);
+        JButton attack = createButton(BUTTON_LABELS[0],null);
+        JButton defend = createButton(BUTTON_LABELS[1],null);
+        JButton item = createButton(BUTTON_LABELS[2],null);
+        JButton run = createButton(BUTTON_LABELS[3],null);
         ArrayList<JButton> buttonsList = new ArrayList<JButton>();
         buttonsList.add(attack);
         buttonsList.add(defend);

@@ -1,7 +1,6 @@
-package view.gui;
+package view;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import java.awt.*;
 
 /***********************************************************************************************************************

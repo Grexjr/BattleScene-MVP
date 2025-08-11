@@ -1,8 +1,6 @@
-package view.gui;
+package view;
 
-import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /***********************************************************************************************************************
  * This class is the general class for interaction panels, which will all be at the bottom of the screen.

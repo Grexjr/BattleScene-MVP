@@ -1,14 +1,16 @@
 package main.tst;
 
-import model.bsc.BattleScene;
+import controller.BattleController;
+import model.btl.BattleState;
 import model.ety.Player;
+import model.ety.Stats;
 import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
-import view.gui.BattleButtonPanel;
-import view.gui.GameWindow;
 import model.itm.healers.Healable;
 import model.itm.healers.HealingItem;
-import view.gui.parts.BattleDisplayPanel;
+import view.BattleButtonPanel;
+import view.BattleDisplayPanel;
+import view.GameWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,17 +27,17 @@ public class Tester {
     public static void testGoFirstMethod(int iterations){
         Slime slime = new Slime(1);
         Player player = new Player("Test Guy");
-        BattleScene bsc = new BattleScene(player,slime);
+        BattleState bsc = new BattleState(player,slime);
 
         // Testing variables
         int playerWins = 0;
         int slimeWins = 0;
 
         // Test 1: slime with lower speed than player (1)
-        slime.getEntityStatBlock().setEntitySpeed(0);
+        slime.getEntityStatBlock().getStatsMap().replace(Stats.SPEED,0);
 
         for(int i = 0; i <= iterations; i++){
-            if(bsc.determineWhoGoesFirst(player,slime) instanceof Player){
+            if(bsc.determineFirst(player,slime) instanceof Player){
                 playerWins++;
             } else {
                 slimeWins++;
@@ -60,10 +62,10 @@ public class Tester {
         // TEST 2: slime with equal speed to player (1)
         playerWins = 0;
         slimeWins = 0;
-        slime.getEntityStatBlock().setEntitySpeed(1);
+        slime.getEntityStatBlock().getStatsMap().replace(Stats.SPEED,1);
 
         for(int i = 0; i <= iterations; i++){
-            if(bsc.determineWhoGoesFirst(player,slime) instanceof Player){
+            if(bsc.determineFirst(player,slime) instanceof Player){
                 playerWins++;
             } else {
                 slimeWins++;
@@ -88,10 +90,10 @@ public class Tester {
         // TEST 3: slime with speed greater than player
         playerWins = 0;
         slimeWins = 0;
-        slime.getEntityStatBlock().setEntitySpeed(2);
+        slime.getEntityStatBlock().getStatsMap().replace(Stats.SPEED,2);
 
         for(int i = 0; i <= iterations; i++){
-            if(bsc.determineWhoGoesFirst(player,slime) instanceof Player){
+            if(bsc.determineFirst(player,slime) instanceof Player){
                 playerWins++;
             } else {
                 slimeWins++;
@@ -122,13 +124,19 @@ public class Tester {
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
         Enemy slime = new Slime(1);
+        System.out.println(slime.getEXPAmount());
         JTextArea textLog = new JTextArea();
+        BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,slime,player);
+        BattleButtonPanel bbp = new BattleButtonPanel();
 
 
-        gameWindow.getContentPane().add(new BattleDisplayPanel(textLog,slime,player), BorderLayout.NORTH);
-        gameWindow.getContentPane().add(new BattleButtonPanel(),BorderLayout.SOUTH);
+        gameWindow.getContentPane().add(bdp, BorderLayout.NORTH);
+        gameWindow.getContentPane().add(bbp,BorderLayout.SOUTH);
 
         gameWindow.refresh();
+
+        BattleState bs = new BattleState(player,slime);
+        BattleController bc = new BattleController(bs,bdp,bbp);
 
 
 
@@ -141,8 +149,8 @@ public class Tester {
 
         gameWindow.refresh();
 
-        //testGoFirstMethod(100000);*/
-
+        testGoFirstMethod(100000);*/
+        //testGoFirstMethod(100000);
 
     }
 

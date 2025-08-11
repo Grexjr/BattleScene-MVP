@@ -1,4 +1,4 @@
-package view.gui;
+package view;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +18,9 @@ public abstract class ButtonPanel extends InteractPanel {
         this.addButtons(buttonsList);
     }
 
+    // === GETTER ===
+    public ArrayList<JButton> getButtonsList() {return this.buttonsList;}
+
 
     // === METHODS ===
     protected void addButtons(ArrayList<JButton> buttonsList){
@@ -26,7 +29,7 @@ public abstract class ButtonPanel extends InteractPanel {
         }
     }
 
-    protected void toggleButtons(boolean activeStatus){
+    public void toggleButtons(boolean activeStatus){
         for(JButton b : this.buttonsList){
             b.setEnabled(activeStatus);
         }
@@ -35,7 +38,7 @@ public abstract class ButtonPanel extends InteractPanel {
     // === ABSTRACT METHODS ===
     protected abstract ArrayList<JButton> initializeButtons();
 
-    protected abstract JButton createButton(String label, ActionListener action);
+    public abstract JButton createButton(String label, ActionListener action);
 
     protected abstract void createBorders();
 
