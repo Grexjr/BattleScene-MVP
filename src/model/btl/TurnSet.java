@@ -1,9 +1,13 @@
 package model.btl;
 
+import model.ety.BattleChoice;
 import model.ety.Entity;
+import model.ety.Player;
+import model.ety.enemy.Enemy;
 import view.panels.TurnActionPanel;
 import view.panels.BattleDisplayPanel;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,6 +25,8 @@ public class TurnSet {
         this.battleState = state;
         this.battleDisplay = viewer;
         this.battleInteract = interactor;
+        setUpBattleListeners();
+
         this.goOrder = new ArrayList<Entity>();
         goOrder.addAll(Arrays.asList(goers)); // Intellij suggestion: TODO: Learn this
     }
@@ -29,7 +35,105 @@ public class TurnSet {
     // === GETTERS ===
     public ArrayList<Entity> getGoOrder(){return this.goOrder;}
 
+    public TurnActionPanel getBattleInteract(){return this.battleInteract;}
 
+
+    public void runTurn(){
+        // Eventually reactor will be filled in with an extra choice box
+        Entity reactor;
+        if(this.goOrder.getFirst() instanceof Player){
+            reactor = this.battleState.getEnemy();
+        } else {
+            reactor = this.battleState.getPlayer();
+            // Will have to replace this with enemy AI at some point
+            this.goOrder.getFirst().makeBattleChoice(BattleChoice.ATTACK);
+        }
+        executeTurn(this.goOrder.getFirst(),reactor);
+    }
+
+    private void executeTurn(Entity actor, Entity reactor){
+        switch(actor.getBattleChoice()){
+            case ATTACK -> onAttackChoice(actor, reactor);
+            case DEFEND -> onDefendChoice(actor);
+            case USE_ITEM -> onItemUseChoice(actor);
+            case RUN -> onRunChoice(actor, reactor);
+        }
+        this.goOrder.remove(actor);
+    }
+
+    private void onAttackChoice(Entity attacker, Entity target){
+        // Run the attack itself
+        int damage = this.battleState.handleAttack(attacker,target);
+
+        // Update UI
+        printAttack(attacker,target,damage);
+        this.battleDisplay.updateStatDisplayer(target);
+
+        // System log
+        System.out.println(
+                attacker.getEntityName() + " attacks " + target.getEntityName() +" for " + damage + " damage!"
+        );
+        this.battleInteract.toggleButtons(false);
+    }
+
+    private void onDefendChoice(Entity defender){
+        battleState.handleDefend(defender);
+
+        // Update the UI
+        printDefense(defender);
+        this.battleDisplay.updateStatDisplayer(defender);
+
+        // Disable the buttons
+        this.battleInteract.toggleButtons(false);
+    }
+
+    private void onItemUseChoice(Entity user){
+        this.battleState.handleItemUse(this.battleState.getPlayer());
+        this.battleInteract.toggleButtons(false);
+        System.out.println("NOT YET IMPLEMENTED!");
+    }
+
+    private void onRunChoice(Entity runner, Entity... runFroms){
+        battleState.handleRun(runner,runFroms[0]); // TEMP: will need to rework for multiple battlers
+        this.battleInteract.toggleButtons(false);
+        new Timer(3000, _ -> {System.exit(0);}).start();
+    }
+
+
+    private void printAttack(Entity attacker, Entity target, int damage){
+        this.battleDisplay.print(String.format("%s Attacks %s for %d damage!",
+                attacker.getEntityName(),
+                target.getEntityName(),
+                damage
+        ));
+    }
+
+    private void printDefense(Entity defender){
+        this.battleDisplay.print(String.format("%s defends!",
+                defender.getEntityName()));
+    }
+
+    // Works for now, but will eventually be choice for reactor, and will need to use the go Order better
+    private void setUpBattleListeners(){
+        ArrayList<JButton> battleButtons = battleInteract.getButtonsList();
+
+        battleButtons.getFirst().addActionListener(_ -> {
+            this.battleState.getPlayer().makeBattleChoice(BattleChoice.ATTACK);
+            executeTurn(this.battleState.getPlayer(),this.battleState.getEnemy());
+        });
+        battleButtons.get(1).addActionListener(_ ->{
+            this.battleState.getPlayer().makeBattleChoice(BattleChoice.DEFEND);
+            executeTurn(this.battleState.getPlayer(),this.battleState.getEnemy());
+        });
+        battleButtons.get(2).addActionListener(_ ->{
+            this.battleState.getPlayer().makeBattleChoice(BattleChoice.USE_ITEM);
+            executeTurn(this.battleState.getPlayer(),this.battleState.getEnemy());
+        });
+        battleButtons.get(3).addActionListener(_ -> {
+            this.battleState.getPlayer().makeBattleChoice(BattleChoice.RUN);
+            executeTurn(this.battleState.getPlayer(),this.battleState.getEnemy());
+        });
+    }
 
 
 
@@ -114,70 +218,13 @@ public class TurnSet {
         }
     }
 
-    private void executeEntityTurn(Entity chooser, Entity other){
-        switch(chooser.getBattleChoice()){
-            case ATTACK -> onAttackChoice(chooser, other);
-            case DEFEND -> onDefendChoice(chooser);
-            case USE_ITEM -> onItemUseChoice(chooser);
-            case RUN -> onRunChoice(chooser, other);
-        }
-        this.goOrder.remove(chooser);
-    }
-
     private boolean isTurnSetDone(){
         return this.goOrder.isEmpty();
     }
 
-    private void onAttackChoice(Entity attacker, Entity target){
-        // Run the attack itself
-        int damage = this.battleState.handleAttack(attacker,target);
 
-        // Update UI
-        printAttack(attacker,target,damage);
-        this.battleDisplay.updateStatDisplayer(target);
 
-        // System log
-        System.out.println(
-                attacker.getEntityName() + " attacks " + target.getEntityName() +" for " + damage + " damage!"
-        );
-        this.battleInteract.toggleButtons(false);
-    }
 
-    private void onDefendChoice(Entity defender){
-        battleState.handleDefend(defender);
-
-        // Update the UI
-        printDefense(defender);
-        this.battleDisplay.updateStatDisplayer(defender);
-
-        // Disable the buttons
-        this.battleInteract.toggleButtons(false);
-    }
-
-    private void onItemUseChoice(Entity user){
-        this.battleState.handleItemUse(this.battleState.getPlayer());
-        this.battleInteract.toggleButtons(false);
-        System.out.println("NOT YET IMPLEMENTED!");
-    }
-
-    private void onRunChoice(Entity runner, Entity... runFroms){
-        battleState.handleRun(runner,runFroms[0]); // TEMP: will need to rework for multiple battlers
-        this.battleInteract.toggleButtons(false);
-        new Timer(3000, _ -> {System.exit(0);}).start();
-    }
-
-    private void printAttack(Entity attacker, Entity target, int damage){
-        this.battleDisplay.print(String.format("%s Attacks %s for %d damage!",
-                attacker.getEntityName(),
-                target.getEntityName(),
-                damage
-        ));
-    }
-
-    private void printDefense(Entity defender){
-        this.battleDisplay.print(String.format("%s defends!",
-                defender.getEntityName()));
-    }
 
     private void advanceTurnPhase(BattlePhase phase){
         this.battleState.setCurrentPhase(phase);

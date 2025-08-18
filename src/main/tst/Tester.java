@@ -127,17 +127,17 @@ public class Tester {
         System.out.println(slime.getEXPAmount());
         JTextArea textLog = new JTextArea();
         BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,slime,player);
-        TurnActionPanel bbp = new TurnActionPanel();
 
 
         gameWindow.getContentPane().add(bdp, BorderLayout.NORTH);
-        gameWindow.getContentPane().add(bbp,BorderLayout.SOUTH);
 
         gameWindow.refresh();
 
         BattleState bs = new BattleState(player,slime);
-        BattleController bc = new BattleController(bs,bdp,bbp);
+        BattleController bc = new BattleController(bs,bdp);
         bc.runBattle();
+        gameWindow.getContentPane().add(bc.getCurrentTurnSet().getBattleInteract(),BorderLayout.SOUTH);
+        gameWindow.refresh();
 
 
 

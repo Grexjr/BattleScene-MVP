@@ -2,6 +2,7 @@ package controller;
 
 import model.btl.BattleState;
 import model.btl.TurnSet;
+import model.ety.Entity;
 import view.panels.TurnActionPanel;
 import view.panels.BattleDisplayPanel;
 
@@ -19,86 +20,30 @@ public class BattleController {
     // === VARIABLES AND FIELDS ===
     private final BattleState battleState;
     private final BattleDisplayPanel battleDisplay;
-    private final TurnActionPanel battleInteract;
+    // TODO: Make the interactivity an interface so you can pass interactive panel into here too
 
     private TurnSet currentTurnSet;
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
-    public BattleController(BattleState state, BattleDisplayPanel view, TurnActionPanel interact){
+    public BattleController(BattleState state, BattleDisplayPanel view){
         this.battleState = state;
         this.battleDisplay = view;
-        this.battleInteract = interact;
+
         this.currentTurnSet = null;
     }
 
+    // GETTER
+    public TurnSet getCurrentTurnSet(){return this.currentTurnSet;}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*public void runBattle(){
+    public void runBattle(){
         initializeBattle();
         runBattleIntro();
         setCurrentTurnSet();
-        runTurnSet();
+        runTurnSet(this.currentTurnSet);
     }
+
 
     private void initializeBattle(){
         if(this.battleState.getCurrentPhase() == BattlePhase.INITIALIZATION) {// Reset temporary values
@@ -106,7 +51,6 @@ public class BattleController {
                 this.battleState.resetTemporaryValues(battlers);
             }
             advancePhase(BattlePhase.INTRO_SCENE);
-            setupActionListeners();
         } // ERROR: Catch if improper phase
     }
 
@@ -124,10 +68,14 @@ public class BattleController {
         } // ERROR: out of phase error
     }
 
-    private void runTurnSet(){
+    private void runTurnSet(TurnSet turnSet){
         if(this.battleState.getCurrentPhase() == BattlePhase.START_TURN_SET){
-            this.currentTurnSet.setUpTurn();
+            this.currentTurnSet.runTurn();
         }
+    }
+
+    private void advancePhase(BattlePhase phase){
+        this.battleState.setCurrentPhase(phase);
     }
 
 
@@ -135,67 +83,17 @@ public class BattleController {
     /**
      * Returns new turn set object
      * @param battlers - the list of battlers in this battle
-     *
-    private TurnSet createTurnSet(Entity... battlers){
+     */
+    private TurnSet createTurnSet(Entity... battlers) {
         // return new turn set object with battlers parameter
-      TurnSet turnSet = new TurnSet(
+        TurnSet turnSet = new TurnSet(
                 this.battleState,
                 this.battleDisplay,
-                this.battleInteract,
+                new TurnActionPanel(),
                 // battlers sorted in descending order based on their speeds
                 this.battleState.calculateGoOrder(battlers)
         );
-      System.out.println(turnSet);
-      return turnSet;
+        System.out.println(turnSet);
+        return turnSet;
     }
-
-
-    private void advancePhase(BattlePhase phase){
-        this.battleState.setCurrentPhase(phase);
-    }
-
-    private void setupActionListeners(){
-        ArrayList<JButton> battleButtons = battleInteract.getButtonsList();
-
-        battleButtons.getFirst().addActionListener(_ -> {
-            Player player = this.battleState.getPlayer();
-            Enemy enemy = this.battleState.getEnemy();
-            player.makeBattleChoice(BattleChoice.ATTACK);
-            runTurn(enemy);
-        });
-        battleButtons.get(1).addActionListener(_ ->{
-            Player player = this.battleState.getPlayer();
-            Enemy enemy = this.battleState.getEnemy();
-            player.makeBattleChoice(BattleChoice.DEFEND);
-            runTurn(enemy);
-        });
-        battleButtons.get(2).addActionListener(_ ->{
-            Player player = this.battleState.getPlayer();
-            Enemy enemy = this.battleState.getEnemy();
-            player.makeBattleChoice(BattleChoice.USE_ITEM);
-            runTurn(enemy);
-        });
-        battleButtons.get(3).addActionListener(_ -> {
-            Player player = this.battleState.getPlayer();
-            Enemy enemy = this.battleState.getEnemy();
-            player.makeBattleChoice(BattleChoice.RUN);
-            runTurn(enemy);
-        });
-    }
-
-    private void runTurn(Entity reactor){
-        this.currentTurnSet.runTurn(reactor);
-        checkTurnSetOver();
-    }
-
-
-    public void checkTurnSetOver(){
-        if(this.currentTurnSet.checkTurnSetDone()){
-            setCurrentTurnSet();
-            runTurnSet();
-        }
-    } */
-
-
-
 }
