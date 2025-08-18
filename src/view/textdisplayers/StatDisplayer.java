@@ -1,4 +1,4 @@
-package view;
+package view.textdisplayers;
 
 import model.ety.Entity;
 

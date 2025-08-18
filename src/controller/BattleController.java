@@ -1,18 +1,9 @@
 package controller;
 
 import model.btl.BattleState;
-import model.ety.BattleChoice;
-import model.ety.Entity;
-import model.ety.Player;
-import model.ety.Stats;
-import model.ety.enemy.Enemy;
-import model.itm.Item;
-import view.BattleButtonPanel;
-import view.BattleDisplayPanel;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import model.btl.TurnSet;
+import view.panels.TurnActionPanel;
+import view.panels.BattleDisplayPanel;
 
 
 /** The battle controller class that controls the flow of battle. Battle is broken up into "turn sets," which are just
@@ -28,268 +19,183 @@ public class BattleController {
     // === VARIABLES AND FIELDS ===
     private final BattleState battleState;
     private final BattleDisplayPanel battleDisplay;
-    private final BattleButtonPanel battleInteract;
+    private final TurnActionPanel battleInteract;
+
+    private TurnSet currentTurnSet;
 
 
     // === BATTLE CONTROLLER CONSTRUCTOR ===
-    public BattleController(BattleState state, BattleDisplayPanel view, BattleButtonPanel interact){
+    public BattleController(BattleState state, BattleDisplayPanel view, TurnActionPanel interact){
         this.battleState = state;
         this.battleDisplay = view;
         this.battleInteract = interact;
-        runBattleStart(); // TEMP: Testing purposes
+        this.currentTurnSet = null;
     }
 
-    /**
-     * Method that ends the players turn. First sets their buttons to inactive, runs the enemy turn, then puts
-     * the battle phase back into determine turn order.
-     * */
-    public void endEntityTurn(Entity goer){
-        if(goer instanceof Player){
-            // Turn off player buttons
-            this.battleInteract.toggleButtons(false);
 
-            // Run Enemy turn
-            // enemy attack + update the UI
-            printAttack(
-                    this.battleState.getEnemy(),
-                    this.battleState.getPlayer(),
-                    this.battleState.handleAttack(
-                            this.battleState.getEnemy(),
-                            this.battleState.getPlayer()
-                    )
-            );
-            this.battleDisplay.updateStatDisplayer(battleState.getPlayer());
 
-            // check if player is dead
-            if(battleState.checkDeath(battleState.getPlayer())){
-                this.battleState.setCurrentPhase(BattlePhase.ENDING);
-                System.out.println("Player dead!");
-                this.runEnding();
-            } else { // Set phase back to determine turn order
-                this.battleState.setCurrentPhase(BattlePhase.DETERMINE_TURN_ORDER);
-                this.runTurnSet();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*public void runBattle(){
+        initializeBattle();
+        runBattleIntro();
+        setCurrentTurnSet();
+        runTurnSet();
+    }
+
+    private void initializeBattle(){
+        if(this.battleState.getCurrentPhase() == BattlePhase.INITIALIZATION) {// Reset temporary values
+            for (Entity battlers : this.battleState.getBattlers()) {
+                this.battleState.resetTemporaryValues(battlers);
             }
-        } // Need to also handle other case.... stuff definitely needs to be refactored
+            advancePhase(BattlePhase.INTRO_SCENE);
+            setupActionListeners();
+        } // ERROR: Catch if improper phase
     }
 
-    // === Action Methods === TODO: Can one day move this to a different action class
-    private void onAttackPressed(Entity target){
-        if(this.battleState.getCurrentPhase() == BattlePhase.PLAYER_TURN){
-            // local vars
-            Player player = this.battleState.getPlayer();
-
-            // store damage amount
-            int damage = this.battleState.handleAttack(player,target);
-
-            // Update UI
-            printAttack(player, target, damage);
-            this.battleDisplay.updateStatDisplayer(target);
-
-            // System log | TODO: Proper system logging
-            System.out.println(player.getEntityName() + " attacks for " + damage + " damage!");
-
-            // Check if entity dead
-            if(this.battleState.checkDeath(target)) {
-                // Interrupts flow early
-                System.out.println("Player wins!");
-                this.battleState.setCurrentPhase(BattlePhase.ENDING);
-                runEnding();
-            } else{
-                // End the player turn
-                endEntityTurn(player);
-            }
-
-        } // ERROR: handle if not player turn
+    private void runBattleIntro(){
+        if(this.battleState.getCurrentPhase() == BattlePhase.INTRO_SCENE){// Print out the start of battle message
+            this.battleDisplay.log("A battle has begun!");
+            advancePhase(BattlePhase.DETERMINE_TURN_ORDER);
+        } // ERROR: out of phase error
     }
 
-    private void onDefendPressed(){
-        Entity player = this.battleState.getPlayer();
-        if(this.battleState.getCurrentPhase() == BattlePhase.PLAYER_TURN){
-            // run defense if player turn
-            this.battleState.handleDefend(player);
-
-            // Update the UI
-            printDefense(player);
-            this.battleDisplay.updateStatDisplayer(player);
-
-            // Disable the buttons
-            this.battleInteract.toggleButtons(false);
-
-            // End the player turn
-            endEntityTurn(player);
-        } // ERROR: will need to handle if not player turn
+    private void setCurrentTurnSet(){
+        if(this.battleState.getCurrentPhase() == BattlePhase.DETERMINE_TURN_ORDER){
+            this.currentTurnSet = createTurnSet(this.battleState.getBattlers());
+            advancePhase(BattlePhase.START_TURN_SET);
+        } // ERROR: out of phase error
     }
 
-    private void onItemPressed(){
-        this.battleState.handleItemUse(this.battleState.getPlayer());
-        this.battleInteract.toggleButtons(false);
-        System.out.println("NOT YET IMPLEMENTED!");
-        endEntityTurn(this.battleState.getPlayer());
-    }
-
-    private void onRunPressed(){
-        this.battleState.handleRun(this.battleState.getPlayer(),this.battleState.getEnemy());
-        this.battleInteract.toggleButtons(false);
-        new Timer(3000, _ -> {System.exit(0);}).start();
-    }
-
-
-    // === Creating Buttons ===
-    private void setUpActionListeners(){
-        ArrayList<JButton> battleButtons = battleInteract.getButtonsList();
-        Entity other = this.battleState.getEnemy();  // gets current enemy
-
-        battleButtons.getFirst().addActionListener(_ -> {
-            onAttackPressed(other);
-            System.out.println("Press.");
-        });
-        battleButtons.get(1).addActionListener(_ -> {
-            onDefendPressed();
-            System.out.println("Press.");
-        });
-        battleButtons.get(2).addActionListener(_ -> {
-            onItemPressed();
-            System.out.println("Press.");
-        });
-        battleButtons.get(3).addActionListener(_ -> {
-            onRunPressed();
-            System.out.println("Press.");
-        });
-    }
-
-    /**
-     * This method initializes the battle
-     * */
-    public void initializeBattle(){
-        // resetting all temporary values of the entities
-        resetAllTempValues();
-
-        // Creating the buttons for the button panel
-        setUpActionListeners();
-    }
-
-
-    // === METHODS ===
-    /**
-     * Resets all temporary values of the entities in the battle scene, set to be used at the beginning of battle
-     * */
-    private void resetAllTempValues(){
-        // NOTE: Should find some way to do this without explicit reference to the players... should be a list/array
-        Player player = this.battleState.getPlayer();
-        Enemy enemy = this.battleState.getEnemy();
-
-        player.getEntityStatBlock().resetTemporaryStats();
-        enemy.getEntityStatBlock().resetTemporaryStats();
-    }
-
-    /**
-     * Method that resets the defense of the entity to prevent guarding from carrying over from turn to turn
-     *
-     * @param guardingEntity the entity that is guarding and will have defense reset.
-     * */
-    // NOTE: This WILL NOT WORK as currently implemented with status AND guard, but for now it is okay.
-    private void resetDefenseTurnStart(Entity guardingEntity){
-        guardingEntity.resetGuard();
-    }
-
-    /**
-     * Runs the turn order
-     * */
-    private Entity runTurnOrder(){
-        Player player = this.battleState.getPlayer();
-        Enemy enemy = this.battleState.getEnemy();
-
-        Entity firstGoer = this.battleState.determineFirst(player,enemy);
-
-        if(firstGoer instanceof Player){
-            return player;
-        } else{
-            return enemy;
+    private void runTurnSet(){
+        if(this.battleState.getCurrentPhase() == BattlePhase.START_TURN_SET){
+            this.currentTurnSet.setUpTurn();
         }
     }
 
-    // === PRINT METHODS === | TODO: will need to be refactored
-    public void printAttack(Entity attacker, Entity target, int damage){
-        this.battleDisplay.print(String.format("%s Attacks %s for %d damage!",
-                attacker.getEntityName(),
-                target.getEntityName(),
-                damage
-        ));
+
+
+    /**
+     * Returns new turn set object
+     * @param battlers - the list of battlers in this battle
+     *
+    private TurnSet createTurnSet(Entity... battlers){
+        // return new turn set object with battlers parameter
+      TurnSet turnSet = new TurnSet(
+                this.battleState,
+                this.battleDisplay,
+                this.battleInteract,
+                // battlers sorted in descending order based on their speeds
+                this.battleState.calculateGoOrder(battlers)
+        );
+      System.out.println(turnSet);
+      return turnSet;
     }
 
-    public void printDefense(Entity defender){
-        this.battleDisplay.print(String.format("%s defends!",
-                defender.getEntityName()));
-    }
 
-    // === RUNNING METHODS ===
-    public void advancePhase(BattlePhase phase){
+    private void advancePhase(BattlePhase phase){
         this.battleState.setCurrentPhase(phase);
     }
 
-    public void runInit(){
-        if(this.battleState.getCurrentPhase() == BattlePhase.INITIALIZATION){
-            initializeBattle();
-            advancePhase(BattlePhase.TEXT_EVENT);
-        } // NOTE: Else will throw exception that must be handled; battle ends prematurely
+    private void setupActionListeners(){
+        ArrayList<JButton> battleButtons = battleInteract.getButtonsList();
+
+        battleButtons.getFirst().addActionListener(_ -> {
+            Player player = this.battleState.getPlayer();
+            Enemy enemy = this.battleState.getEnemy();
+            player.makeBattleChoice(BattleChoice.ATTACK);
+            runTurn(enemy);
+        });
+        battleButtons.get(1).addActionListener(_ ->{
+            Player player = this.battleState.getPlayer();
+            Enemy enemy = this.battleState.getEnemy();
+            player.makeBattleChoice(BattleChoice.DEFEND);
+            runTurn(enemy);
+        });
+        battleButtons.get(2).addActionListener(_ ->{
+            Player player = this.battleState.getPlayer();
+            Enemy enemy = this.battleState.getEnemy();
+            player.makeBattleChoice(BattleChoice.USE_ITEM);
+            runTurn(enemy);
+        });
+        battleButtons.get(3).addActionListener(_ -> {
+            Player player = this.battleState.getPlayer();
+            Enemy enemy = this.battleState.getEnemy();
+            player.makeBattleChoice(BattleChoice.RUN);
+            runTurn(enemy);
+        });
     }
 
-    public void runIntro(){
-        if(this.battleState.getCurrentPhase() == BattlePhase.TEXT_EVENT){
-            // Printing intro, etc., any text events that occur; passed in as parameter
-            this.battleState.setCurrentPhase(BattlePhase.DETERMINE_TURN_ORDER);
+    private void runTurn(Entity reactor){
+        this.currentTurnSet.runTurn(reactor);
+        checkTurnSetOver();
+    }
+
+
+    public void checkTurnSetOver(){
+        if(this.currentTurnSet.checkTurnSetDone()){
+            setCurrentTurnSet();
+            runTurnSet();
         }
-    }
+    } */
 
-    public void runTurnOrderCalc(){
-        if (this.battleState.getCurrentPhase() == BattlePhase.DETERMINE_TURN_ORDER){
-            if(runTurnOrder() instanceof Player){
-                this.battleState.setCurrentPhase(BattlePhase.PLAYER_TURN);
-                this.battleInteract.toggleButtons(true);
-            } else {
-                this.battleState.setCurrentPhase(BattlePhase.ENEMY_TURN);
-            }
-        } //ERROR: Throw error if not in the correct phase; battle out of phase error
-    }
 
-    public void runTurnSet(){
-        runTurnOrderCalc();
-        resetDefenseTurnStart(this.battleState.getPlayer());
-        resetDefenseTurnStart(this.battleState.getEnemy());
-        if(this.battleState.getCurrentPhase() == BattlePhase.PLAYER_TURN){
-            this.battleInteract.toggleButtons(true);
-        } else{
-            this.battleInteract.toggleButtons(false);
-            //run enemy turn | TODO: Enemy AI!!!
-            this.printAttack(this.battleState.getEnemy(),this.battleState.getPlayer(),this.battleState.handleAttack(
-                    this.battleState.getEnemy(),this.battleState.getPlayer()
-            ));
-
-            // Update player stats
-            this.battleDisplay.updateStatDisplayer(this.battleState.getPlayer());
-
-            //Set phase now to player turn again
-            this.battleState.setCurrentPhase(BattlePhase.PLAYER_TURN);
-
-            //set buttons to true
-            this.battleInteract.toggleButtons(true);
-        }
-    }
-
-    public void runEnding(){
-        if(this.battleState.getCurrentPhase() == BattlePhase.ENDING) {
-            this.battleInteract.toggleButtons(false);
-            new Timer(5000, _ -> System.exit(0)).start();
-        }
-    }
-
-    /**
-     * This method runs the entire battle
-     * */
-    public void runBattleStart(){
-        runInit();
-        runIntro();
-        runTurnSet();
-    }
 
 }

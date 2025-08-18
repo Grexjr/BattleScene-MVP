@@ -8,9 +8,9 @@ import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
 import model.itm.healers.Healable;
 import model.itm.healers.HealingItem;
-import view.BattleButtonPanel;
-import view.BattleDisplayPanel;
-import view.GameWindow;
+import view.panels.TurnActionPanel;
+import view.panels.BattleDisplayPanel;
+import view.windows.GameWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +37,7 @@ public class Tester {
         slime.getEntityStatBlock().getStatsMap().replace(Stats.SPEED,0);
 
         for(int i = 0; i <= iterations; i++){
-            if(bsc.determineFirst(player,slime) instanceof Player){
+            if(bsc.calculateGoOrder(player,slime)[0] instanceof Player){
                 playerWins++;
             } else {
                 slimeWins++;
@@ -65,7 +65,7 @@ public class Tester {
         slime.getEntityStatBlock().getStatsMap().replace(Stats.SPEED,1);
 
         for(int i = 0; i <= iterations; i++){
-            if(bsc.determineFirst(player,slime) instanceof Player){
+            if(bsc.calculateGoOrder(player,slime)[0] instanceof Player){
                 playerWins++;
             } else {
                 slimeWins++;
@@ -93,7 +93,7 @@ public class Tester {
         slime.getEntityStatBlock().getStatsMap().replace(Stats.SPEED,2);
 
         for(int i = 0; i <= iterations; i++){
-            if(bsc.determineFirst(player,slime) instanceof Player){
+            if(bsc.calculateGoOrder(player,slime)[0] instanceof Player){
                 playerWins++;
             } else {
                 slimeWins++;
@@ -127,7 +127,7 @@ public class Tester {
         System.out.println(slime.getEXPAmount());
         JTextArea textLog = new JTextArea();
         BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,slime,player);
-        BattleButtonPanel bbp = new BattleButtonPanel();
+        TurnActionPanel bbp = new TurnActionPanel();
 
 
         gameWindow.getContentPane().add(bdp, BorderLayout.NORTH);
@@ -137,6 +137,7 @@ public class Tester {
 
         BattleState bs = new BattleState(player,slime);
         BattleController bc = new BattleController(bs,bdp,bbp);
+        bc.runBattle();
 
 
 

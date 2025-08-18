@@ -1,8 +1,8 @@
-package view;
+package view.panels;
 
 import model.ety.Entity;
 import model.ety.Player;
-import model.itm.Item;
+import view.textdisplayers.StatDisplayer;
 
 import javax.swing.*;
 import java.awt.*;

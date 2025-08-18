@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import model.ety.BattleChoice;
 
@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class BattleButtonPanel extends ButtonPanel {
+public class TurnActionPanel extends ButtonPanel {
     // === CONSTANTS ===
     private static final LayoutManager LAYOUT = new GridLayout(1,0);
     private static final int BORDER_BUFFER = 40;
@@ -27,7 +27,7 @@ public class BattleButtonPanel extends ButtonPanel {
 
 
     // === CONSTRUCTOR ===
-    public BattleButtonPanel(){
+    public TurnActionPanel(){
         super(LAYOUT);
         this.choice = BattleChoice.INVALID;
         createBorders();

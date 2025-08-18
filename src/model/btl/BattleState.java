@@ -4,6 +4,7 @@ import controller.BattlePhase;
 import model.ety.*;
 import model.ety.enemy.Enemy;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /** The Model representation of the battle. It holds a player, an enemy, a boolean for whose turn it is, and an enum
@@ -18,12 +19,20 @@ public class BattleState {
     private EndCode ending;
     private BattlePhase currentPhase;
 
+    private final Entity[] battlers;
+
 
     // == CONSTRUCTOR FOR BATTLESCENE ===
-    public BattleState(Player player, Enemy enemy){
-        this.player = player;
-        this.enemy = enemy;
+    public BattleState(Entity... battlers){
+        // This isn't a great system, but it works for now
+        this.player = (Player)battlers[0];
+        this.enemy = (Enemy)battlers[1];
+
+
         this.isPlayerTurn = false;
+
+        this.battlers = battlers;
+
         this.ending = EndCode.NOT_OVER;
         this.currentPhase = BattlePhase.INITIALIZATION;
     }
@@ -36,6 +45,8 @@ public class BattleState {
     public boolean getPlayerTurn() {return this.isPlayerTurn;}
     public void setPlayerTurn(boolean turn) {this.isPlayerTurn = turn;}
 
+    public Entity[] getBattlers() {return this.battlers;}
+
     public BattlePhase getCurrentPhase() {return this.currentPhase;}
     public void setCurrentPhase(BattlePhase phase) {this.currentPhase = phase;}
 
@@ -44,6 +55,57 @@ public class BattleState {
 
 
     // === OTHER METHODS ===
+    ///  resets temporary values of the entities within
+    public void resetTemporaryValues(Entity... battlers){
+        for(Entity battler : battlers){
+            battler.getEntityStatBlock().resetTemporaryStats();
+        }
+    }
+
+     /**
+      * Determines the order of which entities go by using a bubble sort algorithm. Algorithm from this lesson
+      * (which I did only a day before needing this!):
+      * <a href="https://www.w3schools.com/dsa/dsa_data_arrays.php">Link</a>
+      *
+      * @param battlers - The battlers involved in this battle
+      * @return the sorted battlers array from highest to lowest
+      * */
+    public Entity[] calculateGoOrder(Entity... battlers){
+
+        // Bubble sort algorithm | Look into using the built-in java array sorting methods
+        int index;
+        for(int i = 0; i < battlers.length - 1; i++){
+            boolean swapped = false;
+            for(index = 0; index < battlers.length - i - 1; index++){
+                int battlerSpeed = battlers[index].getEntityStatBlock().calcFullSpeed();
+                int nextBattlerSpeed = battlers[index + 1].getEntityStatBlock().calcFullSpeed();
+
+                // less than sorts from highest to lowest, so the fastest entity is first in the list
+                if(battlerSpeed < nextBattlerSpeed){
+                    Entity temp = battlers[index];
+                    battlers[index] = battlers[index+1];
+                    battlers[index+1] = temp;
+                    swapped = true;
+                }
+
+                // Else, if they are equal in speed, choose randomly between them which to put first
+                else if(battlerSpeed == nextBattlerSpeed){
+                    Entity first = runRandomEntityChoice(battlers[index],battlers[index+1]);
+                    if(first.equals(battlers[index+1])){
+                        Entity temp = battlers[index];
+                        battlers[index] = battlers[index+1];
+                        battlers[index+1] = temp;
+                        swapped = true;
+                    }
+                }
+
+            }
+            if(!swapped) break;
+        }
+        System.out.println(battlers[0] + " " + battlers[1]);
+        return battlers;
+    }
+
     /// Randomly decides between two entities and returns one of them. Useful for turn calculations.
     private Entity runRandomEntityChoice(Entity trueEntity, Entity falseEntity){
         Random rand = new Random();
@@ -53,25 +115,6 @@ public class BattleState {
             return trueEntity;
         } else{
             return falseEntity;
-        }
-    }
-
-
-     /// Returns which entity goes first in the battle scene based on a speed comparison.
-    public Entity determineFirst(Entity player, Entity enemy){
-        StatBlock playerStats = player.getEntityStatBlock();
-        StatBlock enemyStats = enemy.getEntityStatBlock();
-
-        // If the comparison is positive, it means the comparer has the higher stat
-        boolean playerFaster = playerStats.compareFullSpeed(enemyStats.calcFullSpeed()) > 0;
-        boolean enemyFaster = playerStats.compareFullSpeed(enemyStats.calcFullSpeed()) < 0;
-
-        if(playerFaster){
-            return player;
-        } else if(enemyFaster){
-            return enemy;
-        } else {
-            return runRandomEntityChoice(player,enemy);
         }
     }
 
