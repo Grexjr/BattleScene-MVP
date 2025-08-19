@@ -3,25 +3,24 @@ package controller;
 import model.btl.BattleState;
 import view.panels.BattleBaseInteract;
 import view.panels.BattleDisplayPanel;
+import view.panels.ContainerPanel;
 
 
 public class BattleController {
 
     private final BattleState battleState;
-    private final BattleDisplayPanel battleDisplayer;
-    private final BattleBaseInteract baseInteractor;
+    private final ContainerPanel guiContainer;
 
 
     /**
      * Constructor for the battle controller which controls general battle flow. This includes initialization,
      * cutscenes, and turn sets (a set of player and enemy moves).
      * @param state - the battle state that this controller will control
-     * @param display - the display that this battle controller will control
+     * @param owner - the container panel that owns this battle controller's GUI
      * */
-    public BattleController(BattleState state, BattleDisplayPanel display){
+    public BattleController(BattleState state, ContainerPanel owner){
         this.battleState = state;
-        this.battleDisplayer = display;
-        this.baseInteractor = new BattleBaseInteract();
+        this.guiContainer = owner;
     }
 
     // === GETTERS ===
@@ -29,12 +28,8 @@ public class BattleController {
         return battleState;
     }
 
-    public BattleDisplayPanel getBattleDisplayer() {
-        return battleDisplayer;
-    }
-
-    public BattleBaseInteract getBaseInteractor() {
-        return baseInteractor;
+    public ContainerPanel getGuiContainer() {
+        return guiContainer;
     }
 
 

@@ -8,17 +8,11 @@ public class ContainerPanel extends ContentPanel{
     private static final LayoutManager LAYOUT = new BorderLayout();
 
     // === VARIABLES AND FIELDS ===
-    private final DisplayPanel displayer;
-    private final InteractPanel interactor;
+    private DisplayPanel displayer;
+    private InteractPanel interactor;
 
-    public ContainerPanel(DisplayPanel display, InteractPanel interact){
+    public ContainerPanel(){
         super(LAYOUT);
-
-        this.displayer = display;
-        this.interactor = interact;
-
-        this.add(displayer,BorderLayout.NORTH);
-        this.add(interactor,BorderLayout.SOUTH);
     }
 
     // === GETTERS ===
@@ -28,6 +22,34 @@ public class ContainerPanel extends ContentPanel{
 
     public InteractPanel getInteractor() {
         return interactor;
+    }
+
+    // === SETTERS ===
+    public void setPanels(DisplayPanel display, InteractPanel interact){
+        setDisplayPanel(display);
+        setInteractPanel(interact);
+    }
+
+    public void setDisplayPanel(DisplayPanel display){
+        if(this.displayer != null){
+            this.remove(this.displayer);
+        }
+        this.displayer = display;
+        if(displayer != null){
+            this.add(displayer,BorderLayout.NORTH);
+        }
+        this.refresh();
+    }
+
+    public void setInteractPanel(InteractPanel interact){
+        if(this.interactor != null){
+            this.remove(this.interactor);
+        }
+        this.interactor = interact;
+        if(interactor != null){
+            this.add(interactor,BorderLayout.SOUTH);
+        }
+        this.refresh();
     }
 
 

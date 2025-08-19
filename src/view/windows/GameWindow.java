@@ -9,6 +9,7 @@ public class GameWindow {
 
     // === VARIABLES AND FIELDS ===
     private final JFrame baseFrame;
+    private final ContainerPanel container;
 
 
     // === GAME WINDOW CONSTRUCTOR ===
@@ -27,9 +28,12 @@ public class GameWindow {
         this.baseFrame.setResizable(false);
         this.baseFrame.setLocationRelativeTo(null);
 
-        // This will be done in an initializer
-        //this.baseFrame.add(new ContainerPanel(),BorderLayout.CENTER);
+        this.container = new ContainerPanel();
+        getContentPane().add(container,BorderLayout.CENTER);
     }
+
+    // === GETTERS ===
+    public ContainerPanel getContainerPanel() {return this.container;}
 
     // === OTHER METHODS ===
 

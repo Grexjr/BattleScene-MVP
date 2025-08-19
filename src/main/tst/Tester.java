@@ -8,6 +8,7 @@ import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
 import model.itm.healers.Healable;
 import model.itm.healers.HealingItem;
+import view.panels.BattleBaseInteract;
 import view.panels.ContainerPanel;
 import view.panels.TurnActionPanel;
 import view.panels.BattleDisplayPanel;
@@ -123,19 +124,19 @@ public class Tester {
     public static void main(String[] args){
 
         GameWindow gameWindow = new GameWindow();
+
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
         Enemy slime = new Slime(1);
-        System.out.println(slime.getEXPAmount());
+
         JTextArea textLog = new JTextArea();
-        BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,slime,player);
         BattleState bs = new BattleState(player,slime);
-        BattleController bc = new BattleController(bs,bdp);
+        BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,bs.getPlayer(),bs.getEnemy());
+        BattleBaseInteract bbi = new BattleBaseInteract();
 
-        ContainerPanel container = new ContainerPanel(bdp,bc.getBaseInteractor());
+        gameWindow.getContainerPanel().setPanels(bdp,bbi);
 
-        gameWindow.getContentPane().add(container,BorderLayout.CENTER);
-        gameWindow.refresh();
+        BattleController bc = new BattleController(bs,gameWindow.getContainerPanel());
 
 
 
