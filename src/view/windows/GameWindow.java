@@ -1,5 +1,7 @@
 package view.windows;
 
+import view.panels.ContainerPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -25,8 +27,8 @@ public class GameWindow {
         this.baseFrame.setResizable(false);
         this.baseFrame.setLocationRelativeTo(null);
 
-        this.baseFrame.getContentPane().setLayout(new BorderLayout()); //NOTE: border or grid? or Box
-        // TODO: Image and Icon
+        // This will be done in an initializer
+        //this.baseFrame.add(new ContainerPanel(),BorderLayout.CENTER);
     }
 
     // === OTHER METHODS ===

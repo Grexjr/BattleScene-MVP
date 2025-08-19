@@ -8,11 +8,13 @@ import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
 import model.itm.healers.Healable;
 import model.itm.healers.HealingItem;
+import view.panels.ContainerPanel;
 import view.panels.TurnActionPanel;
 import view.panels.BattleDisplayPanel;
 import view.windows.GameWindow;
 
 import javax.swing.*;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.awt.*;
 
 public class Tester {
@@ -127,16 +129,12 @@ public class Tester {
         System.out.println(slime.getEXPAmount());
         JTextArea textLog = new JTextArea();
         BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,slime,player);
-
-
-        gameWindow.getContentPane().add(bdp, BorderLayout.NORTH);
-
-        gameWindow.refresh();
-
         BattleState bs = new BattleState(player,slime);
         BattleController bc = new BattleController(bs,bdp);
-        bc.runBattle();
-        gameWindow.getContentPane().add(bc.getCurrentTurnSet().getBattleInteract(),BorderLayout.SOUTH);
+
+        ContainerPanel container = new ContainerPanel(bdp,bc.getBaseInteractor());
+
+        gameWindow.getContentPane().add(container,BorderLayout.CENTER);
         gameWindow.refresh();
 
 
