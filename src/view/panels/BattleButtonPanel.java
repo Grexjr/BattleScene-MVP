@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public abstract class BattleButtonPanel extends ButtonPanel {
     // === CONSTANTS ===
     private static final LayoutManager LAYOUT = new GridLayout(1,0);
-    private static final int BORDER_BUFFER = 40;
+    private static final int BORDER_BUFFER = 25;
     private static final int INNER_BORDER_BUFFER = 35;
 
 

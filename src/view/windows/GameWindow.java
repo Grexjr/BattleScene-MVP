@@ -1,5 +1,7 @@
 package view.windows;
 
+import view.panels.ContainerPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,6 +9,7 @@ public class GameWindow {
 
     // === VARIABLES AND FIELDS ===
     private final JFrame baseFrame;
+    private final ContainerPanel container;
 
 
     // === GAME WINDOW CONSTRUCTOR ===
@@ -25,9 +28,12 @@ public class GameWindow {
         this.baseFrame.setResizable(false);
         this.baseFrame.setLocationRelativeTo(null);
 
-        this.baseFrame.getContentPane().setLayout(new BorderLayout()); //NOTE: border or grid? or Box
-        // TODO: Image and Icon
+        this.container = new ContainerPanel();
+        getContentPane().add(container,BorderLayout.CENTER);
     }
+
+    // === GETTERS ===
+    public ContainerPanel getContainerPanel() {return this.container;}
 
     // === OTHER METHODS ===
 

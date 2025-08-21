@@ -8,11 +8,14 @@ import model.ety.enemy.Enemy;
 import model.ety.enemy.Slime;
 import model.itm.healers.Healable;
 import model.itm.healers.HealingItem;
+import view.panels.BattleBaseInteract;
+import view.panels.ContainerPanel;
 import view.panels.TurnActionPanel;
 import view.panels.BattleDisplayPanel;
 import view.windows.GameWindow;
 
 import javax.swing.*;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.awt.*;
 
 public class Tester {
@@ -121,23 +124,19 @@ public class Tester {
     public static void main(String[] args){
 
         GameWindow gameWindow = new GameWindow();
+
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
         Enemy slime = new Slime(1);
-        System.out.println(slime.getEXPAmount());
+
         JTextArea textLog = new JTextArea();
-        BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,slime,player);
-
-
-        gameWindow.getContentPane().add(bdp, BorderLayout.NORTH);
-
-        gameWindow.refresh();
-
         BattleState bs = new BattleState(player,slime);
-        BattleController bc = new BattleController(bs,bdp);
-        bc.runBattle();
-        gameWindow.getContentPane().add(bc.getCurrentTurnSet().getBattleInteract(),BorderLayout.SOUTH);
-        gameWindow.refresh();
+        BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,bs.getPlayer(),bs.getEnemy());
+        BattleBaseInteract bbi = new BattleBaseInteract();
+
+        gameWindow.getContainerPanel().setPanels(bdp,bbi);
+
+        BattleController bc = new BattleController(bs,gameWindow.getContainerPanel());
 
 
 
