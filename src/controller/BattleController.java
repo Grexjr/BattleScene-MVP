@@ -2,6 +2,7 @@ package controller;
 
 import model.btl.BattleState;
 import view.panels.BattleBaseInteract;
+import view.panels.BattleButtonPanel;
 import view.panels.BattleDisplayPanel;
 import view.panels.ContainerPanel;
 
@@ -31,6 +32,19 @@ public class BattleController {
     public ContainerPanel getGuiContainer() {
         return guiContainer;
     }
+
+
+    // === METHODS ===
+
+
+
+
+    private void replaceBattleInteract(BattleButtonPanel replacer){
+        this.guiContainer.setInteractPanel(replacer);
+    }
+
+
+
 
 
 
