@@ -127,7 +127,7 @@ public class Tester {
 
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
-        Enemy slime = new Slime(1);
+        Enemy slime = new Slime(2);
 
         JTextArea textLog = new JTextArea();
         BattleState bs = new BattleState(player,slime);
@@ -136,7 +136,8 @@ public class Tester {
 
         gameWindow.getContainerPanel().setPanels(bdp,bbi);
 
-        BattleController bc = new BattleController(bs,gameWindow.getContainerPanel());
+        BattleController bc = new BattleController(bs,bdp,gameWindow.getContainerPanel());
+        bc.runBattle();
 
 
 

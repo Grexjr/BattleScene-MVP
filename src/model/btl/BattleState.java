@@ -56,7 +56,7 @@ public class BattleState {
 
     // === OTHER METHODS ===
     ///  resets temporary values of the entities within
-    public void resetTemporaryValues(Entity... battlers){
+    public void resetTemporaryValues(ArrayList<Entity> battlers){
         for(Entity battler : battlers){
             battler.getEntityStatBlock().resetTemporaryStats();
         }
@@ -102,7 +102,6 @@ public class BattleState {
             }
             if(!swapped) break;
         }
-        System.out.println(battlers[0] + " " + battlers[1]);
         return battlers;
     }
 
