@@ -127,7 +127,7 @@ public class Tester {
 
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
-        Enemy slime = new Slime(2);
+        Enemy slime = new Slime(1);
 
         JTextArea textLog = new JTextArea();
         BattleState bs = new BattleState(player,slime);

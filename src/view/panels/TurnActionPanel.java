@@ -33,14 +33,6 @@ public class TurnActionPanel extends BattleButtonPanel {
     // === GETTER ===
     public BattleChoice getChoice() {return this.choice;}
 
-    // === METHODS ===
-    @Override
-    public JButton createButton(String label, ActionListener action){
-        JButton button = new JButton(label);
-        button.addActionListener(action);
-        return button;
-    }
-
     @Override
     protected ArrayList<JButton> initializeButtons() {
         JButton attack = createButton(BUTTON_LABELS[0],null);

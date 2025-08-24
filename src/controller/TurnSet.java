@@ -4,6 +4,7 @@ import model.btl.BattleState;
 import model.ety.BattleChoice;
 import model.ety.Entity;
 import model.ety.Player;
+import view.panels.EntitySelectPanel;
 import view.panels.TurnActionPanel;
 import view.panels.BattleDisplayPanel;
 
@@ -23,35 +24,50 @@ public class TurnSet {
 
     private int goOrderNum;
 
+    /**
+     * Constructor for the TurnSet that sets all defaults, resets all temporary values, sets up action listeners, and
+     * creates the go Order based on a sorting algorithm.
+     * @param state the battle state that gives the turn set its battlers
+     * @param display the display panel the turn set must modify for entity actions
+     * @param endRun the method that the TurnSet runs when it is finished (passed in by the battle controller)
+     * */
     public TurnSet(BattleState state, BattleDisplayPanel display, Runnable endRun){
+        // Set instance fields
         this.onEnd = endRun;
         this.battleState = state;
         this.displayer = display;
         this.actionSuite = new TurnActionPanel();
 
+        // Calculate the go order using bubble sort to sort into descending speeds
         this.goOrder = new ArrayList<>(
                 Arrays.asList(
                         this.battleState.calculateGoOrder(this.battleState.getBattlers())
                 )
         );
 
+        // Set non-final variables and reset stats
         this.goOrderNum = 0;
         this.battleState.resetTemporaryValues(this.goOrder);
 
+        // Deal with buttons; disable them at start before turn has been run, set up the listeners
         this.actionSuite.toggleButtons(false);
         setUpActionListeners();
 
-
+        // Run the first turn of the turn set
         runNextTurn();
     }
 
     // === GETTERS ===
+    /// @return the turn action panel that has the turn buttons (attack, defend, etc.) of the turn set
     public TurnActionPanel getActionSuite() {
         return actionSuite;
     }
 
+
+    ///  @return the current goer in the turn order
     private Entity getGoer(){return this.goOrder.get(this.goOrderNum);}
 
+    /// @return the other entity in the turn order (only works because there are two)
     private Entity getOther(){
         if(this.goOrderNum == 0){
             return this.goOrder.get(1);
@@ -63,12 +79,14 @@ public class TurnSet {
         }
     }
 
+    /// Increments the go Order Num, which tracks which index of the go Order the turn is on
     private void incrementGoOrderNum(){this.goOrderNum += 1;}
 
+    /// Runs the turn: conditional if player or enemy, if player waits for input, if enemy just attacks
     private void runNextTurn(){
         if(this.getGoer() instanceof Player){
             waitForPlayerInput();
-            System.out.println("Wiating for player");
+            this.displayer.log("Waiting for player...\n");
         } else {
             this.battleState.getEnemy().makeBattleChoice(BattleChoice.ATTACK); // TEMPORARY!!!
             executeEntityAction(getGoer(), getOther()); // TEMPORARY!!!
@@ -76,6 +94,11 @@ public class TurnSet {
         }
     }
 
+    /**
+     * Executes the entity action based on the executor and the target, switching based on the executor's choice.
+     * @param executor the entity executing the action
+     * @param other the possible target of the executor's action
+     * */
     private void executeEntityAction(Entity executor, Entity other){ // Other will eventually be decided by choice
         switch(executor.getBattleChoice()){
             case BattleChoice.ATTACK -> onAttackChoice(executor,other);
@@ -86,11 +109,16 @@ public class TurnSet {
         }
     }
 
+    /// Activates the turn battle panel for the player to click buttons
     private void waitForPlayerInput(){
         this.actionSuite.toggleButtons(true);
     }
 
-
+    /**
+     * Runs an entity attacking another.
+     * @param attacker the entity doing the attacking
+     * @param target the target of the attacks
+     * */
     private void onAttackChoice(Entity attacker, Entity target){
         // Run the attack itself
         int damage = this.battleState.handleAttack(attacker,target);
@@ -105,6 +133,10 @@ public class TurnSet {
         );
     }
 
+    /**
+     * Runs an entity defending.
+     * @param defender the entity defending
+     * */
     private void onDefendChoice(Entity defender){
         battleState.handleDefend(defender);
 
@@ -115,30 +147,26 @@ public class TurnSet {
         // Disable the buttons
     }
 
+    /**
+     * Runs an entity using an item.
+     * @param user the entity using the item
+     * */
     private void onItemUseChoice(Entity user){
         this.battleState.handleItemUse(this.battleState.getPlayer());
         System.out.println("NOT YET IMPLEMENTED!");
     }
 
+    /**
+     * Runs an entity running away from battle.
+     * @param runner the entity running
+     * @param runFroms the entities being run from
+     * */
     private void onRunChoice(Entity runner, Entity... runFroms){
         battleState.handleRun(runner,runFroms[0]); // TEMP: will need to rework for multiple battlers
         new Timer(3000, _ -> {System.exit(0);}).start();
     }
 
-
-    private void printAttack(Entity attacker, Entity target, int damage){
-        this.displayer.print(String.format("%s Attacks %s for %d damage!",
-                attacker.getEntityName(),
-                target.getEntityName(),
-                damage
-        ));
-    }
-
-    private void printDefense(Entity defender){
-        this.displayer.print(String.format("%s defends!",
-                defender.getEntityName()));
-    }
-
+    /// Sets up action listeners for the turn buttons with conditional in each to determine how to proceed
     private void setUpActionListeners(){
         ArrayList<JButton> buttonsList = this.actionSuite.getButtonsList();
 
@@ -167,19 +195,48 @@ public class TurnSet {
 
     }
 
+    ///  Runs the ending of an enemy turn, which checks if everyone in the go order has gone or if anyone is left
     private void runEndTurn(){
         incrementGoOrderNum();
         if(this.goOrderNum < this.goOrder.size()){
             runNextTurn();
         } else {
-            this.onEnd.run();
+            endTurnSet();
         }
     }
 
+    /**
+     * Prints an entity attacking another entity into the display text log
+     * @param attacker the entity attacking
+     * @param target the entity being attacked
+     * @param damage the amount of damage done by the attacking entity
+     * */
+    private void printAttack(Entity attacker, Entity target, int damage){
+        this.displayer.print(String.format("%s Attacks %s for %d damage!",
+                attacker.getEntityName(),
+                target.getEntityName(),
+                damage
+        ));
+    }
+
+    /**
+     * Prints an entity defending in to the display text log
+     * @param defender the entity doing the defending
+     * */
+    private void printDefense(Entity defender){
+        this.displayer.print(String.format("%s defends!",
+                defender.getEntityName()));
+    }
 
 
+    ///  @return boolean value if entity is below or at 0 health
+    private boolean checkIfDead(Entity queriedEntity){
+        return queriedEntity.getEntityStatBlock().isDead();
+    }
 
-
-
+    /// Runs the on End runnable
+    private void endTurnSet(){
+        this.onEnd.run();
+    }
 
 }

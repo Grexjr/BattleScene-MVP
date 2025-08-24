@@ -16,6 +16,7 @@ public class BattleController {
     private final BattleDisplayPanel battleDisplay;
 
     private TurnSet currentTurnSet;
+    private int turnNum;
 
 
     /**
@@ -29,7 +30,12 @@ public class BattleController {
         this.guiContainer = owner;
         this.battleDisplay = display;
 
+        battleDisplay.updateStatDisplayer(this.battleState.getPlayer()); // this fixes bug, but why does it happen?
+        battleDisplay.updateStatDisplayer(this.battleState.getEnemy());
+
         owner.setPanels(display,BASE_INTERACT);
+
+        this.turnNum = 0;
     }
 
     // === GETTERS ===
@@ -54,13 +60,10 @@ public class BattleController {
     }
 
     public void createTurnSet(){
-        this.battleDisplay.log("TURN BEGIN!!!");
+        this.turnNum++;
+        this.battleDisplay.print("\nTurn " + this.turnNum + " begins!\n");
         this.currentTurnSet = new TurnSet(this.battleState,this.battleDisplay,this::endTurnSet);
         replaceBattleInteract(this.currentTurnSet.getActionSuite());
-    }
-
-    public void runTurnSet(){
-
     }
 
     public void endTurnSet(){
