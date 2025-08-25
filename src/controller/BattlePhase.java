@@ -8,12 +8,14 @@ public enum BattlePhase {
 
     // === VALUES OF ENUM ===
     INITIALIZATION,
-    TEXT_EVENT,
+    INTRO_SCENE,
     DETERMINE_TURN_ORDER,
+    START_TURN_SET,
     PLAYER_TURN,
     ENEMY_TURN,
-    ENDING,
-    EXITING,
+    TURN_SET_ENDING,
+    BATTLE_ENDING,
+    BATTLE_EXITING,
 
     INVALID
 

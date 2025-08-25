@@ -1,8 +1,8 @@
-package view;
+package view.panels;
 
 import model.ety.Entity;
 import model.ety.Player;
-import model.itm.Item;
+import view.textdisplayers.StatDisplayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,12 +45,7 @@ public class BattleDisplayPanel extends DisplayPanel {
     public StatDisplayer getEnemyStats(){return this.enemyStats;}
 
     // === METHODS ===
-    public void print(String... printStrings){
-        for(String string : printStrings){
-            this.log(string);
-        }
-    }
-
+    @Override
     public void updateStatDisplayer(Entity entity){
         if(entity instanceof Player){
             playerStats.update(entity);

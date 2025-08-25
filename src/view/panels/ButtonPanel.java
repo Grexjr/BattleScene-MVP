@@ -1,4 +1,4 @@
-package view;
+package view.panels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,10 +35,14 @@ public abstract class ButtonPanel extends InteractPanel {
         }
     }
 
+    public JButton createButton(String label, ActionListener action) {
+        JButton button = new JButton(label);
+        button.addActionListener(action);
+        return button;
+    }
+
     // === ABSTRACT METHODS ===
     protected abstract ArrayList<JButton> initializeButtons();
-
-    public abstract JButton createButton(String label, ActionListener action);
 
     protected abstract void createBorders();
 
