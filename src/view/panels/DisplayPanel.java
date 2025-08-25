@@ -1,5 +1,8 @@
 package view.panels;
 
+import model.ety.Entity;
+import model.ety.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,7 +14,7 @@ import java.awt.*;
  *
  **********************************************************************************************************************/
 
-public class DisplayPanel extends ContentPanel {
+public abstract class DisplayPanel extends ContentPanel {
     // === CONSTANTS ===
     private static final int horizontalGap = 15;
     private static final int verticalGap = 0;
@@ -61,6 +64,18 @@ public class DisplayPanel extends ContentPanel {
     public void log(String message){
         this.textLog.append(message + "\n");
         SwingUtilities.invokeLater(this::scrollDown);
+    }
+
+    public void print(String... printStrings){
+        for(String string : printStrings){
+            this.log(string);
+        }
+    }
+
+
+    // === BATTLE PANEL METHODS ===
+    public void updateStatDisplayer(Entity entity){
+        // Default: do nothing
     }
 
 

@@ -45,12 +45,7 @@ public class BattleDisplayPanel extends DisplayPanel {
     public StatDisplayer getEnemyStats(){return this.enemyStats;}
 
     // === METHODS ===
-    public void print(String... printStrings){
-        for(String string : printStrings){
-            this.log(string);
-        }
-    }
-
+    @Override
     public void updateStatDisplayer(Entity entity){
         if(entity instanceof Player){
             playerStats.update(entity);

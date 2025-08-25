@@ -4,9 +4,7 @@ import model.btl.BattleState;
 import model.ety.BattleChoice;
 import model.ety.Entity;
 import model.ety.Player;
-import view.panels.EntitySelectPanel;
-import view.panels.TurnActionPanel;
-import view.panels.BattleDisplayPanel;
+import view.panels.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +18,7 @@ public class TurnSet {
     private final BattleState battleState;
     private final ArrayList<Entity> goOrder;
     private final TurnActionPanel actionSuite;
-    private final BattleDisplayPanel displayer;
+    private final ContainerPanel ownerPanel;
 
     private int goOrderNum;
 
@@ -28,14 +26,14 @@ public class TurnSet {
      * Constructor for the TurnSet that sets all defaults, resets all temporary values, sets up action listeners, and
      * creates the go Order based on a sorting algorithm.
      * @param state the battle state that gives the turn set its battlers
-     * @param display the display panel the turn set must modify for entity actions
+     * @param owner the container panel that contains the displayer
      * @param endRun the method that the TurnSet runs when it is finished (passed in by the battle controller)
      * */
-    public TurnSet(BattleState state, BattleDisplayPanel display, Runnable endRun){
+    public TurnSet(BattleState state, ContainerPanel owner, Runnable endRun){
         // Set instance fields
         this.onEnd = endRun;
         this.battleState = state;
-        this.displayer = display;
+        this.ownerPanel = owner;
         this.actionSuite = new TurnActionPanel();
 
         // Calculate the go order using bubble sort to sort into descending speeds
@@ -86,7 +84,7 @@ public class TurnSet {
     private void runNextTurn(){
         if(this.getGoer() instanceof Player){
             waitForPlayerInput();
-            this.displayer.log("Waiting for player...\n");
+            this.ownerPanel.getDisplayer().print("Waiting for player...\n");
         } else {
             this.battleState.getEnemy().makeBattleChoice(BattleChoice.ATTACK); // TEMPORARY!!!
             executeEntityAction(getGoer(), getOther()); // TEMPORARY!!!
@@ -125,7 +123,7 @@ public class TurnSet {
 
         // Update UI
         printAttack(attacker,target,damage);
-        this.displayer.updateStatDisplayer(target);
+        this.ownerPanel.getDisplayer().updateStatDisplayer(target);
 
         // System log
         System.out.println(
@@ -142,7 +140,7 @@ public class TurnSet {
 
         // Update the UI
         printDefense(defender);
-        this.displayer.updateStatDisplayer(defender);
+        this.ownerPanel.getDisplayer().updateStatDisplayer(defender);
 
         // Disable the buttons
     }
@@ -212,7 +210,7 @@ public class TurnSet {
      * @param damage the amount of damage done by the attacking entity
      * */
     private void printAttack(Entity attacker, Entity target, int damage){
-        this.displayer.print(String.format("%s Attacks %s for %d damage!",
+        this.ownerPanel.getDisplayer().print(String.format("%s Attacks %s for %d damage!",
                 attacker.getEntityName(),
                 target.getEntityName(),
                 damage
@@ -224,10 +222,9 @@ public class TurnSet {
      * @param defender the entity doing the defending
      * */
     private void printDefense(Entity defender){
-        this.displayer.print(String.format("%s defends!",
+        this.ownerPanel.getDisplayer().print(String.format("%s defends!",
                 defender.getEntityName()));
     }
-
 
     ///  @return boolean value if entity is below or at 0 health
     private boolean checkIfDead(Entity queriedEntity){

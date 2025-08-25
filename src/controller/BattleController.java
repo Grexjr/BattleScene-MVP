@@ -62,7 +62,7 @@ public class BattleController {
     public void createTurnSet(){
         this.turnNum++;
         this.battleDisplay.print("\nTurn " + this.turnNum + " begins!\n");
-        this.currentTurnSet = new TurnSet(this.battleState,this.battleDisplay,this::endTurnSet);
+        this.currentTurnSet = new TurnSet(this.battleState,this.guiContainer,this::endTurnSet);
         replaceBattleInteract(this.currentTurnSet.getActionSuite());
     }
 
