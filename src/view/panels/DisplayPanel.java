@@ -1,6 +1,9 @@
 package view.panels;
 
-import model.ety.Entity;
+import view.Displayable;
+import view.Formattable;
+import view.textdisplayers.TextDisplayBox;
+import view.Writeable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,23 +16,20 @@ import java.awt.*;
  *
  **********************************************************************************************************************/
 
-public abstract class DisplayPanel extends ContentPanel implements Displayable {
+public abstract class DisplayPanel extends ContentPanel implements Displayable, Formattable {
     // === CONSTANTS ===
     private static final int horizontalGap = 15;
     private static final int verticalGap = 0;
     private static final LayoutManager LAYOUT = new BorderLayout(horizontalGap,verticalGap);
-    private static final int TEXT_ROWS = 30;
-    private static final int TEXT_COLUMNS = 65;
 
 
     // === VARIABLES AND FIELDS ===
-    protected final JScrollPane contentDisplayer;
-    private final JTextArea textLog;
+    private final Writeable textBox;
     protected final String displayTitle;
 
 
     // === CONSTRUCTOR ===
-    public DisplayPanel(JTextArea text, String title){
+    public DisplayPanel(TextDisplayBox text, String title){
         super(LAYOUT);
 
         // The title of the display panel
@@ -39,43 +39,23 @@ public abstract class DisplayPanel extends ContentPanel implements Displayable {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // The central text log of all display panels
-        this.textLog = text;
-        this.textLog.setRows(TEXT_ROWS);
-        this.textLog.setColumns(TEXT_COLUMNS);
-        this.textLog.setEditable(false);
-        this.textLog.setFocusable(false);
-        this.textLog.setLineWrap(true);
-        this.contentDisplayer = new JScrollPane(textLog);
-        this.add(contentDisplayer,BorderLayout.CENTER);
+        this.textBox = text;
 
-        // Formatting for text Log | TODO: move to its own wrapper class
-        textLog.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
+        // Formatting
+        text.setBorder(text.buildBorder(BorderFactory.createLineBorder(Color.BLACK)));
     }
 
+    // === Getters and Setters ===
+    public Writeable getTextBox(){return this.textBox;}
 
-    // === TEXT METHODS ===
+    // === Displayable Methods ===
     @Override
-    public void scrollTextBoxDown(){
-        JScrollBar scroller = this.contentDisplayer.getVerticalScrollBar();
-        scroller.setValue(scroller.getMaximum());
+    public void printToGUI(String... printMessages){
+        this.textBox.write(printMessages);
     }
 
-    @Override
-    public void printToGUI(String... printStrings){
-        for(String string : printStrings){
-            this.textLog.append(string + "\n");
-            SwingUtilities.invokeLater(this::scrollTextBoxDown);
-        }
-    }
+    // === Formattable Methods ===
 
-
-
-
-    // === BATTLE PANEL METHODS ===
-    public void updateStatDisplayer(Entity entity){
-        // Default: do nothing
-    }
 
 
 

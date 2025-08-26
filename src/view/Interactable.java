@@ -1,4 +1,4 @@
-package view.panels;
+package view;
 
 public interface Interactable {
 

@@ -1,6 +1,7 @@
 package view.panels;
 
-import javax.swing.border.Border;
+import view.Displayable;
+
 import java.awt.*;
 
 public class ContainerPanel extends ContentPanel{
@@ -8,15 +9,13 @@ public class ContainerPanel extends ContentPanel{
     private static final LayoutManager LAYOUT = new BorderLayout();
 
     // === VARIABLES AND FIELDS ===
-    private DisplayPanel displayer;
+    private Displayable displayer;
     private InteractPanel interactor;
 
-    public ContainerPanel(){
-        super(LAYOUT);
-    }
+    public ContainerPanel(){super(LAYOUT);}
 
     // === GETTERS ===
-    public DisplayPanel getDisplayer() {
+    public Displayable getDisplayer() {
         return displayer;
     }
 
@@ -32,11 +31,11 @@ public class ContainerPanel extends ContentPanel{
 
     public void setDisplayPanel(DisplayPanel display){
         if(this.displayer != null){
-            this.remove(this.displayer);
+            this.remove((Component)this.displayer);
         }
         this.displayer = display;
         if(displayer != null){
-            this.add(displayer,BorderLayout.NORTH);
+            this.add((Component)displayer,BorderLayout.NORTH);
         }
         this.refresh();
     }

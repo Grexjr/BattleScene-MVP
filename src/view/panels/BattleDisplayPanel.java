@@ -2,6 +2,7 @@ package view.panels;
 
 import model.ety.Entity;
 import model.ety.Player;
+import view.textdisplayers.TextDisplayBox;
 import view.textdisplayers.StatDisplayer;
 
 import javax.swing.*;
@@ -19,8 +20,8 @@ public class BattleDisplayPanel extends DisplayPanel {
     private final StatDisplayer playerStats, enemyStats;
 
     // === THE CONSTRUCTOR ===
-    public BattleDisplayPanel(JTextArea textLog, Entity enemy, Entity player){
-        super(textLog,TITLE + enemy.getEntityName());
+    public BattleDisplayPanel(TextDisplayBox text, Entity enemy, Entity player){
+        super(text,TITLE + enemy.getEntityName());
 
         this.playerStats = new StatDisplayer(player);
         this.enemyStats = new StatDisplayer(enemy);
@@ -38,22 +39,5 @@ public class BattleDisplayPanel extends DisplayPanel {
 
         setVisible(true); //NOTE: other ways to do this
     }
-
-
-    // === GETTERS ===
-    public StatDisplayer getPlayerStats(){return this.playerStats;}
-    public StatDisplayer getEnemyStats(){return this.enemyStats;}
-
-    // === METHODS ===
-    @Override
-    public void updateStatDisplayer(Entity entity){
-        if(entity instanceof Player){
-            playerStats.update(entity);
-        } else{
-            enemyStats.update(entity);
-        }
-    }
-
-
 
 }
