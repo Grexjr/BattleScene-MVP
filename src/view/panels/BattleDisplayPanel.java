@@ -6,6 +6,7 @@ import view.textdisplayers.TextDisplayBox;
 import view.textdisplayers.StatDisplayer;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class BattleDisplayPanel extends DisplayPanel {
@@ -26,18 +27,27 @@ public class BattleDisplayPanel extends DisplayPanel {
         this.playerStats = new StatDisplayer(player);
         this.enemyStats = new StatDisplayer(enemy);
 
-        this.add(playerStats,BorderLayout.EAST);
-        this.add(enemyStats,BorderLayout.WEST);
+        this.add(enemyStats,BorderLayout.EAST);
+        this.add(playerStats,BorderLayout.WEST);
 
-        // formatting the panel with edges
-        this.setBorder(BorderFactory.createEmptyBorder(BORDER_NORTH,BORDER_WEST,BORDER_SOUTH,BORDER_EAST));
-            // NORTH WEST SOUTH EAST
-
-
-
-
-
+        createBorder();
         setVisible(true); //NOTE: other ways to do this
+    }
+
+    public void updateStatDisplayers(){
+        this.playerStats.update();
+        this.enemyStats.update();
+    }
+
+    private void createBorder(){
+        this.setBorder(
+                super.buildBorder(BorderFactory.createEmptyBorder(
+                        BORDER_NORTH,
+                        BORDER_WEST,
+                        BORDER_SOUTH,
+                        BORDER_EAST)
+                )
+        );
     }
 
 }

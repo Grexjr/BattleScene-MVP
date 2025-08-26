@@ -17,6 +17,7 @@ public class TurnSet {
     private final ArrayList<Entity> goOrder;
     private final TurnActionPanel actionSuite;
     private final ContainerPanel ownerPanel;
+    private final BattleDisplayPanel battleDisplay;
 
     private int goOrderNum;
 
@@ -33,6 +34,7 @@ public class TurnSet {
         this.battleState = state;
         this.ownerPanel = owner;
         this.actionSuite = new TurnActionPanel();
+        this.battleDisplay = (BattleDisplayPanel) ownerPanel.getDisplayer(); // ERROR will need to catch if not true
 
         // Calculate the go order using bubble sort to sort into descending speeds
         this.goOrder = new ArrayList<>(
@@ -121,7 +123,7 @@ public class TurnSet {
 
         // Update UI
         printAttack(attacker,target,damage);
-        this.ownerPanel.getDisplayer().updateStatDisplayer(target);
+        this.battleDisplay.updateStatDisplayers();
 
         // System log
         System.out.println(
@@ -138,7 +140,7 @@ public class TurnSet {
 
         // Update the UI
         printDefense(defender);
-        this.ownerPanel.getDisplayer().updateStatDisplayer(defender);
+        this.battleDisplay.updateStatDisplayers();
 
         // Disable the buttons
     }

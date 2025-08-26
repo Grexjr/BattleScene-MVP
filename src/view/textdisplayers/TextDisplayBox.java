@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 /// The basic text display box of the game TODO: make this abstract, make concrete gameBox implementation
-public class TextDisplayBox extends JTextArea implements Writeable, Formattable {
+public abstract class TextDisplayBox extends JTextArea implements Writeable, Formattable {
 
     // === FIELDS AND VARIABLES ===
     private JScrollPane scrollView;
@@ -24,6 +24,9 @@ public class TextDisplayBox extends JTextArea implements Writeable, Formattable 
         this.setLineWrap(true);
         this.scrollView = new JScrollPane(this);
     }
+
+    // === GETTER ===
+    public JScrollPane getScrollView(){return this.scrollView;}
 
 
     // === Writeable Methods ===

@@ -8,11 +8,4 @@ public interface Formattable {
     Border buildBorder(Border baseBorder);
 
 
-
-
-
-
-
-
-
 }

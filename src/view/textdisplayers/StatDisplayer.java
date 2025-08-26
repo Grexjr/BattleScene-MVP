@@ -14,8 +14,7 @@ public class StatDisplayer extends TextDisplayBox implements Writeable {
     private static final int COLUMNS = 15;
 
     // === VARIABLES AND FIELDS ===
-    Entity displayedEntity;
-
+    private final Entity displayedEntity;
 
     // === CONSTRUCTOR ===
     public StatDisplayer(Entity entity){
@@ -23,7 +22,7 @@ public class StatDisplayer extends TextDisplayBox implements Writeable {
 
         this.displayedEntity = entity;
         this.update();
-        this.buildBorder(BorderFactory.createLineBorder(Color.GRAY,5));
+        this.setBorder(buildBorder(BorderFactory.createLineBorder(Color.BLACK,5)));
     }
 
 

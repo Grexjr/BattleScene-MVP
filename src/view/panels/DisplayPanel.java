@@ -2,10 +2,12 @@ package view.panels;
 
 import view.Displayable;
 import view.Formattable;
+import view.textdisplayers.GameTextDisplay;
 import view.textdisplayers.TextDisplayBox;
 import view.Writeable;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 /***********************************************************************************************************************
@@ -29,7 +31,12 @@ public abstract class DisplayPanel extends ContentPanel implements Displayable, 
 
 
     // === CONSTRUCTOR ===
-    public DisplayPanel(TextDisplayBox text, String title){
+    /**
+     * General display panel constructor
+     * @param text The main game text box that persists through all screens
+     * @param title The title that appears to label the display panel
+     * */
+    public DisplayPanel(Writeable text, String title){
         super(LAYOUT);
 
         // The title of the display panel
@@ -40,9 +47,7 @@ public abstract class DisplayPanel extends ContentPanel implements Displayable, 
 
         // The central text log of all display panels
         this.textBox = text;
-
-        // Formatting
-        text.setBorder(text.buildBorder(BorderFactory.createLineBorder(Color.BLACK)));
+        this.add(((GameTextDisplay)textBox).getScrollView(),BorderLayout.CENTER);
     }
 
     // === Getters and Setters ===
@@ -55,7 +60,10 @@ public abstract class DisplayPanel extends ContentPanel implements Displayable, 
     }
 
     // === Formattable Methods ===
-
+    @Override
+    public Border buildBorder(Border border){
+        return border;
+    }
 
 
 

@@ -30,8 +30,7 @@ public class BattleController {
         this.guiContainer = owner;
         this.battleDisplay = display;
 
-        battleDisplay.updateStatDisplayer(this.battleState.getPlayer()); // this fixes bug, but why does it happen?
-        battleDisplay.updateStatDisplayer(this.battleState.getEnemy());
+        battleDisplay.updateStatDisplayers();
 
         owner.setPanels(display,BASE_INTERACT);
 
@@ -50,7 +49,7 @@ public class BattleController {
 
     // === METHODS ===
     public void runBattle(){
-        battleDisplay.log(
+        battleDisplay.printToGUI(
                 "Battle between " +
                         battleState.getPlayer().getEntityName() +
                         " and " +
