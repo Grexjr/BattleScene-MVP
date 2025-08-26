@@ -7,8 +7,6 @@ import model.ety.Player;
 import view.panels.*;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -84,7 +82,7 @@ public class TurnSet {
     private void runNextTurn(){
         if(this.getGoer() instanceof Player){
             waitForPlayerInput();
-            this.ownerPanel.getDisplayer().print("Waiting for player...\n");
+            this.ownerPanel.getDisplayer().printToGUI("Waiting for player...\n");
         } else {
             this.battleState.getEnemy().makeBattleChoice(BattleChoice.ATTACK); // TEMPORARY!!!
             executeEntityAction(getGoer(), getOther()); // TEMPORARY!!!
@@ -210,7 +208,7 @@ public class TurnSet {
      * @param damage the amount of damage done by the attacking entity
      * */
     private void printAttack(Entity attacker, Entity target, int damage){
-        this.ownerPanel.getDisplayer().print(String.format("%s Attacks %s for %d damage!",
+        this.ownerPanel.getDisplayer().printToGUI(String.format("%s Attacks %s for %d damage!",
                 attacker.getEntityName(),
                 target.getEntityName(),
                 damage
@@ -222,7 +220,7 @@ public class TurnSet {
      * @param defender the entity doing the defending
      * */
     private void printDefense(Entity defender){
-        this.ownerPanel.getDisplayer().print(String.format("%s defends!",
+        this.ownerPanel.getDisplayer().printToGUI(String.format("%s defends!",
                 defender.getEntityName()));
     }
 

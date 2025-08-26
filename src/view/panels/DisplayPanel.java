@@ -1,7 +1,6 @@
 package view.panels;
 
 import model.ety.Entity;
-import model.ety.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +13,7 @@ import java.awt.*;
  *
  **********************************************************************************************************************/
 
-public abstract class DisplayPanel extends ContentPanel {
+public abstract class DisplayPanel extends ContentPanel implements Displayable {
     // === CONSTANTS ===
     private static final int horizontalGap = 15;
     private static final int verticalGap = 0;
@@ -56,21 +55,21 @@ public abstract class DisplayPanel extends ContentPanel {
 
 
     // === TEXT METHODS ===
-    public void scrollDown(){
+    @Override
+    public void scrollTextBoxDown(){
         JScrollBar scroller = this.contentDisplayer.getVerticalScrollBar();
         scroller.setValue(scroller.getMaximum());
     }
 
-    public void log(String message){
-        this.textLog.append(message + "\n");
-        SwingUtilities.invokeLater(this::scrollDown);
-    }
-
-    public void print(String... printStrings){
+    @Override
+    public void printToGUI(String... printStrings){
         for(String string : printStrings){
-            this.log(string);
+            this.textLog.append(string + "\n");
+            SwingUtilities.invokeLater(this::scrollTextBoxDown);
         }
     }
+
+
 
 
     // === BATTLE PANEL METHODS ===
