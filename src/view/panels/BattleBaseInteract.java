@@ -8,26 +8,24 @@ public class BattleBaseInteract extends BattleButtonPanel{
     // === CONSTANTS ===
     private static final JLabel BASE_PANEL_TEXT = new JLabel("Waiting...");
 
-
-
     public BattleBaseInteract(){ // May extend this to a general base panel
         super();
         this.add(BASE_PANEL_TEXT,CENTER_ALIGNMENT);
     }
 
+    // === ButtonInputtable Methods ===
     @Override
-    protected void createBorders() {
-        super.createBorders();
-    }
-
-    @Override
-    protected ArrayList<JButton> initializeButtons() {
-        return new ArrayList<>();
+    public ArrayList<JButton> initializeButtons(){
+        // Does nothing, has no buttons -- perhaps logs, perhaps throws an error
+        return new ArrayList<JButton>();
     }
 
 
-    @Override
-    public JButton createButton(String label, ActionListener action) {
-        return new JButton();
-    }
+
+
+
+
+
+
+
 }

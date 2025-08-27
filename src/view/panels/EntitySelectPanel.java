@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /// This class is the panel that allows the player to select an entity to attack
 public class EntitySelectPanel extends BattleBaseInteract{
 
-    private ArrayList<Entity> enemyList;
+    private final ArrayList<Entity> enemyList;
 
 
     public EntitySelectPanel(ArrayList<Entity> list){
@@ -18,7 +18,7 @@ public class EntitySelectPanel extends BattleBaseInteract{
 
     // === METHODS ===
     @Override
-    protected ArrayList<JButton> initializeButtons() {
+    public ArrayList<JButton> initializeButtons() {
         ArrayList<JButton> buttonsList = new ArrayList<>();
         for(Entity entity : enemyList){
             JButton entityButton = createButton(entity.getEntityName(),null);

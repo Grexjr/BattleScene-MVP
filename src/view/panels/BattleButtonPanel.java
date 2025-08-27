@@ -19,27 +19,27 @@ public abstract class BattleButtonPanel extends ButtonPanel {
         createBorders();
     }
 
+    // === Formattable Methods ===
     @Override
-    protected void createBorders(){
-        Border outerBorder = BorderFactory.createEmptyBorder(BORDER_BUFFER,BORDER_BUFFER,BORDER_BUFFER,BORDER_BUFFER);
-        Border innerBorder = BorderFactory.createEmptyBorder(
-                INNER_BORDER_BUFFER,
-                INNER_BORDER_BUFFER,
-                INNER_BORDER_BUFFER,
-                INNER_BORDER_BUFFER
-        );
+    public Border buildBorder(Border baseBorder){
 
         CompoundBorder firstBorder = BorderFactory.createCompoundBorder(
-                outerBorder,
+                baseBorder,
                 BorderFactory.createBevelBorder(1,Color.GRAY,Color.DARK_GRAY)
         );
 
-        CompoundBorder finalBorder = BorderFactory.createCompoundBorder(
+        return BorderFactory.createCompoundBorder(
                 firstBorder,
-                innerBorder
+                baseBorder
         );
+    }
 
-        this.setBorder(finalBorder);
+    protected void createBorders(){
+        this.setBorder(
+                buildBorder(
+                        BorderFactory.createEmptyBorder(
+                                BORDER_BUFFER,BORDER_BUFFER,BORDER_BUFFER,BORDER_BUFFER
+                        )));
     }
 
 
