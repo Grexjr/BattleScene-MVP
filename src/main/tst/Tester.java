@@ -12,6 +12,8 @@ import view.panels.BattleBaseInteract;
 import view.panels.ContainerPanel;
 import view.panels.TurnActionPanel;
 import view.panels.BattleDisplayPanel;
+import view.textdisplayers.GameTextDisplay;
+import view.textdisplayers.TextDisplayBox;
 import view.windows.GameWindow;
 
 import javax.swing.*;
@@ -123,15 +125,30 @@ public class Tester {
     // The tester main method
     public static void main(String[] args){
 
+        //GameWindow gameWindow = new GameWindow();
+        //GameTextDisplay gameText = new GameTextDisplay();
+
+
+
+
+
+
+
+
+
+
+
+
+
         GameWindow gameWindow = new GameWindow();
 
         Player player = new Player("Player");
         player.getPlayerInventory().put(new Healable(HealingItem.SMALL_HEALTH_POTION));
         Enemy slime = new Slime(1);
 
-        JTextArea textLog = new JTextArea();
+        GameTextDisplay centralGameText = new GameTextDisplay();
         BattleState bs = new BattleState(player,slime);
-        BattleDisplayPanel bdp = new BattleDisplayPanel(textLog,bs.getPlayer(),bs.getEnemy());
+        BattleDisplayPanel bdp = new BattleDisplayPanel(centralGameText,bs.getPlayer(),bs.getEnemy());
         BattleBaseInteract bbi = new BattleBaseInteract();
 
         gameWindow.getContainerPanel().setPanels(bdp,bbi);

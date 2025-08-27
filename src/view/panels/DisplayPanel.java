@@ -1,9 +1,13 @@
 package view.panels;
 
-import model.ety.Entity;
-import model.ety.Player;
+import view.Displayable;
+import view.Formattable;
+import view.textdisplayers.GameTextDisplay;
+import view.textdisplayers.TextDisplayBox;
+import view.Writeable;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 /***********************************************************************************************************************
@@ -14,23 +18,25 @@ import java.awt.*;
  *
  **********************************************************************************************************************/
 
-public abstract class DisplayPanel extends ContentPanel {
+public abstract class DisplayPanel extends ContentPanel implements Displayable, Formattable {
     // === CONSTANTS ===
     private static final int horizontalGap = 15;
     private static final int verticalGap = 0;
     private static final LayoutManager LAYOUT = new BorderLayout(horizontalGap,verticalGap);
-    private static final int TEXT_ROWS = 30;
-    private static final int TEXT_COLUMNS = 65;
 
 
     // === VARIABLES AND FIELDS ===
-    protected final JScrollPane contentDisplayer;
-    private final JTextArea textLog;
+    private final Writeable textBox;
     protected final String displayTitle;
 
 
     // === CONSTRUCTOR ===
-    public DisplayPanel(JTextArea text, String title){
+    /**
+     * General display panel constructor
+     * @param text The main game text box that persists through all screens
+     * @param title The title that appears to label the display panel
+     * */
+    public DisplayPanel(Writeable text, String title){
         super(LAYOUT);
 
         // The title of the display panel
@@ -40,42 +46,23 @@ public abstract class DisplayPanel extends ContentPanel {
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // The central text log of all display panels
-        this.textLog = text;
-        this.textLog.setRows(TEXT_ROWS);
-        this.textLog.setColumns(TEXT_COLUMNS);
-        this.textLog.setEditable(false);
-        this.textLog.setFocusable(false);
-        this.textLog.setLineWrap(true);
-        this.contentDisplayer = new JScrollPane(textLog);
-        this.add(contentDisplayer,BorderLayout.CENTER);
-
-        // Formatting for text Log | TODO: move to its own wrapper class
-        textLog.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
+        this.textBox = text;
+        this.add(((GameTextDisplay)textBox).getScrollView(),BorderLayout.CENTER);
     }
 
+    // === Getters and Setters ===
+    public Writeable getTextBox(){return this.textBox;}
 
-    // === TEXT METHODS ===
-    public void scrollDown(){
-        JScrollBar scroller = this.contentDisplayer.getVerticalScrollBar();
-        scroller.setValue(scroller.getMaximum());
+    // === Displayable Methods ===
+    @Override
+    public void printToGUI(String... printMessages){
+        this.textBox.write(printMessages);
     }
 
-    public void log(String message){
-        this.textLog.append(message + "\n");
-        SwingUtilities.invokeLater(this::scrollDown);
-    }
-
-    public void print(String... printStrings){
-        for(String string : printStrings){
-            this.log(string);
-        }
-    }
-
-
-    // === BATTLE PANEL METHODS ===
-    public void updateStatDisplayer(Entity entity){
-        // Default: do nothing
+    // === Formattable Methods ===
+    @Override
+    public Border buildBorder(Border border){
+        return border;
     }
 
 

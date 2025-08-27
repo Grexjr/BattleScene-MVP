@@ -30,11 +30,9 @@ public class TurnActionPanel extends BattleButtonPanel {
         setVisible(true); //NOTE: other ways to do this
     }
 
-    // === GETTER ===
-    public BattleChoice getChoice() {return this.choice;}
-
+    // === ButtonInputtable Methods ===
     @Override
-    protected ArrayList<JButton> initializeButtons() {
+    public ArrayList<JButton> initializeButtons(){
         JButton attack = createButton(BUTTON_LABELS[0],null);
         JButton defend = createButton(BUTTON_LABELS[1],null);
         JButton item = createButton(BUTTON_LABELS[2],null);
@@ -46,7 +44,5 @@ public class TurnActionPanel extends BattleButtonPanel {
         buttonsList.add(run);
         return buttonsList;
     }
-
-    // TODO: Create system logs for action listeners that button has been pressed
 
 }
