@@ -148,7 +148,7 @@ public class Tester {
 
         GameTextDisplay centralGameText = new GameTextDisplay();
         BattleState bs = new BattleState(player,slime);
-        BattleDisplayPanel bdp = new BattleDisplayPanel(centralGameText,bs.getPlayer(),bs.getEnemy());
+        BattleDisplayPanel bdp = new BattleDisplayPanel(centralGameText,bs.getEnemy(),bs.getPlayer());
         BattleBaseInteract bbi = new BattleBaseInteract();
 
         gameWindow.getContainerPanel().setPanels(bdp,bbi);

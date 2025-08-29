@@ -5,6 +5,7 @@ import model.ety.*;
 import model.ety.enemy.Enemy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 /** The Model representation of the battle. It holds a player, an enemy, a boolean for whose turn it is, and an enum
@@ -56,7 +57,7 @@ public class BattleState {
 
     // === OTHER METHODS ===
     ///  resets temporary values of the entities within
-    public void resetTemporaryValues(ArrayList<Entity> battlers){
+    public void resetTemporaryValues(Entity... battlers){
         for(Entity battler : battlers){
             battler.getEntityStatBlock().resetTemporaryStats();
         }
