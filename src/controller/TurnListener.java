@@ -7,6 +7,8 @@ public interface TurnListener {
 
     void runTurnExecute(Entity executor, Entity other, int damage); // prints to the GUI
 
+    void runEntityDeath(Entity deadEntity);
+
     void runTurnEnd(); // starts the next turn of the round
 
     void runRoundEnd(); // starts the next round, signals to bc to start next round

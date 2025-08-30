@@ -4,7 +4,10 @@ import model.btl.BattleState;
 import model.btl.Round;
 import model.ety.BattleChoice;
 import model.ety.Entity;
+import model.ety.Player;
 import view.panels.*;
+
+import javax.swing.*;
 
 // just need to fix first turn not registering damage... nvm its a deeper issue
 public class BattleController implements TurnListener {
@@ -116,6 +119,13 @@ public class BattleController implements TurnListener {
             default -> System.out.println("ERROR!"); // ERROR; catch if this occurs
         }
         this.battleDisplay.updateStatDisplayers();
+    }
+
+    @Override
+    public void runEntityDeath(Entity deadEntity){
+        this.guiContainer.getDisplayer().printToGUI(String.format("%s is dead!\n",deadEntity.getEntityName()));
+        this.battleDisplay.updateStatDisplayers();
+        new Timer(2000,_ -> System.exit(0)).start();
     }
 
     @Override

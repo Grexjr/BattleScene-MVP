@@ -3,6 +3,7 @@ package controller;
 import model.btl.Round;
 import model.ety.BattleChoice;
 import model.ety.Entity;
+import model.ety.LifeState;
 import model.ety.Player;
 import view.ButtonInputtable;
 import view.panels.TurnActionPanel;
@@ -62,8 +63,20 @@ public class RoundController{
                     getOther(),
                     round.retrieveTurn(round.retrieveEnemy()).getDamage()
             );
-            runEndTurn();
+
+            // Check if the entity is dead
+            if(checkEntityDeath(getOther())) {
+                this.turnPanel.toggleButtons(false);
+                this.round.retrievePlayer().changeState(LifeState.DEAD);
+                listener.runEntityDeath(round.retrievePlayer());
+            } else {
+                runEndTurn();
+            }
         }
+    }
+
+    private boolean checkEntityDeath(Entity deadOne){
+        return deadOne.getEntityStatBlock().isDead();
     }
 
 
@@ -114,8 +127,17 @@ public class RoundController{
                         round.retrieveTurn(round.retrievePlayer()).getDamage() // May not work as intended
                 );
 
-                // End the turn
-                runEndTurn();
+                // Check if enemy dead
+                boolean isDead = checkEntityDeath(round.retrieveEnemy());
+                System.out.println("isDead? " + isDead);
+                if(isDead) {
+                    this.turnPanel.toggleButtons(false);
+                    this.round.retrieveEnemy().changeState(LifeState.DEAD);
+                    listener.runEntityDeath(round.retrieveEnemy());
+                } else {
+                    System.out.println("else reached!");
+                    runEndTurn();
+                }
             });
         }
     }

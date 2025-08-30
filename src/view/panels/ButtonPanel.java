@@ -43,7 +43,7 @@ public abstract class ButtonPanel extends InteractPanel implements ButtonInputta
     @Override
     public void toggleButtons(boolean status){
         for(JButton b: buttonsList){
-            this.setEnabled(status);
+            b.setEnabled(status);
         }
     }
 

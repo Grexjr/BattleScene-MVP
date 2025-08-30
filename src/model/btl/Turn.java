@@ -33,9 +33,10 @@ public class Turn {
         this.executorChoice = this.turnExecutor.getBattleChoice();
         switch(this.executorChoice){
             case ATTACK -> {
+                // Handle the attack
                 this.damage = this.parentBattle.handleAttack(this.turnExecutor, target);
-                System.out.println("Turn damage val = " + this.damage);
-                System.out.println(damage);
+                System.out.println("Turn damage val = " + this.damage); //DEBUG
+                System.out.println(damage);                             //DEBUG
             }
             case DEFEND -> this.parentBattle.handleDefend(this.turnExecutor);
             case USE_ITEM -> this.parentBattle.handleItemUse(this.turnExecutor);
