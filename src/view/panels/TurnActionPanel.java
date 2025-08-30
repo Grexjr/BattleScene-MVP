@@ -30,9 +30,12 @@ public class TurnActionPanel extends BattleButtonPanel {
         setVisible(true); //NOTE: other ways to do this
     }
 
+    public BattleChoice getChoice(){return this.choice;}
+
     // === ButtonInputtable Methods ===
     @Override
     public ArrayList<JButton> initializeButtons(){
+        // Swing adds action listeners multiple-wise, so this will be called first then whatever is added after
         JButton attack = createButton(BUTTON_LABELS[0],null);
         JButton defend = createButton(BUTTON_LABELS[1],null);
         JButton item = createButton(BUTTON_LABELS[2],null);

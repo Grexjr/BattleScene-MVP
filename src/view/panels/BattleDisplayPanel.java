@@ -27,8 +27,8 @@ public class BattleDisplayPanel extends DisplayPanel {
         this.playerStats = new StatDisplayer(player);
         this.enemyStats = new StatDisplayer(enemy);
 
-        this.add(enemyStats,BorderLayout.EAST);
-        this.add(playerStats,BorderLayout.WEST);
+        this.add(enemyStats,BorderLayout.WEST);
+        this.add(playerStats,BorderLayout.EAST);
 
         createBorder();
         setVisible(true); //NOTE: other ways to do this
